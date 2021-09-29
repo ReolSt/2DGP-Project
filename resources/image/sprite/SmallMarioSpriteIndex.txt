@@ -1,0 +1,12 @@
+DeadLeft 0 1 15 16
+StandLeft 212 1 227 16
+Run1Left 196 1 211 16
+Run2Left 180 1 195 16
+Run3Left 164 1 179 16
+JumpLeft 130 1 145 16
+DeadRight 440 1 455 16
+StandRight 228 1 243 16
+Run1Right 244 1 259 16
+Run2Right 260 1 275 16
+Run3Right 276 1 291 16
+JumpLeft 310 1 325 16

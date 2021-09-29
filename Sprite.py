@@ -1,5 +1,6 @@
 import pico2d
-import Transform
+from Transform import *
+from GameObject import *
 
 SPRITE_PATH = "resources/image/sprite/"
 
@@ -85,27 +86,29 @@ class Sprite:
     def __init__(self, spriteMap, spriteName, parent):
         self.spriteMap = spriteMap
         self.spriteName = spriteName
+        self.spriteIndex = self.spriteMap.indices[self.spriteName]
 
-        assert(parent is Transform or parent is None)
-        self.parent = parent
+        self.width = self.spriteIndex['width']
+        self.height = self.spriteIndex['height']
+        self.left = self.spriteIndex['left']
+        self.bottom = self.spriteIndex['bottom']
+
+        if type(parent) is GameObject:
+            parent = parent.transform
+
         self.transform = Transform(parent)
 
-    def render(self, transform):
-        assert(transform is Transform)
+    def render(self):
 
         spriteIndex = self.spriteMap.indices[self.spriteName]
 
-        width = spriteIndex['width']
-        height = spriteIndex['height']
+        x, y = self.transform.position()
+        rotation = self.transform.rotation()
+        scale = self.transform.scale()
+        flip = self.transform.flip()
 
-        left = spriteIndex['left']
-        bottom = spriteIndex['bottom']
+        flipString = '' + ('h' if flip[0] else '') + ('v' if flip[1] else '')
 
-        x, y = self.transform.globalPosition()
-        rotation = self.transform.globalRotation()
-        scale = self.transform.globalScale()
-        flip = self.transform.flip
-
-        self.image.clip_composite_draw(
-            left, bottom, width, height, rotation, flip, x, y,
-            width * scale[0], height * scale[1])
+        self.spriteMap.image.clip_composite_draw(
+            self.left, self.bottom, self.width, self.height, rotation, flipString, x, y,
+            self.width * scale[0], self.height * scale[1])
