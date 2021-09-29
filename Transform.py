@@ -2,7 +2,7 @@ import numpy
 
 class Transform:
     def __init__(self, parent=None):
-        assert(type(parent) is Transform or parent is None)
+        assert(isinstance(parent, Transform) or parent is None)
 
         self.parent = parent
 
@@ -11,6 +11,15 @@ class Transform:
         self.localScale = numpy.array([1.0, 1.0])
 
         self.localFlip = numpy.array([False, False])
+
+    def translate(self, x, y):
+        self.localPosition += numpy.array([x, y], dtype=numpy.float32)
+
+    def rotate(self, deg):
+        self.localRotation += deg
+
+    def setScale(self, xScale, yScale):
+        self.localScale = numpy.array([xScale, yScale], dtype=numpy.float32)
 
     def position(self):
         parent = self.parent

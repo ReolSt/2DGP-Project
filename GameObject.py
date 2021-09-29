@@ -3,9 +3,10 @@ from Transform import *
 
 class GameObject:
     def __init__(self, parent=None):
-        if type(parent) is GameObject:
-            parent = parent.transform
-        self.transform = Transform(parent)
+        if isinstance(parent, GameObject):
+            self.transform = Transform(parent.transform)
+        else:
+            self.transform = Transform(parent)
 
         self.children = []
         self.sprites = []

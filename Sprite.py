@@ -78,29 +78,33 @@ class SpriteMap:
                     'bottom': bottom
                 }
 
-    def getIndex(self, name):
-        return self.indices[name]
+    def getSpriteImage(self, name):
+        spriteIndex = self.indices[name]
+
+        width = spriteIndex['width']
+        height = spriteIndex['height']
+        left = spriteIndex['left']
+        bottom = spriteIndex['bottom']
+
+        return self.image.clip_image(left, bottom, width, height)
 
 
 class Sprite:
     def __init__(self, spriteMap, spriteName, parent):
-        self.spriteMap = spriteMap
+        self.image = spriteMap.image
         self.spriteName = spriteName
-        self.spriteIndex = self.spriteMap.indices[self.spriteName]
+        self.spriteIndex = spriteMap.indices[spriteName]
 
-        self.width = self.spriteIndex['width']
-        self.height = self.spriteIndex['height']
-        self.left = self.spriteIndex['left']
-        self.bottom = self.spriteIndex['bottom']
-
-        if type(parent) is GameObject:
-            parent = parent.transform
-
-        self.transform = Transform(parent)
+        if isinstance(parent, GameObject):
+            self.transform = Transform(parent.transform)
+        else:
+            self.transform = Transform(parent)
 
     def render(self):
-
-        spriteIndex = self.spriteMap.indices[self.spriteName]
+        width = self.spriteIndex['width']
+        height = self.spriteIndex['height']
+        left = self.spriteIndex['left']
+        bottom = self.spriteIndex['bottom']
 
         x, y = self.transform.position()
         rotation = self.transform.rotation()
@@ -109,6 +113,5 @@ class Sprite:
 
         flipString = '' + ('h' if flip[0] else '') + ('v' if flip[1] else '')
 
-        self.spriteMap.image.clip_composite_draw(
-            self.left, self.bottom, self.width, self.height, rotation, flipString, x, y,
-            self.width * scale[0], self.height * scale[1])
+        self.image.clip_composite_draw(left, bottom, width, height,
+            rotation, flipString, x, y, width * scale[0], height * scale[1])

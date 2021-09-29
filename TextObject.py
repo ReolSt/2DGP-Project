@@ -7,12 +7,20 @@ class TextObject(GameObject):
         self.text = text
         self.spacing = spacing
 
-        xOffset = 0
+        self.setText(spriteMap, text)
+
+    def setText(self, spriteMap, text):
+        self.text = text
+        self.sprites.clear()
+
+        xOffset = 0.0
         for ch in self.text:
             if ch == " ":
                 ch = "SPACE"
             sprite = Sprite(spriteMap, ch, self.transform)
-            sprite.transform.position.x += sprite.width + self.spacing
+
+            sprite.transform.localPosition[0] += xOffset
 
             self.sprites.append(sprite)
-            xOffset += sprite.width
+
+            xOffset += sprite.spriteIndex['width'] + self.spacing
