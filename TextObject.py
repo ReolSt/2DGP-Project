@@ -1,15 +1,17 @@
-from Sprite import *
+import pico2d
+
+from TextSprite import *
+from EntitySprite import *
 from GameObject import *
 
 class TextObject(GameObject):
-    def __init__(self, parent, spriteMap, text="", spacing=1):
+    def __init__(self, parent, text="", spacing=1):
         super().__init__(parent)
         self.text = text
         self.spacing = spacing
+        self.setText(text)
 
-        self.setText(spriteMap, text)
-
-    def setText(self, spriteMap, text):
+    def setText(self, text):
         self.text = text
         self.sprites.clear()
 
@@ -17,7 +19,7 @@ class TextObject(GameObject):
         for ch in self.text:
             if ch == " ":
                 ch = "SPACE"
-            sprite = Sprite(spriteMap, ch, self.transform)
+            sprite = TextSprite(self.transform, ch)
 
             sprite.transform.localPosition[0] += xOffset
 
