@@ -9,6 +9,7 @@ BigMarioStand 8 41 23 72
 BigMarioRun1 27 41 42 72
 BigMarioRun2 46 43 60 72
 BigMarioRun3 65 42 78 72
+BigMarioKick 82 42 98 72
 BigMarioCrouch 130 82 146 105
 MysteryBlock1 1 373 16 388
 MysteryBlock2 18 373 33 388

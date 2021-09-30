@@ -2,7 +2,7 @@ import pico2d
 
 from Singleton import *
 
-class RenderingContext(Singleton):
+class RenderingContext(metaclass=Singleton):
     def __init__(self, width, height):
         self.width = width
         self.height = height

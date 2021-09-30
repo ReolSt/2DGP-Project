@@ -1,4 +1,6 @@
 import pico2d
+
+from Settings import *
 from Transform import *
 
 class GameObject:
@@ -27,12 +29,16 @@ class GameObject:
 
     def captureEvent(self, event):
         if event.type == pico2d.SDL_MOUSEBUTTONUP:
+            event.y = int(Settings().default["WindowHeight"]) - 1 - event.y
             self.onMouseUp(event)
         elif event.type == pico2d.SDL_MOUSEBUTTONDOWN:
+            event.y = int(Settings().default["WindowHeight"]) - 1 - event.y
             self.onMouseDown(event)
         elif event.type == pico2d.SDL_MOUSEMOTION:
+            event.y = int(Settings().default["WindowHeight"]) - 1 - event.y
             self.onMouseMove(event)
         elif event.type == pico2d.SDL_MOUSEWHEEL:
+            event.y = int(Settings().default["WindowHeight"]) - 1 - event.y
             self.onMouseWheel(event)
         elif event.type == pico2d.SDL_KEYDOWN:
             if event.key not in self.keyDown:
