@@ -56,7 +56,7 @@ class Transform:
         return scale
 
     def flip(self):
-        flip = self.localFlip
+        flip = self.localFlip.copy()
         if self.parent is not None:
             parent_flip = self.parent.flip()
             if parent_flip[0]:
