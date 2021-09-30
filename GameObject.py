@@ -19,8 +19,11 @@ class GameObject:
             "MouseUp": [],
             "MouseWheel": [],
             "KeyDown": [],
+            "KeyPress": [],
             "KeyUp": [],
         }
+
+        self.keyDown = {}
 
     def captureEvent(self, event):
         if event.type == pico2d.SDL_MOUSEBUTTONUP:
@@ -32,8 +35,19 @@ class GameObject:
         elif event.type == pico2d.SDL_MOUSEWHEEL:
             self.onMouseWheel(event)
         elif event.type == pico2d.SDL_KEYDOWN:
-            self.onKeyDown(event)
+            if event.key not in self.keyDown:
+                self.keyDown[event.key] = False
+
+            if self.keyDown[event.key]:
+                self.onKeyPress(event)
+            else:
+                self.onKeyDown(event)
+                self.keyDown[event.key] = True
         elif event.type == pico2d.SDL_KEYUP:
+            if event.key not in self.keyDown:
+                self.keyDown[event.key] = False
+            self.keyDown[event.key] = False
+
             self.onKeyUp(event)
 
     def addEventListener(self, eventType, callback):
@@ -97,3 +111,10 @@ class GameObject:
 
         for child in self.children:
             child.onKeyUp(event)
+
+    def onKeyPress(self, event):
+        for callback in self.eventListeners["KeyPress"]:
+            callback(self, event)
+
+        for child in self.children:
+            child.onKeyPress(event)
