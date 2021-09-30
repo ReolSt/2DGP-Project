@@ -28,6 +28,7 @@ class GameObject:
         self.keyDown = {}
 
     def captureEvent(self, event):
+
         if event.type == pico2d.SDL_MOUSEBUTTONUP:
             event.y = int(Settings().default["WindowHeight"]) - 1 - event.y
             self.onMouseUp(event)
