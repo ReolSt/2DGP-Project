@@ -1,7 +1,6 @@
-from Sprite import *
-from GameObject import *
-from TextObject import *
-from EntityObject import *
+from Engine.GameObject import *
+from Engine.TextObject import *
+from Engine.EntityObject import *
 from GameState import *
 
 

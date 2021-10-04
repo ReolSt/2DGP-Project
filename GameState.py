@@ -1,4 +1,4 @@
-from GameObject import *
+from Engine.GameObject import *
 
 class GameState(GameObject):
     def __init__(self, parent):

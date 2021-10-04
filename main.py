@@ -3,44 +3,58 @@ import numpy
 
 import pico2d
 
-from Settings import *
-from RenderingContext import *
+from Engine.Settings import *
+from Engine.RenderingContext import *
 
 settings = Settings()
 renderingContext = RenderingContext(
     int(settings.default["WindowWidth"]), int(settings.default["WindowHeight"]))
 
-from Sprite import *
-from SpriteMap import *
-from SpriteIndexParser import *
-from GameObject import *
-from TextObject import *
-from EntityObject import *
-from TerrainObject import *
-from BackgroundObject import *
-from Scene import *
+from Engine.GameObject import *
+from Engine.TextObject import *
+from Engine.BackgroundObject import *
+from Engine.TerrainObject import *
+from Engine.Scene import *
 
 from GamePlayInterface import *
 from Player import *
+from Mountain import *
+from VerticalPipe import *
 
 scene = Scene("SuperMarioBros")
 root = scene.root
 
 backgroundLayer = GameObject(scene.root)
-objectLayer = GameObject(scene.root)
+terrainLayer = GameObject(scene.root)
 entityLayer = GameObject(scene.root)
 interfaceLayer = GameObject(scene.root)
 
-root.children = [backgroundLayer, objectLayer, entityLayer, interfaceLayer]
+root.children = [backgroundLayer, terrainLayer, entityLayer, interfaceLayer]
 
 sky = BackgroundObject(backgroundLayer, "Sky")
-sky.transform.localPosition = numpy.array([400.0, 300.0])
+sky.transform.translate(400.0, 300.0)
 backgroundLayer.children.append(sky)
 
 player = Player(entityLayer)
-player.transform.localPosition = numpy.array([100.0, 100.0])
-player.transform.localScale = numpy.array([3.0, 3.0])
+player.transform.translate(100.0, 100.0)
+player.transform.setScale(3.0, 3.0)
 entityLayer.children.append(player)
+
+block = TerrainObject(terrainLayer, "Ground")
+block.transform.translate(100.0, 50.0)
+block.transform.setScale(2, 2)
+terrainLayer.children.append(block)
+
+mountain = Mountain(terrainLayer)
+mountain.transform.translate(200, 200)
+mountain.transform.setScale(2, 2)
+terrainLayer.children.append(mountain)
+
+verticalPipe = VerticalPipe(terrainLayer, height=5)
+verticalPipe.transform.translate(300, 200)
+verticalPipe.transform.setScale(2, 2)
+terrainLayer.children.append(verticalPipe)
+
 
 gameState = GameState(root)
 gamePlayInterface = GamePlayInterface(interfaceLayer, gameState)
