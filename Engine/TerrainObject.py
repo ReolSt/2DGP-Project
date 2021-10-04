@@ -1,7 +1,7 @@
 import pico2d
 
-from TerrainSprite import *
-from GameObject import *
+from .TerrainSprite import *
+from .GameObject import *
 
 class TerrainObject(GameObject):
     def __init__(self, parent, spriteName):

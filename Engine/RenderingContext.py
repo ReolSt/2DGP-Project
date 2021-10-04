@@ -1,6 +1,6 @@
 import pico2d
 
-from Singleton import *
+from .Singleton import *
 
 class RenderingContext(metaclass=Singleton):
     def __init__(self, width, height):

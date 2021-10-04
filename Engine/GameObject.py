@@ -1,7 +1,7 @@
 import pico2d
 
-from Settings import *
-from Transform import *
+from .Settings import *
+from .Transform import *
 
 class GameObject:
     def __init__(self, parent=None):
@@ -26,6 +26,8 @@ class GameObject:
         }
 
         self.keyDown = {}
+
+        self.layer = ""
 
     def captureEvent(self, event):
 

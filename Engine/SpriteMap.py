@@ -1,6 +1,6 @@
 import pico2d
 
-from Sprite import *
+from .Sprite import *
 
 SPRITE_PATH = "resources/image/sprite/"
 

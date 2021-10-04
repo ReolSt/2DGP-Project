@@ -1,8 +1,8 @@
 import pico2d
 
-from TextSprite import *
-from EntitySprite import *
-from GameObject import *
+from .TextSprite import *
+from .EntitySprite import *
+from .GameObject import *
 
 class TextObject(GameObject):
     def __init__(self, parent, text="", spacing=1):

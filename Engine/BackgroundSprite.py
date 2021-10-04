@@ -1,8 +1,8 @@
-from Settings import *
+from .Settings import *
 
-from Sprite import *
-from SpriteMap import *
-from SpriteIndexParser import *
+from .Sprite import *
+from .SpriteMap import *
+from .SpriteIndexParser import *
 
 class BackgroundSprite(Sprite):
     Settings = Settings()

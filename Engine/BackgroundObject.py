@@ -1,7 +1,7 @@
 import pico2d
 
-from BackgroundSprite import *
-from GameObject import *
+from .BackgroundSprite import *
+from .GameObject import *
 
 class BackgroundObject(GameObject):
     def __init__(self, parent, spriteName):

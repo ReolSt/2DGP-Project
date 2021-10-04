@@ -1,10 +1,10 @@
 import pico2d
 
-from Settings import *
+from .Settings import *
 
-from Sprite import *
-from SpriteMap import *
-from SpriteIndexParser import *
+from .Sprite import *
+from .SpriteMap import *
+from .SpriteIndexParser import *
 
 class EntitySprite(Sprite):
     Map = SpriteMap(
