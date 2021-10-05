@@ -8,6 +8,6 @@ class Scene:
         self.root = GameObject(None)
         self.collisionManager = CollisionManager(self)
 
-    def Update(self, deltaTime):
-        self.root.Update(deltaTime)
+    def update(self, deltaTime):
+        self.root.update(deltaTime)
         self.collisionManager.Update()
