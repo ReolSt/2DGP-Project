@@ -1,49 +1,86 @@
 from .Transform import *
-
-class Collision:
-    def __init__(self):
-        pass
-
-class Collider:
-    def __init__(self, gameObject):
-        self.gameObject = gameObject
-        self.transform = Transform(gameObject)
-
-    def isTouching(collider):
-        assert(isinstance(collider, Collider))
-
-        return False
+from .Collider import *
 
 class AABB:
     def __init__(self, left, right, bottom, top):
+        """
+        Parameters
+        ----------
+        left : int or float
+            DESCRIPTION.
+        right : int or float
+            DESCRIPTION.
+        bottom : int or float
+            DESCRIPTION.
+        top : int or float
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
+
         self.left = left
         self.right = right
         self.bottom = bottom
         self.top = top
 
-class BoxCollider:
+class BoxCollider(Collider):
     def __init__(self, gameObject, width=1, height=1):
+        """
+        Parameters
+        ----------
+        gameObject : GameObject
+            DESCRIPTION.
+        width : int or float, optional
+            DESCRIPTION. The default is 1.
+        height : int or float, optional
+            DESCRIPTION. The default is 1.
+
+        Returns
+        -------
+        None.
+
+        """
+
         super().__init__(gameObject)
 
         self.width = width
         self.height = height
 
     def getAABB():
+        """
+        Returns
+        -------
+        AABB
+            DESCRIPTION.
+
+        """
+
         position = self.transform.position()
-        scale = self.transform.scale()
 
-        width = self.width * scale[0]
-        height = self.height * scale[1]
-
-        left = position[0] - width / 2
-        right = position[0] + width / 2
-        bottom = position - height / 2
-        top = position[0] + height / 2
+        left = position[0] - self.width / 2
+        right = position[0] + self.width / 2
+        bottom = position - self.height / 2
+        top = position[0] + self.height / 2
 
         return AABB(left, right, bottom, top)
 
 
     def isTouching(collider):
+        """
+        Parameters
+        ----------
+        collider : Collider
+            DESCRIPTION.
+
+        Returns
+        -------
+        bool
+
+        """
+
         assert(isinstance(collider, Collider))
 
         if isinstance(collider, BoxCollider):
