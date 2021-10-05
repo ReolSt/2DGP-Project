@@ -1,14 +1,56 @@
 import pico2d
 
+from .Singleton import *
 from .Settings import *
 from .Transform import *
 
+class GameObjectIDGenerator(metaclass=Singleton):
+    OBJECT_MAX_ID = int(Settings().default["GameObjectMaxId"])
+    def __init__(self):
+        """
+
+        Returns
+        -------
+        None.
+
+        """
+
+        self.currentId = 0
+
+    def generate(self):
+        """
+        Returns
+        -------
+        generated_id : int
+            DESCRIPTION.
+
+        """
+
+        generated_id = self.currentId
+
+        self.currentId = (self.currentId + 1) % GameObjectIDGenerator.OBJECT_MAX_ID
+        return generated_id
+
 class GameObject:
     def __init__(self, parent=None):
+        """
+        Parameters
+        ----------
+        parent : GameObject or Transform, optional
+            DESCRIPTION. The default is None.
+
+        Returns
+        -------
+        None.
+
+        """
+
         if isinstance(parent, GameObject):
             self.transform = Transform(parent.transform)
         else:
             self.transform = Transform(parent)
+
+        self.id = GameObjectIDGenerator().generate()
 
         self.children = []
         self.sprites = []
@@ -23,13 +65,24 @@ class GameObject:
             "KeyDown": [],
             "KeyPress": [],
             "KeyUp": [],
+            "CollisionEnter": [],
+            "CollisionStay": [],
         }
 
         self.keyDown = {}
 
-        self.layer = ""
-
     def captureEvent(self, event):
+        """
+        Parameters
+        ----------
+        event : SDL_Event
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
 
         if event.type == pico2d.SDL_MOUSEBUTTONUP:
             event.y = int(Settings().default["WindowHeight"]) - 1 - event.y
@@ -44,15 +97,21 @@ class GameObject:
             event.y = int(Settings().default["WindowHeight"]) - 1 - event.y
             self.onMouseWheel(event)
         elif event.type == pico2d.SDL_KEYDOWN:
-            if event.key not in self.keyDown:
+            if event.key is None:
+                for key in self.keyDown:
+                    if self.keyDown[key]:
+                        event.key = key
+                        self.onKeyPress(event)
+            elif event.key not in self.keyDown:
                 self.keyDown[event.key] = False
 
-            if self.keyDown[event.key]:
-                self.onKeyPress(event)
-            else:
+            if not self.keyDown[event.key]:
                 self.onKeyDown(event)
                 self.keyDown[event.key] = True
         elif event.type == pico2d.SDL_KEYUP:
+            if event.key == None:
+                return
+
             if event.key not in self.keyDown:
                 self.keyDown[event.key] = False
             self.keyDown[event.key] = False
@@ -60,9 +119,55 @@ class GameObject:
             self.onKeyUp(event)
 
     def addEventListener(self, eventType, callback):
+        """
+        Parameters
+        ----------
+        eventType : str
+            DESCRIPTION.
+        callback : function
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
+
+        assert(eventType in self.eventListeners.keys())
+
         self.eventListener[eventType].append(callback)
 
+    def removeEventListeners(self, eventType):
+        """
+        Parameters
+        ----------
+        eventType : str
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
+
+        assert(eventType in self.eventListeners.keys())
+
+        self.eventListeners[eventType] = []
+
     def update(self, deltaTime):
+        """
+
+        Parameters
+        ----------
+        deltaTime : float
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
+
         for callback in self.eventListeners["Update"]:
             callback(self)
 
@@ -127,3 +232,12 @@ class GameObject:
 
         for child in self.children:
             child.onKeyPress(event)
+
+    def onCollisionEnter(self, collision):
+        pass
+
+    def onCollisionStay(self, collision):
+        pass
+
+    def onCollisionExit(self, collision):
+        pass

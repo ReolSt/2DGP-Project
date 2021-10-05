@@ -6,6 +6,20 @@ SPRITE_PATH = "resources/image/sprite/"
 
 class SpriteMap:
     def __init__(self, image, indices):
+        """
+        Parameters
+        ----------
+        image : SDL_Image
+            DESCRIPTION.
+        indices : dictionary
+            The dictionary has 4 keys('startX', 'startY', 'endX', 'endY')
+
+        Returns
+        -------
+        None.
+
+        """
+
         self.image = image
         self.indices = {}
 
@@ -34,6 +48,19 @@ class SpriteMap:
             }
 
     def getSpriteImage(self, name):
+        """
+
+        Parameters
+        ----------
+        name : str
+            The name of sprite.
+
+        Returns
+        -------
+        TYPE
+            SDL_Image.
+
+        """
         spriteIndex = self.indices[name]
 
         width = spriteIndex['width']
@@ -44,6 +71,22 @@ class SpriteMap:
         return self.image.clip_image(left, bottom, width, height)
 
     def getSprite(self, name, parent):
+        """
+
+        Parameters
+        ----------
+        name : str
+            DESCRIPTION.
+        parent : Gameobject or Transform
+            DESCRIPTION.
+
+        Returns
+        -------
+        sprite : Sprite
+            DESCRIPTION.
+
+        """
+
         sprite = Sprite(self, name, parent)
 
         return sprite

@@ -5,6 +5,21 @@ from .GameObject import *
 
 class Sprite:
     def __init__(self, parent, spriteMap, spriteName):
+        """
+        Parameters
+        ----------
+        parent : GameObject or Transform
+            DESCRIPTION.
+        spriteMap : SpriteMap
+            SpriteMap for loading sprite by name.
+        spriteName : str
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
         self.image = spriteMap.image
         self.spriteName = spriteName
         self.spriteIndex = spriteMap.indices[spriteName]
@@ -20,6 +35,17 @@ class Sprite:
             self.transform = Transform(parent)
 
     def render(self):
+        """
+        Returns
+        -------
+        None.
+
+        Notes
+        -------
+        render itself.
+
+        """
+
         x, y = self.transform.position()
         rotation = self.transform.rotation()
         scale = self.transform.scale()
