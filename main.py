@@ -20,6 +20,8 @@ from GamePlayInterface import *
 from Player import *
 from Mountain import *
 from VerticalPipe import *
+from Cloud import *
+from Grass import *
 
 scene = Scene("SuperMarioBros")
 root = scene.root
@@ -55,6 +57,15 @@ verticalPipe.transform.translate(300, 200)
 verticalPipe.transform.setScale(2, 2)
 terrainLayer.children.append(verticalPipe)
 
+cloud = Cloud(terrainLayer)
+cloud.transform.translate(400, 200)
+cloud.transform.setScale(2, 2)
+terrainLayer.children.append(cloud)
+
+grass = Grass(terrainLayer)
+grass.transform.translate(500, 200)
+grass.transform.setScale(2, 2)
+terrainLayer.children.append(grass)
 
 gameState = GameState(root)
 gamePlayInterface = GamePlayInterface(interfaceLayer, gameState)
@@ -70,7 +81,7 @@ while running:
 
     pico2d.clear_canvas()
 
-    scene.root.update(deltaTime * 1000)
+    scene.update(deltaTime * 1000)
     scene.root.render()
 
     pico2d.update_canvas()
