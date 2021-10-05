@@ -38,8 +38,8 @@ class Player(GameObject):
         self.runningAnimationInterval = 20.0
         self.runningAnimationFrameDuration = 0.0
 
-        self.collider = BoxCollider(
-            self.transform, self.sprites[0].width, self.sprites[0].height)
+        self.collider = BoxCollider(self.transform,
+            self.sprites[0].width , self.sprites[0].height)
 
     def onKeyDown(self, event):
         super().onKeyDown(event)
@@ -135,11 +135,6 @@ class Player(GameObject):
                     self.jumpPressing = False
 
                 self.speed[1] = min(self.speed[1], self.maxSpeed[1])
-
-            if not self.jumpPressing and self.transform.localPosition[1] <= 100.0:
-                self.jumping = False
-                self.speed[1] = 0.0
-                self.transform.localPosition[1] = 100.0
 
     def update(self, deltaTime):
         super().update(deltaTime)

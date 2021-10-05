@@ -27,16 +27,16 @@ class AABB:
         self.top = top
 
 class BoxCollider(Collider):
-    def __init__(self, gameObject, width=1, height=1):
+    def __init__(self, gameObject, width, height):
         """
         Parameters
         ----------
         gameObject : GameObject
             DESCRIPTION.
-        width : int or float, optional
-            DESCRIPTION. The default is 1.
-        height : int or float, optional
-            DESCRIPTION. The default is 1.
+        width : int or float
+            DESCRIPTION.
+        height : int or float
+            DESCRIPTION.
 
         Returns
         -------
@@ -49,7 +49,7 @@ class BoxCollider(Collider):
         self.width = width
         self.height = height
 
-    def getAABB():
+    def getAABB(self):
         """
         Returns
         -------
@@ -59,16 +59,21 @@ class BoxCollider(Collider):
         """
 
         position = self.transform.position()
+        scale = self.transform.scale()
 
-        left = position[0] - self.width / 2
-        right = position[0] + self.width / 2
-        bottom = position - self.height / 2
-        top = position[0] + self.height / 2
+        width = self.width * scale[0]
+        height = self.height * scale[1]
+
+
+        left = position[0] - width / 2
+        right = position[0] + width / 2
+        bottom = position[1] - height / 2
+        top = position[1] + height / 2
 
         return AABB(left, right, bottom, top)
 
 
-    def isTouching(collider):
+    def isTouching(self, collider):
         """
         Parameters
         ----------

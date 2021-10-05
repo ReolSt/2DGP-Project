@@ -33,10 +33,6 @@ class Collider:
         -------
         None.
 
-        Notes
-        -------
-        It has a transform as member but use just position.
-
 
         """
 
@@ -45,7 +41,7 @@ class Collider:
 
         self.touchingObjects = {}
 
-    def getGroup():
+    def getGroup(self):
         """
         Returns
         -------
@@ -55,7 +51,7 @@ class Collider:
 
         return self.group
 
-    def setGroup(group):
+    def setGroup(self, group):
         """
         Parameters
         ----------
@@ -70,7 +66,7 @@ class Collider:
 
         self.group = group
 
-    def isTouching(collider):
+    def isTouching(self, collider):
         """
         Parameters
         ----------
@@ -103,6 +99,7 @@ class Collider:
         """
 
         position = self.transform.position()
+
         x, y = position[0], position[1]
 
         colliderPosition = collider.transform.position()

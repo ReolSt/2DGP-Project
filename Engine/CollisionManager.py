@@ -48,11 +48,12 @@ class CollisionManager():
                     objectA.onCollisionStay(Collision(colliderB, directionA))
                     objectB.onCollisionStay(Collision(colliderA, directionB))
                 else:
-                    colliderA.touchingObjects.pop(objectB.id)
-                    colliderB.touchingObjects.pop(objectA.id)
-
-                    objectA.onCollisionExit(Collision(colliderB, directionA))
-                    objectB.onCollisionExit(Collision(colliderA, directionB))
+                    if objectB.id in colliderA.touchingObjects:
+                        colliderA.touchingObjects.pop(objectB.id)
+                        objectA.onCollisionExit(Collision(colliderB, directionA))
+                    if objectA.id in colliderB.touchingObjects:
+                        colliderB.touchingObjects.pop(objectA.id)
+                        objectB.onCollisionExit(Collision(colliderA, directionB))
 
 
     def addObject(self, gameObject):

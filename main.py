@@ -16,8 +16,12 @@ from Engine.BackgroundObject import *
 from Engine.TerrainObject import *
 from Engine.Scene import *
 
+from GameState import *
 from GamePlayInterface import *
+
 from Player import *
+
+from Ground import *
 from Mountain import *
 from VerticalPipe import *
 from Cloud import *
@@ -41,11 +45,13 @@ player = Player(entityLayer)
 player.transform.translate(100.0, 100.0)
 player.transform.setScale(3.0, 3.0)
 entityLayer.children.append(player)
+scene.collisionManager.addObject(player)
 
-block = TerrainObject(terrainLayer, "Ground")
-block.transform.translate(100.0, 50.0)
-block.transform.setScale(2, 2)
-terrainLayer.children.append(block)
+ground = Ground(terrainLayer, 50, 3)
+ground.transform.translate(-24, -24)
+ground.transform.setScale(2, 2)
+terrainLayer.children.append(ground)
+scene.collisionManager.addObject(ground)
 
 mountain = Mountain(terrainLayer)
 mountain.transform.translate(200, 200)
