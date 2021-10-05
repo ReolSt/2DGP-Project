@@ -4,22 +4,22 @@ class Mountain(GameObject):
     def __init__(self, parent):
         super().__init__(parent)
 
-        spriteTop = TerrainSprite(self.transform, "MountainTop")
-        spriteWidth = spriteTop.width
-        spriteHeight = spriteTop.height
+        top = TerrainSprite(self.transform, "MountainTop")
+        spriteWidth = top.width
+        spriteHeight = top.height
 
-        spriteTop.transform.translate(0, spriteHeight)
+        top.transform.translate(0, spriteHeight)
 
-        spriteBottomLeft = TerrainSprite(self.transform, "MountainBottom1")
-        spriteBottomLeft.transform.translate(-spriteWidth, 0)
+        bottomLeft = TerrainSprite(self.transform, "MountainBottom1")
+        bottomLeft.transform.translate(-spriteWidth, 0)
 
-        spriteBottomCenter = TerrainSprite(self.transform, "MountainBottom2")
-        spriteBottomCenter.transform.translate(0, 0)
+        bottomCenter = TerrainSprite(self.transform, "MountainBottom2")
+        bottomCenter.transform.translate(0, 0)
 
-        spriteBottomRight = TerrainSprite(self.transform, "MountainBottom3")
-        spriteBottomRight.transform.translate(spriteWidth, 0)
+        bottomRight = TerrainSprite(self.transform, "MountainBottom3")
+        bottomRight.transform.translate(spriteWidth, 0)
 
-        self.sprites.append(spriteTop)
-        self.sprites.append(spriteBottomLeft)
-        self.sprites.append(spriteBottomCenter)
-        self.sprites.append(spriteBottomRight)
+        self.sprites.append(top)
+        self.sprites.append(bottomLeft)
+        self.sprites.append(bottomCenter)
+        self.sprites.append(bottomRight)
