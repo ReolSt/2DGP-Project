@@ -25,6 +25,9 @@ from Mountain import *
 from VerticalPipe import *
 from Cloud import *
 from Grass import *
+from Tree import *
+from Mushroom import *
+from Flagpole import *
 
 scene = Scene("SuperMarioBros")
 root = scene.root
@@ -37,23 +40,23 @@ interfaceLayer = GameObject(scene.root)
 root.children = [backgroundLayer, terrainLayer, entityLayer, interfaceLayer]
 
 sky = Sky(terrainLayer, 800, 600)
-sky.transform.translate(400.0, 300.0)
+sky.transform.translate(0, 0)
 backgroundLayer.children.append(sky)
 
 player = Player(entityLayer)
-player.transform.translate(100.0, 100.0)
+player.transform.translate(100.0, 116.0)
 player.transform.setScale(3.0, 3.0)
 entityLayer.children.append(player)
 scene.collisionManager.addObject(player)
 
 ground = Ground(terrainLayer, 50, 3)
-ground.transform.translate(-24, -24)
+ground.transform.translate(0, 0)
 ground.transform.setScale(2, 2)
 terrainLayer.children.append(ground)
 scene.collisionManager.addObject(ground)
 
-mountain = Mountain(terrainLayer)
-mountain.transform.translate(200, 200)
+mountain = Mountain(terrainLayer, 3)
+mountain.transform.translate(100, 96)
 mountain.transform.setScale(2, 2)
 terrainLayer.children.append(mountain)
 
@@ -67,16 +70,37 @@ cloud.transform.translate(400, 200)
 cloud.transform.setScale(2, 2)
 terrainLayer.children.append(cloud)
 
+cloud2 = Cloud(terrainLayer, 4)
+cloud2.transform.translate(400, 300)
+cloud2.transform.setScale(2, 2)
+terrainLayer.children.append(cloud2)
+
 grass = Grass(terrainLayer)
 grass.transform.translate(500, 200)
 grass.transform.setScale(2, 2)
 terrainLayer.children.append(grass)
+
+tree = Tree(terrainLayer)
+tree.transform.translate(560, 200)
+tree.transform.setScale(2, 2)
+terrainLayer.children.append(tree)
+
+mushroom = Mushroom(terrainLayer)
+mushroom.transform.translate(640, 200)
+mushroom.transform.setScale(2, 2)
+terrainLayer.children.append(mushroom)
+
+flagpole = Flagpole(terrainLayer)
+flagpole.transform.translate(700, 100)
+flagpole.transform.setScale(2, 2)
+terrainLayer.children.append(flagpole)
 
 gameState = GameState(root)
 gamePlayInterface = GamePlayInterface(interfaceLayer, gameState)
 
 root.children.append(gameState)
 interfaceLayer.children.append(gamePlayInterface)
+
 
 running = True
 oldTime = time.time()
@@ -92,7 +116,6 @@ while running:
     pico2d.update_canvas()
 
     events = pico2d.get_events()
-
     for event in events:
         if event.type == pico2d.SDL_QUIT:
             running = False
