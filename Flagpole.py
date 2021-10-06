@@ -12,11 +12,12 @@ class Flagpole(GameObject):
         spriteWidth = ball.width
         spriteHeight = ball.height
 
+        xOffset = spriteWidth / 2
         yOffset = spriteHeight / 2
 
         for i in range(height - 2):
             pole = TerrainSprite(self, "FlagpolePole")
-            pole.transform.translate(spriteWidth * 3 / 2, yOffset)
+            pole.transform.translate(xOffset + spriteWidth, yOffset)
 
             self.sprites.append(pole)
 
@@ -25,14 +26,14 @@ class Flagpole(GameObject):
         flagLeft = TerrainSprite(self, "FlagpoleFlag1")
         flagRight = TerrainSprite(self, "FlagpoleFlag2")
 
-        flagLeft.transform.translate(spriteWidth / 2, yOffset)
-        flagRight.transform.translate(spriteWidth * 3 / 2, yOffset)
+        flagLeft.transform.translate(xOffset, yOffset)
+        flagRight.transform.translate(xOffset + spriteWidth, yOffset)
 
         self.sprites.append(flagLeft)
         self.sprites.append(flagRight)
 
         yOffset += spriteWidth
 
-        ball.transform.translate(spriteWidth * 3 / 2, yOffset)
+        ball.transform.translate(xOffset + spriteWidth, yOffset)
 
         self.sprites.append(ball)
