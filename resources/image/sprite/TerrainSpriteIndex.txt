@@ -35,3 +35,4 @@ CastleEntranceBottom 17 102 32 117
 CastleWindowLeft 0 85 15 100
 CastleWindowRIght 34 85 49 100
 CastleBrick 34 68 49 83
+Sky 204 102 219 117
