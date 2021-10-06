@@ -21,7 +21,7 @@ class Text(GameObject):
                 ch = "SPACE"
             sprite = TextSprite(self.transform, ch)
 
-            sprite.transform.localPosition[0] += xOffset
+            sprite.transform.localPosition.x += xOffset
 
             self.sprites.append(sprite)
 

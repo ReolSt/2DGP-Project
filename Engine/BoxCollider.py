@@ -61,14 +61,14 @@ class BoxCollider(Collider):
         position = self.transform.position()
         scale = self.transform.scale()
 
-        width = self.width * scale[0]
-        height = self.height * scale[1]
+        width = self.width * scale.x
+        height = self.height * scale.y
 
 
-        left = position[0] - width / 2
-        right = position[0] + width / 2
-        bottom = position[1] - height / 2
-        top = position[1] + height / 2
+        left = position.x - width / 2
+        right = position.x + width / 2
+        bottom = position.y - height / 2
+        top = position.y + height / 2
 
         return AABB(left, right, bottom, top)
 

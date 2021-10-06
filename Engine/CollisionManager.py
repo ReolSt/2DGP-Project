@@ -17,6 +17,29 @@ class CollisionManager():
         self.scene = scene
         self.objects = []
 
+    def rayCast(self, origin, direction, distance, tag):
+        """
+        Parameters
+        ----------
+        origin : Vector2
+            ray origin.
+        direction : Vector2
+            normalized direction vector.
+        distance : float
+            DESCRIPTION.
+        tag : str
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
+        pass
+
+    def boxCast(self, origin, size, direction, distance, tag):
+        pass
+
     def Update(self):
         """
         Returns

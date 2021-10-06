@@ -18,6 +18,7 @@ class Collision:
 
         assert(isinstance(collider, Collider))
 
+        self.collider = collider
         self.gameObject = collider.gameObject
         self.direction = direction
 
@@ -102,10 +103,10 @@ class Collider:
 
         position = self.transform.position()
 
-        x, y = position[0], position[1]
+        x, y = position.x, position.y
 
         colliderPosition = collider.transform.position()
-        cx, cy = colliderPosition[0], colliderPosition[1]
+        cx, cy = colliderPosition.x, colliderPosition.y
 
         rx = cx - x
         ry = cy - y

@@ -1,8 +1,11 @@
 import pico2d
 
+from Engine.Vector2 import *
 from Engine.GameObject import *
 from Engine.EntitySprite import *
 from Engine.BoxCollider import *
+
+from Engine.AudioMixer import *
 
 class Player(GameObject):
     def __init__(self, parent):
@@ -28,10 +31,10 @@ class Player(GameObject):
         self.jumpPressing = True
         self.jumping = False
 
-        self.speed = [0.0, 0.0]
-        self.minSpeed = [0.0, 0.2]
-        self.maxSpeed = [0.3, 0.5]
-        self.acceleration = [0.0005, 0.003]
+        self.speed = Vector2(0.0, 0.0)
+        self.minSpeed = Vector2(0.0, 0.2)
+        self.maxSpeed = Vector2(0.3, 0.5)
+        self.acceleration = Vector2(0.0005, 0.003)
         self.gravity = 0.0015
 
         self.runningAnimationFrame = 1
@@ -54,7 +57,8 @@ class Player(GameObject):
             if not self.jumping:
                 self.jumping = True
                 self.jumpPressing = True
-                self.speed[1] = self.minSpeed[1]
+                self.speed.y = self.minSpeed.y
+
 
     def onKeyPress(self, event):
         super().onKeyPress(event)
@@ -77,60 +81,63 @@ class Player(GameObject):
         elif event.key == pico2d.SDLK_SPACE:
             self.jumpPressing = False
 
+    def switchSprite(self, spriteName):
+        self.sprites[0] = self.animationSprites[spriteName]
+
     def updateAnimation(self, deltaTime):
         if not self.jumping and self.moving:
-            self.transform.localFlip[0] = self.moving < 0
+            self.transform.localFlip.x = self.moving < 0
 
         if self.moving != 0 or self.stopping:
             if not self.jumping:
-                self.sprites[0] = self.animationSprites["Run" + str(self.runningAnimationFrame)]
+                self.switchSprite("Run" + str(self.runningAnimationFrame))
 
-            self.runningAnimationFrameDuration += deltaTime * abs(self.speed[0])
+            self.runningAnimationFrameDuration += deltaTime * abs(self.speed.x)
 
             if self.runningAnimationFrameDuration > self.runningAnimationInterval:
                 self.runningAnimationFrame = (self.runningAnimationFrame % 3) + 1
                 self.runningAnimationFrameDuration = 0.0
 
-        if self.stopping and not self.jumping and self.moving * self.speed[0] < 0.0:
-            self.sprites[0] = self.animationSprites["Kick"]
+        if self.stopping and not self.jumping and self.moving * self.speed.x < 0.0:
+            self.switchSprite("Kick")
 
-        if (self.moving == 0 or self.stopping) and self.speed[0] == 0.0:
-            self.sprites[0] = self.animationSprites["Stand"]
+        if (self.moving == 0 or self.stopping) and self.speed.x == 0.0:
+            self.switchSprite("Stand")
 
         if self.jumping:
-            self.sprites[0] = self.animationSprites["Jump"]
+            self.switchSprite("Jump")
 
     def updateMove(self, deltaTime):
-        acceleration = deltaTime * self.acceleration[0]
+        acceleration = deltaTime * self.acceleration.x
         gravity = deltaTime * self.gravity
 
         if self.moving != 0:
-            self.speed[0] += acceleration * self.moving
-            self.speed[0] = max(-self.maxSpeed[0], self.speed[0])
-            self.speed[0] = min(self.maxSpeed[0], self.speed[0])
+            self.speed.x += acceleration * self.moving
+            self.speed.x = max(-self.maxSpeed.x, self.speed.x)
+            self.speed.x = min(self.maxSpeed.x, self.speed.x)
         elif self.stopping:
-            if self.speed[0] > 0:
-                self.speed[0] -= acceleration
-                self.speed[0] = max(0.0, self.speed[0])
-            elif self.speed[0] < 0:
-                self.speed[0] += acceleration
-                self.speed[0] = min(0.0, self.speed[0])
+            if self.speed.x > 0:
+                self.speed.x -= acceleration
+                self.speed.x = max(0.0, self.speed.x)
+            elif self.speed.x < 0:
+                self.speed.x += acceleration
+                self.speed.x = min(0.0, self.speed.x)
 
-            self.stopping = False if self.speed[0] == 0.0 else self.stopping
+            self.stopping = False if self.speed.x == 0.0 else self.stopping
 
     def updateJump(self, deltaTime):
-        acceleration = deltaTime * self.acceleration[1]
+        acceleration = deltaTime * self.acceleration.y
         gravity = deltaTime * self.gravity
 
         if self.jumping:
-            self.speed[1] -= gravity
+            self.speed.y -= gravity
             if self.jumpPressing:
-                self.speed[1] += acceleration
+                self.speed.y += acceleration
 
-                if self.speed[1] >= self.maxSpeed[1]:
+                if self.speed.y >= self.maxSpeed.y:
                     self.jumpPressing = False
 
-                self.speed[1] = min(self.speed[1], self.maxSpeed[1])
+                self.speed.y = min(self.speed.y, self.maxSpeed.y)
 
     def update(self, deltaTime):
         super().update(deltaTime)
@@ -139,12 +146,11 @@ class Player(GameObject):
         self.updateJump(deltaTime)
         self.updateMove(deltaTime)
 
-        self.transform.translate(deltaTime * self.speed[0],
-                                 deltaTime * self.speed[1])
+        self.transform.translate(deltaTime * self.speed.x,
+                                 deltaTime * self.speed.y)
 
-    def onCollisionEnter(self, collider):
-        if self.jumping and not self.jumpPressing:
+    def onCollisionEnter(self, collision):
+        if collision.collider.tag == "ground" and self.jumping and not self.jumpPressing:
             self.jumping = False
-            self.speed[1] = 0.0
-            print(self.transform.position())
-            self.sprites[0] = self.animationSprites["Stand"]
+            self.speed.y = 0.0
+            self.switchSprite("Stand")

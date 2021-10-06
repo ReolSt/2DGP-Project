@@ -1,4 +1,5 @@
 import numpy
+from .Vector2 import *
 
 class Transform:
     def __init__(self, parent=None):
@@ -6,20 +7,20 @@ class Transform:
 
         self.parent = parent
 
-        self.localPosition = numpy.array([0.0, 0.0])
+        self.localPosition = Vector2(0.0, 0.0)
         self.localRotation = 0.0
-        self.localScale = numpy.array([1.0, 1.0])
+        self.localScale = Vector2(1.0, 1.0)
 
-        self.localFlip = numpy.array([False, False])
+        self.localFlip = Vector2(False, False)
 
     def translate(self, x, y):
-        self.localPosition += numpy.array([x, y], dtype=numpy.float32)
+        self.localPosition += Vector2(x, y)
 
     def rotate(self, deg):
         self.localRotation += deg
 
     def setScale(self, xScale, yScale):
-        self.localScale = numpy.array([xScale, yScale], dtype=numpy.float32)
+        self.localScale = Vector2(xScale, yScale)
 
     def position(self):
         parent = self.parent
@@ -34,8 +35,8 @@ class Transform:
             cos = numpy.cos(numpy.deg2rad(parent_rotation))
             sin = numpy.sin(numpy.deg2rad(parent_rotation))
 
-            position = numpy.array([position[0] * cos - position[1] * sin,
-                                    position[1] * cos + position[0] * sin])
+            position = Vector2(position.x * cos - position.y * sin,
+                               position.y * cos + position.x * sin)
 
             position += parent_position
 
@@ -59,9 +60,9 @@ class Transform:
         flip = self.localFlip.copy()
         if self.parent is not None:
             parent_flip = self.parent.flip()
-            if parent_flip[0]:
-                flip[0] = not flip[0]
-            if parent_flip[1]:
-                flip[1] = not flip[1]
+            if parent_flip.x:
+                flip.x = not flip.x
+            if parent_flip.y:
+                flip.y = not flip.y
 
         return flip

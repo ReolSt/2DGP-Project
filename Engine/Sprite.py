@@ -46,14 +46,16 @@ class Sprite:
 
         """
 
-        x, y = self.transform.position()
+        position = self.transform.position()
         rotation = self.transform.rotation()
         scale = self.transform.scale()
         flip = self.transform.flip()
 
         flipString = ''
-        flipString += 'h' if flip[0] else ''
-        flipString += 'v' if flip[1] else ''
+        flipString += 'h' if flip.x else ''
+        flipString += 'v' if flip.y else ''
 
-        self.image.clip_composite_draw(self.left, self.bottom, self.width, self.height,
-            rotation, flipString, x, y, self.width * scale[0], self.height * scale[1])
+        self.image.clip_composite_draw(
+            self.left, self.bottom, self.width, self.height,
+            rotation, flipString, position.x, position.y,
+            self.width * scale.x, self.height * scale.y)
