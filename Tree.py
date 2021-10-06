@@ -11,6 +11,8 @@ class Tree(GameObject):
         crownBottom = TerrainSprite(self, "TreeCrownBottom")
 
         referenceSprite = crownTop
+        spriteWidth = referenceSprite.width
+        spriteHeight = referenceSprite.height
 
         xOffset = spriteWidth / 2
         yOffset = spriteHeight / 2
