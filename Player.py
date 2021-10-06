@@ -9,13 +9,13 @@ class Player(GameObject):
         super().__init__(parent)
 
         self.animationSprites = {
-            "Stand": EntitySprite(self.transform, "MarioStand"),
-            "Run1": EntitySprite(self.transform, "MarioRun1"),
-            "Run2": EntitySprite(self.transform, "MarioRun2"),
-            "Run3": EntitySprite(self.transform, "MarioRun3"),
-            "Jump": EntitySprite(self.transform, "MarioJump"),
-            "Dead": EntitySprite(self.transform, "MarioDead"),
-            "Kick": EntitySprite(self.transform, "MarioKick")
+            "Stand": EntitySprite(self, "MarioStand"),
+            "Run1": EntitySprite(self, "MarioRun1"),
+            "Run2": EntitySprite(self, "MarioRun2"),
+            "Run3": EntitySprite(self, "MarioRun3"),
+            "Jump": EntitySprite(self, "MarioJump"),
+            "Dead": EntitySprite(self, "MarioDead"),
+            "Kick": EntitySprite(self, "MarioKick")
         }
 
         self.sprites = [self.animationSprites["Stand"]]
@@ -38,8 +38,7 @@ class Player(GameObject):
         self.runningAnimationInterval = 20.0
         self.runningAnimationFrameDuration = 0.0
 
-        self.collider = BoxCollider(self.transform,
-            self.sprites[0].width , self.sprites[0].height)
+        self.collider = BoxCollider(self.transform, self.sprites[0].width, self.sprites[0].height)
 
     def onKeyDown(self, event):
         super().onKeyDown(event)
@@ -101,9 +100,6 @@ class Player(GameObject):
         if self.jumping:
             self.sprites[0] = self.animationSprites["Jump"]
 
-            if not self.jumpPressing and self.transform.localPosition[1] <= 100.0:
-                self.sprites[0] = self.animationSprites["Stand"]
-
     def updateMove(self, deltaTime):
         acceleration = deltaTime * self.acceleration[0]
         gravity = deltaTime * self.gravity
@@ -150,3 +146,5 @@ class Player(GameObject):
         if self.jumping and not self.jumpPressing:
             self.jumping = False
             self.speed[1] = 0.0
+            print(self.transform.position())
+            self.sprites[0] = self.animationSprites["Stand"]
