@@ -59,6 +59,7 @@ class Player(GameObject):
                 self.jumpPressing = True
                 self.speed.y = self.minSpeed.y
 
+                AudioMixer().play("JumpSmall")
 
     def onKeyPress(self, event):
         super().onKeyPress(event)
