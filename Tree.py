@@ -1,0 +1,28 @@
+from Engine.GameObject import *
+from Engine.TerrainSprite import *
+
+class Tree(GameObject):
+    def __init__(self, parent, height=3):
+        assert height >= 2, "Impossible tree height : {}".format(height)
+
+        super().__init__(parent)
+
+        crownTop = TerrainSprite(self, "TreeCrownTop")
+        crownBottom = TerrainSprite(self, "TreeCrownBottom")
+
+        referenceSprite = crownTop
+
+        xOffset = spriteWidth / 2
+        yOffset = spriteHeight / 2
+
+        self.sprites.append(crownTop)
+        self.sprites.append(crownBottom)
+
+        for i in range(height - 2):
+            truck = TerrainSprite(self, "TreeTruck")
+            self.sprites.append(truck)
+
+        for i in range(len(self.sprites) - 1, -1, -1):
+            self.sprites[i].transform.translate(
+                xOffset, yOffset + spriteHeight * (len(self.sprites) - i - 1))
+

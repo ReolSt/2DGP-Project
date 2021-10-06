@@ -4,7 +4,10 @@ from Engine.BoxCollider import *
 
 class Ground(GameObject):
     def __init__(self, parent, width, height):
+        assert width >= 1 and height >= 1, "Impossible ground size : ({}, {})".format(width, height)
+
         super().__init__(parent)
+
         self.width = width
         self.height = height
 
@@ -24,3 +27,5 @@ class Ground(GameObject):
 
         self.collider.transform.translate(
             spriteWidth * width / 2, spriteHeight * height / 2)
+
+        self.collider.tag = "ground"

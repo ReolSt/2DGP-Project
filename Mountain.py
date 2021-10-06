@@ -1,25 +1,65 @@
 from Engine.TerrainSprite import *
 from Engine.GameObject import *
 class Mountain(GameObject):
-    def __init__(self, parent):
+    def __init__(self, parent, height=2):
+        assert 1 <= height <= 3, "Impossible mountain height : {}".format(height)
+
         super().__init__(parent)
 
         top = TerrainSprite(self.transform, "MountainTop")
-        spriteWidth = top.width
-        spriteHeight = top.height
 
-        top.transform.translate(0, spriteHeight)
+        referenceSprite = top
+        spriteWidth = referenceSprite.width
+        spriteHeight = referenceSprite.height
 
-        bottomLeft = TerrainSprite(self.transform, "MountainBottom1")
-        bottomLeft.transform.translate(-spriteWidth, 0)
+        xOffset = spriteWidth / 2
+        yOffset = spriteHeight / 2
 
-        bottomCenter = TerrainSprite(self.transform, "MountainBottom2")
-        bottomCenter.transform.translate(0, 0)
-
-        bottomRight = TerrainSprite(self.transform, "MountainBottom3")
-        bottomRight.transform.translate(spriteWidth, 0)
+        top.transform.translate(xOffset, yOffset)
 
         self.sprites.append(top)
-        self.sprites.append(bottomLeft)
-        self.sprites.append(bottomCenter)
-        self.sprites.append(bottomRight)
+
+        if height == 1:
+            return
+
+        top.transform.translate(spriteWidth, spriteHeight)
+
+        slopeLeft = TerrainSprite(self.transform, "MountainSlopeLeft")
+        slopeLeft.transform.translate(xOffset, yOffset)
+
+        inside = TerrainSprite(self.transform, "MountainInside1")
+        inside.transform.translate(xOffset + spriteWidth, yOffset)
+
+        slopeRight = TerrainSprite(self.transform, "MountainSlopeRight")
+        slopeRight.transform.translate(xOffset + spriteWidth * 2, yOffset)
+
+        self.sprites.append(slopeLeft)
+        self.sprites.append(inside)
+        self.sprites.append(slopeRight)
+
+        if height == 2:
+            return
+
+        top.transform.translate(spriteWidth, spriteHeight)
+        slopeLeft.transform.translate(spriteWidth, spriteHeight)
+        inside.transform.translate(spriteWidth, spriteHeight)
+        slopeRight.transform.translate(spriteWidth, spriteHeight)
+
+        bottomSlopeLeft = TerrainSprite(self.transform, "MountainSlopeLeft")
+        bottomInside1 = TerrainSprite(self.transform, "MountainInside1")
+        bottomInside2 = TerrainSprite(self.transform, "MountainInside2")
+        bottomInside3 = TerrainSprite(self.transform, "MountainInside3")
+        bottomSlopeRight = TerrainSprite(self.transform, "MountainSlopeRight")
+
+        bottomSlopeLeft.transform.translate(xOffset, yOffset)
+        bottomInside1.transform.translate(xOffset + spriteWidth, yOffset)
+        bottomInside2.transform.translate(xOffset + spriteWidth * 2, yOffset)
+        bottomInside3.transform.translate(xOffset + spriteWidth * 3, yOffset)
+        bottomSlopeRight.transform.translate(xOffset + spriteWidth * 4, yOffset)
+
+        self.sprites.append(bottomSlopeLeft)
+        self.sprites.append(bottomInside1)
+        self.sprites.append(bottomInside2)
+        self.sprites.append(bottomInside3)
+        self.sprites.append(bottomSlopeRight)
+
