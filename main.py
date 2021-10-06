@@ -11,9 +11,7 @@ renderingContext = RenderingContext(
     int(settings.default["WindowWidth"]), int(settings.default["WindowHeight"]))
 
 from Engine.GameObject import *
-from Engine.TextObject import *
-from Engine.BackgroundObject import *
-from Engine.TerrainObject import *
+from Engine.Text import *
 from Engine.Scene import *
 
 from GameState import *
@@ -21,6 +19,7 @@ from GamePlayInterface import *
 
 from Player import *
 
+from Sky import *
 from Ground import *
 from Mountain import *
 from VerticalPipe import *
@@ -37,7 +36,7 @@ interfaceLayer = GameObject(scene.root)
 
 root.children = [backgroundLayer, terrainLayer, entityLayer, interfaceLayer]
 
-sky = BackgroundObject(backgroundLayer, "Sky")
+sky = Sky(terrainLayer, 800, 600)
 sky.transform.translate(400.0, 300.0)
 backgroundLayer.children.append(sky)
 
