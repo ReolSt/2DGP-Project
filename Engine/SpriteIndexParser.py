@@ -1,8 +1,8 @@
 class SpriteIndexParser:
-    def __init__(self, index_file_name):
+    def __init__(self, filePath):
         self.indices = {}
 
-        with open(index_file_name, "r") as index_file:
+        with open(filePath, "r") as index_file:
             for line in index_file.readlines():
                 tokens = line.split()
                 if len(tokens) < 4:
