@@ -1,11 +1,14 @@
 import pico2d
 from .GameObject import *
 from .CollisionManager import *
+from .Camera import *
 
 class Scene:
     def __init__(self, name=""):
         self.name = name
         self.root = GameObject(None)
+        self.root.scene = self
+        self.camera = Camera(self)
         self.collisionManager = CollisionManager(self)
 
     def update(self, deltaTime):
