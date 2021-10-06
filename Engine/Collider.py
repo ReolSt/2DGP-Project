@@ -41,7 +41,9 @@ class Collider:
 
         self.touchingObjects = {}
 
-    def getGroup(self):
+        self.tag = ""
+
+    def getTag(self):
         """
         Returns
         -------
@@ -49,14 +51,14 @@ class Collider:
 
         """
 
-        return self.group
+        return self.tag
 
-    def setGroup(self, group):
+    def setTag(self, tag):
         """
         Parameters
         ----------
-        group : str
-            The group name.
+        tag : str
+            The tag name.
 
         Returns
         -------
@@ -64,7 +66,7 @@ class Collider:
 
         """
 
-        self.group = group
+        self.tag = tag
 
     def isTouching(self, collider):
         """
