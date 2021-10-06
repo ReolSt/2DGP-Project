@@ -4,7 +4,7 @@ from .TextSprite import *
 from .EntitySprite import *
 from .GameObject import *
 
-class TextObject(GameObject):
+class Text(GameObject):
     def __init__(self, parent, text="", spacing=1):
         super().__init__(parent)
         self.text = text
