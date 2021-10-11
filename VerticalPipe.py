@@ -1,12 +1,13 @@
-from Engine.TerrainSprite import *
 from Engine.GameObject import *
+from Engine.TerrainSprite import *
+from Engine.BoxCollider import *
 
 class VerticalPipe(GameObject):
     def __init__(self, parent, height=2):
         assert height >= 1, "Impossible vertical pipe height : {}".format(height)
         super().__init__(parent)
 
-        referenceSprite = TerrainSprite(self.transform, "VerticalPipeEntrance1")
+        referenceSprite = TerrainSprite(self, "VerticalPipeEntrance1")
         spriteWidth = referenceSprite.width
         spriteHeight = referenceSprite.height
 
@@ -14,8 +15,8 @@ class VerticalPipe(GameObject):
         yOffset = spriteHeight / 2
 
         for h in range(height - 1):
-            pillarLeft = TerrainSprite(self.transform, "VerticalPipePillar1")
-            pillarRight = TerrainSprite(self.transform, "VerticalPipePillar2")
+            pillarLeft = TerrainSprite(self, "VerticalPipePillar1")
+            pillarRight = TerrainSprite(self, "VerticalPipePillar2")
 
             pillarLeft.transform.translate(xOffset, yOffset)
             pillarRight.transform.translate(xOffset + spriteWidth, yOffset)
@@ -25,11 +26,17 @@ class VerticalPipe(GameObject):
             self.sprites.append(pillarLeft)
             self.sprites.append(pillarRight)
 
-        entranceLeft = TerrainSprite(self.transform, "VerticalPipeEntrance1")
-        entranceRight = TerrainSprite(self.transform, "VerticalPipeEntrance2")
+        entranceLeft = TerrainSprite(self, "VerticalPipeEntrance1")
+        entranceRight = TerrainSprite(self, "VerticalPipeEntrance2")
 
         entranceLeft.transform.translate(xOffset, yOffset)
         entranceRight.transform.translate(xOffset + spriteWidth, yOffset)
 
         self.sprites.append(entranceLeft)
         self.sprites.append(entranceRight)
+
+        collider = BoxCollider(self, spriteWidth * 2, spriteHeight * height)
+        collider.transform.translate(spriteWidth, spriteHeight * height / 2)
+        collider.tag = "Floor"
+
+        self.addCollider(collider)
