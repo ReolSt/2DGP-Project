@@ -1,5 +1,6 @@
 from .Transform import *
 from .Collider import *
+from .Math import *
 
 class AABB:
     def __init__(self, left, right, bottom, top):
@@ -49,7 +50,7 @@ class BoxCollider(Collider):
         self.width = width
         self.height = height
 
-    def getAABB(self):
+    def aabb(self):
         """
         Returns
         -------
@@ -73,7 +74,7 @@ class BoxCollider(Collider):
         return AABB(left, right, bottom, top)
 
 
-    def isTouching(self, collider):
+    def isTouchingCollider(self, collider):
         """
         Parameters
         ----------
@@ -83,22 +84,136 @@ class BoxCollider(Collider):
         Returns
         -------
         bool
+            DESCRIPTION.
 
         """
 
-        assert(isinstance(collider, Collider))
+        assert isinstance(collider, Collider), "isTouchingCollider : invalid parameter."
+
+        aabb = self.aabb()
 
         if isinstance(collider, BoxCollider):
-            aabb = self.getAABB()
-            colliderAABB = collider.getAABB()
+            colliderAABB = collider.aabb()
 
-            if aabb.right < colliderAABB.left:
-                return False
-            if aabb.left > colliderAABB.right:
-                return False
-            if aabb.top < colliderAABB.bottom:
-                return False
-            if aabb.bottom > colliderAABB.top:
-                return False
+            return self.isTouchingBox(
+                colliderAABB.left,
+                colliderAABB.right,
+                colliderAABB.bottom,
+                colliderAABB.top)
+
+        return True
+
+    def rayIntersectionPoint(self, ray):
+        """
+        Parameters
+        ----------
+        ray : Ray
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
+
+        aabb = self.aabb()
+
+        rayStart = ray.origin
+        rayEnd = ray.origin + ray.direction * ray.distance
+
+        leftBottom = Vector2(aabb.left, aabb.bottom)
+        leftTop = Vector2(aabb.left, aabb.top)
+        rightBottom = Vector2(aabb.right, aabb.bottom)
+        rightTop = Vector2(aabb.right, aabb.top)
+
+        minDistancePoint = None
+        minDistance = None
+
+        edges = [
+            (leftBottom, leftTop),
+            (rightBottom, rightTop),
+            (leftBottom, rightBottom),
+            (leftTop, rightTop)
+        ]
+
+        for p1, p2 in edges:
+            point = getIntersectionPoint(rayStart, rayEnd, p1, p2)
+            distance = abs(point - ray.origin)
+            if minDistancePoint is None or minDistance > distance:
+                minDistancePoint = point
+                minDistance = distance
+
+        return minDistancePoint
+
+    def isTouchingRay(self, ray):
+        """
+        Parameters
+        ----------
+        ray : Ray
+            DESCRIPTION.
+
+        Returns
+        -------
+        bool
+            DESCRIPTION.
+
+        """
+
+        assert isinstance(ray, Ray), "Invalid parameter type: {}".format(type(ray))
+
+        aabb = self.aabb()
+
+        rayStart = ray.origin
+        rayEnd = ray.origin + ray.direction * ray.distance
+
+        leftBottom = Vector2(aabb.left, aabb.bottom)
+        leftTop = Vector2(aabb.left, aabb.top)
+        rightBottom = Vector2(aabb.right, aabb.bottom)
+        rightTop = Vector2(aabb.right, aabb.top)
+
+        result = False
+
+        edges = [
+            (leftBottom, leftTop),
+            (rightBottom, rightTop),
+            (leftBottom, rightBottom),
+            (leftTop, rightTop)
+        ]
+
+        for p1, p2 in edges:
+            result |= isIntersecting(rayStart, rayEnd, p1, p2)
+
+        return result
+
+    def isTouchingBox(self, left, right, bottom, top):
+        """
+        Parameters
+        ----------
+        left : int or float
+            DESCRIPTION.
+        right : int or float
+            DESCRIPTION.
+        bottom : int or float
+            DESCRIPTION.
+        top : int or float
+            DESCRIPTION.
+
+        Returns
+        -------
+        bool
+            DESCRIPTION.
+
+        """
+
+        aabb = self.aabb()
+
+        if aabb.right < left:
+            return False
+        if aabb.left > right:
+            return False
+        if aabb.top < bottom:
+            return False
+        if aabb.bottom > top:
+            return False
 
         return True

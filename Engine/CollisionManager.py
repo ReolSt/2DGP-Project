@@ -1,4 +1,5 @@
 from .Collider import *
+from .Ray import *
 
 class CollisionManager():
     def __init__(self, scene):
@@ -15,7 +16,7 @@ class CollisionManager():
         """
 
         self.scene = scene
-        self.objects = []
+        self.colliders = []
 
     def rayCast(self, origin, direction, distance, tag):
         """
@@ -26,19 +27,55 @@ class CollisionManager():
         direction : Vector2
             normalized direction vector.
         distance : float
-            DESCRIPTION.
+            max distance from origin
         tag : str
-            DESCRIPTION.
+            the collider tag that want to hit ray
 
         Returns
         -------
         None.
 
         """
-        pass
+
+        assert isinstance(origin, Vector2), "rayCast : origin is not Vector2"
+        assert isinstance(direction, Vector2), "rayCast : direction is not Vector2"
+
+        ray = Ray(origin, direction, distance)
+
+        for collider in self.colliders:
+            if collider.tag == tag and collider.isTouchingRay(ray):
+                hitPoint = collider.rayIntersectionPoint(ray)
+                return RayCastHit(collider, origin, direction, abs(hitPoint - origin), hitPoint, tag)
+
+        return None
 
     def boxCast(self, origin, size, direction, distance, tag):
-        pass
+        """
+        Parameters
+        ----------
+        origin : Vector2
+            ray origin
+        size : Vector2
+            box size
+        direction : Vector2
+            normalized direction vector.
+        distance : float
+            max distance from origin
+        tag : str
+            the collider tag that want to hit ray
+
+        Returns
+        -------
+        TYPE
+            DESCRIPTION.
+
+        """
+
+
+        assert isinstance(origin, Vector2), "boxCast : origin is not Vector2"
+        assert isinstance(direction, Vector2), "boxCast : direction is not Vector2"
+
+
 
     def Update(self):
         """
@@ -48,38 +85,38 @@ class CollisionManager():
 
         """
 
-        for i in range(len(self.objects)):
-            for j in range(i + 1, len(self.objects)):
-                objectA = self.objects[i]
-                objectB = self.objects[j]
-
-                colliderA = objectA.collider
-                colliderB = objectB.collider
+        for i in range(len(self.colliders)):
+            for j in range(i + 1, len(self.colliders)):
+                colliderA = self.colliders[i]
+                colliderB = self.colliders[j]
 
                 directionA = colliderA.relativeDirection(colliderB)
                 directionB = colliderB.relativeDirection(colliderA)
 
-                if colliderA.isTouching(colliderB):
-                    if objectB.id not in colliderA.touchingObjects:
+                objectA = colliderA.gameObject
+                objectB = colliderB.gameObject
+
+                if colliderA.isTouchingCollider(colliderB):
+                    if colliderB not in colliderA.touchingColliders:
                         objectA.onCollisionEnter(Collision(colliderB, directionA))
-                        colliderA.touchingObjects[objectB.id] = objectB
-                    if objectA.id not in colliderB.touchingObjects:
+                        colliderA.touchingColliders.append(colliderB)
+                    if colliderA not in colliderB.touchingColliders:
                         direction = colliderA.relativeDirection
                         objectB.onCollisionEnter(Collision(colliderA, directionB))
-                        colliderB.touchingObjects[objectA.id] = objectA
+                        colliderB.touchingColliders.append(colliderA)
 
                     objectA.onCollisionStay(Collision(colliderB, directionA))
                     objectB.onCollisionStay(Collision(colliderA, directionB))
                 else:
-                    if objectB.id in colliderA.touchingObjects:
-                        colliderA.touchingObjects.pop(objectB.id)
+                    if colliderB in colliderA.touchingColliders:
+                        colliderA.touchingColliders.remove(colliderB)
                         objectA.onCollisionExit(Collision(colliderB, directionA))
-                    if objectA.id in colliderB.touchingObjects:
-                        colliderB.touchingObjects.pop(objectA.id)
+                    if colliderA in colliderB.touchingColliders:
+                        colliderB.touchingColliders.remove(colliderA)
                         objectB.onCollisionExit(Collision(colliderA, directionB))
 
 
-    def addObject(self, gameObject):
+    def addCollider(self, collider):
         """
         Parameters
         ----------
@@ -92,15 +129,15 @@ class CollisionManager():
 
         """
 
-        assert(hasattr(gameObject, "collider") and isinstance(gameObject.collider, Collider))
+        assert isinstance(collider, Collider), "invalid parameter type: {}".format(type(collider))
 
-        self.objects.append(gameObject)
+        self.colliders.append(collider)
 
-    def removeObject(self, idOrGameObject):
+    def removeCollider(self, colliderToRemove):
         """
         Parameters
         ----------
-        idOrGameObject : int or GameObject
+        collider : ColliderToRemove
             DESCRIPTION.
 
         Returns
@@ -109,24 +146,11 @@ class CollisionManager():
 
         """
 
-        assert(isinstance(idOrGameObject, int) or isinstance(idOrGameObject, GameObject))
+        assert isinstance(colliderToRemove, Collider), "invalid parameter type: {}".format(type(collider))
 
-        if isinstance(idOrGameObject, GameObject):
-            gameObject = idOrGameObject
-            if gameObject in self.objects:
-                self.objects.remove(gameObject)
+        if colliderToRemove in self.colliders:
+            self.colliders.remove(colliderToRemove)
 
-            for collisionObject in self.objects:
-                collider = collisionObject.collider
-                if gameObject.id in collider.touchingObjects:
-                    collider.touchingObject.pop(gameObject.id)
-        else:
-            objectId = idOrObject
-            for i in range(len(self.objects)):
-                if self.objects[i].id == objectId:
-                    self.objects.pop(i)
-
-            for collisionObject in self.objects:
-                collider = collisionObject.collider
-                if objectId in collider.touchingObjects:
-                    collider.touchingObject.pop(objectId)
+        for collider in self.colliders:
+            if colliderToRemove in collider.touchingColliders:
+                collider.touchingColliders.remove(colliderToRemove)

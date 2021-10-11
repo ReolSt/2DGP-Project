@@ -8,9 +8,25 @@ class Scene:
         self.name = name
         self.root = GameObject(None)
         self.root.scene = self
-        self.camera = Camera(self)
+
         self.collisionManager = CollisionManager(self)
+        self.cameras = []
 
     def update(self, deltaTime):
-        self.root.update(deltaTime)
         self.collisionManager.Update()
+        self.root.update(deltaTime)
+
+    def render(self):
+        for camera in self.cameras:
+            self.root.render(camera)
+
+    def addCamera(self, parent, layer, order):
+        camera = Camera(parent, layer, order)
+
+        self.cameras.append(camera)
+        self.cameras.sort(key=lambda camera: camera.order)
+
+        return camera
+
+    def removeCamera(self, camera):
+        self.cameras.remove(camera)

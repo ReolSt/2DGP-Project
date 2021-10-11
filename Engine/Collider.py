@@ -1,4 +1,6 @@
 from .Transform import *
+from .GameObject import *
+from .Ray import *
 
 class Collision:
     def __init__(self, collider, direction):
@@ -16,7 +18,7 @@ class Collision:
 
         """
 
-        assert(isinstance(collider, Collider))
+        assert isinstance(collider, Collider), "Invalid parameter type: {}".format(type(collider))
 
         self.collider = collider
         self.gameObject = collider.gameObject
@@ -37,10 +39,12 @@ class Collider:
 
         """
 
-        self.gameObject = gameObject
-        self.transform = Transform(gameObject)
+        assert isinstance(gameObject, GameObject), "Invalid parameter type: {}".format(type(gameObject))
 
-        self.touchingObjects = {}
+        self.gameObject = gameObject
+        self.transform = Transform(gameObject.transform)
+
+        self.touchingColliders = []
 
         self.tag = ""
 
@@ -69,7 +73,7 @@ class Collider:
 
         self.tag = tag
 
-    def isTouching(self, collider):
+    def isTouchingCollider(self, collider):
         """
         Parameters
         ----------
@@ -83,7 +87,43 @@ class Collider:
 
         """
 
-        assert(isinstance(collider, Collider))
+        return False
+
+    def isTouchingRay(self, ray):
+        """
+        Parameters
+        ----------
+        ray : Ray
+            DESCRIPTION.
+
+        Returns
+        -------
+        bool
+            DESCRIPTION.
+
+        """
+
+        return False
+
+    def isTouchingBox(self, left, right, bottom, top):
+        """
+        Parameters
+        ----------
+        left : int or float
+            DESCRIPTION.
+        right : int or float
+            DESCRIPTION.
+        bottom : int or float
+            DESCRIPTION.
+        top : int or float
+            DESCRIPTION.
+
+        Returns
+        -------
+        bool
+            DESCRIPTION.
+
+        """
 
         return False
 
