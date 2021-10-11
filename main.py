@@ -12,95 +12,45 @@ renderingContext = RenderingContext(
 
 from Engine.GameObject import *
 from Engine.Text import *
+from Engine.Camera import *
 from Engine.Scene import *
 
 from GameState import *
 from GamePlayInterface import *
 
-from Player import *
-
-from Sky import *
-from Ground import *
-from Mountain import *
-from VerticalPipe import *
-from Cloud import *
-from Grass import *
-from Tree import *
-from Mushroom import *
-from Flagpole import *
+from PlayerController import *
+from World1_1 import *
 
 scene = Scene("SuperMarioBros")
+
 root = scene.root
 
-backgroundLayer = GameObject(scene.root)
-terrainLayer = GameObject(scene.root)
-entityLayer = GameObject(scene.root)
-interfaceLayer = GameObject(scene.root)
+ui = GameObject(root)
+world = World1_1(root)
 
-root.children = [backgroundLayer, terrainLayer, entityLayer, interfaceLayer]
+root.children.append(ui)
+root.children.append(world)
 
-sky = Sky(terrainLayer, 800, 600)
-sky.transform.translate(0, 0)
-backgroundLayer.children.append(sky)
+worldCamera = scene.addCamera(parent=root, layer="Default", order=2)
+backgroundCamera = scene.addCamera(parent=root, layer="Background", order=1)
 
-player = Player(entityLayer)
-player.transform.translate(100.0, 116.0)
-player.transform.setScale(3.0, 3.0)
-entityLayer.children.append(player)
-scene.collisionManager.addObject(player)
+world.children.append(worldCamera)
+world.children.append(backgroundCamera)
 
-ground = Ground(terrainLayer, 50, 3)
-ground.transform.translate(0, 0)
-ground.transform.setScale(2, 2)
-terrainLayer.children.append(ground)
-scene.collisionManager.addObject(ground)
+uiCamera = scene.addCamera(parent=ui, layer="UI", order=3)
+ui.children.append(uiCamera)
 
-mountain = Mountain(terrainLayer, 3)
-mountain.transform.translate(100, 96)
-mountain.transform.setScale(2, 2)
-terrainLayer.children.append(mountain)
+playerController = PlayerController(world)
+playerController.player.transform.translate(100, 116)
+playerController.player.transform.setScale(3.0, 3.0)
 
-verticalPipe = VerticalPipe(terrainLayer, height=5)
-verticalPipe.transform.translate(300, 200)
-verticalPipe.transform.setScale(2, 2)
-terrainLayer.children.append(verticalPipe)
-
-cloud = Cloud(terrainLayer)
-cloud.transform.translate(400, 200)
-cloud.transform.setScale(2, 2)
-terrainLayer.children.append(cloud)
-
-cloud2 = Cloud(terrainLayer, 4)
-cloud2.transform.translate(400, 300)
-cloud2.transform.setScale(2, 2)
-terrainLayer.children.append(cloud2)
-
-grass = Grass(terrainLayer)
-grass.transform.translate(500, 200)
-grass.transform.setScale(2, 2)
-terrainLayer.children.append(grass)
-
-tree = Tree(terrainLayer)
-tree.transform.translate(560, 200)
-tree.transform.setScale(2, 2)
-terrainLayer.children.append(tree)
-
-mushroom = Mushroom(terrainLayer)
-mushroom.transform.translate(640, 200)
-mushroom.transform.setScale(2, 2)
-terrainLayer.children.append(mushroom)
-
-flagpole = Flagpole(terrainLayer)
-flagpole.transform.translate(700, 100)
-flagpole.transform.setScale(2, 2)
-terrainLayer.children.append(flagpole)
+world.children.append(playerController)
 
 gameState = GameState(root)
-gamePlayInterface = GamePlayInterface(interfaceLayer, gameState)
-
 root.children.append(gameState)
-interfaceLayer.children.append(gamePlayInterface)
 
+gamePlayInterface = GamePlayInterface(ui, gameState)
+ui.children.append(gamePlayInterface)
 
 running = True
 oldTime = time.time()
@@ -111,7 +61,7 @@ while running:
     pico2d.clear_canvas()
 
     scene.update(deltaTime * 1000)
-    scene.root.render()
+    scene.render()
 
     pico2d.update_canvas()
 
