@@ -2,10 +2,11 @@ import numpy
 from .Vector2 import *
 
 class Transform:
-    def __init__(self, parent=None):
-        assert(isinstance(parent, Transform) or parent is None)
+    def __init__(self, parent=None, gameObject=None):
+        assert isinstance(parent, Transform) or parent is None, "Invalid parameter type: {}".format(parent)
 
         self.parent = parent
+        self.gameObject = gameObject
 
         self.localPosition = Vector2(0.0, 0.0)
         self.localRotation = 0.0
