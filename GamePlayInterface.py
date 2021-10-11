@@ -9,6 +9,8 @@ class GamePlayInterface(GameObject):
         super().__init__(parent)
         self.gameState = gameState
 
+        self.layer = "UI"
+
         self.name = Text(self, gameState.name, 1)
         self.name.transform.translate(80, 568)
         self.name.transform.setScale(3, 3)
