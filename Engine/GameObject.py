@@ -46,9 +46,9 @@ class GameObject:
         """
 
         if isinstance(parent, GameObject):
-            self.transform = Transform(parent.transform)
+            self.transform = Transform(parent.transform, self)
         else:
-            self.transform = Transform(parent)
+            self.transform = Transform(parent, self)
 
         self.id = GameObjectIDGenerator().generate()
 
@@ -70,6 +70,13 @@ class GameObject:
         }
 
         self.keyDown = {}
+
+        self.layer = "Default"
+
+        if self.transform.parent is not None:
+            self.scene = self.transform.parent.gameObject.scene
+
+        self.colliders = []
 
     def captureEvent(self, event):
         """
@@ -174,15 +181,16 @@ class GameObject:
         for child in self.children:
             child.update(deltaTime)
 
-    def render(self):
+    def render(self, camera):
         for callback in self.eventListeners["Render"]:
             callback(self)
 
-        for sprite in self.sprites:
-            sprite.render()
+        if camera.layer == self.layer:
+            for sprite in self.sprites:
+                sprite.render(camera)
 
         for child in self.children:
-            child.render()
+            child.render(camera)
 
     def onMouseMove(self, event):
         for callback in self.eventListeners["MouseMove"]:
@@ -241,3 +249,15 @@ class GameObject:
 
     def onCollisionExit(self, collision):
         pass
+
+    def addCollider(self, collider):
+        assert hasattr(self, "scene"), "addCollider : object has no scene property."
+
+        self.colliders.append(collider)
+        self.scene.collisionManager.addCollider(collider)
+
+    def removeCollider(self, collider):
+        assert hasattr(self, "scene"), "removeCollider : object has no scene property."
+
+        self.colliders.remove(collider)
+        self.scene.collisionManager.removeCollider(collider)
