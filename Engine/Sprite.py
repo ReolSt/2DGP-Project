@@ -1,4 +1,5 @@
 import pico2d
+import numpy
 
 from .Transform import *
 from .GameObject import *
@@ -34,7 +35,7 @@ class Sprite:
         else:
             self.transform = Transform(parent)
 
-    def render(self):
+    def render(self, camera):
         """
         Returns
         -------
@@ -50,6 +51,21 @@ class Sprite:
         rotation = self.transform.rotation()
         scale = self.transform.scale()
         flip = self.transform.flip()
+
+        cameraPosition = -camera.transform.position()
+        cameraRotation = -camera.transform.rotation()
+        cameraScale = camera.transform.localScale
+
+        cos = numpy.cos(numpy.deg2rad(cameraRotation))
+        sin = numpy.sin(numpy.deg2rad(cameraRotation))
+
+        position *= cameraScale
+        position = Vector2(position.x * cos - position.y * sin,
+                           position.y * cos + position.x * sin)
+        position += cameraPosition
+
+        rotation += cameraRotation
+        scale *= cameraScale
 
         flipString = ''
         flipString += 'h' if flip.x else ''
