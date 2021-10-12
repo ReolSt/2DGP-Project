@@ -10,47 +10,10 @@ settings = Settings()
 renderingContext = RenderingContext(
     int(settings.default["WindowWidth"]), int(settings.default["WindowHeight"]))
 
-from Engine.GameObject import *
-from Engine.Text import *
-from Engine.Camera import *
-from Engine.Scene import *
+from World1_1Scene import *
 
-from GameState import *
-from GamePlayInterface import *
-
-from PlayerController import *
-from World1_1 import *
-
-scene = Scene("SuperMarioBros")
-
-root = scene.root
-
-ui = GameObject(root)
-world = World1_1(root)
-
-root.children.append(ui)
-root.children.append(world)
-
-worldCamera = scene.addCamera(parent=root, layer="Default", order=2)
-backgroundCamera = scene.addCamera(parent=root, layer="Background", order=1)
-
-world.children.append(worldCamera)
-world.children.append(backgroundCamera)
-
-uiCamera = scene.addCamera(parent=ui, layer="UI", order=3)
-ui.children.append(uiCamera)
-
-playerController = PlayerController(world)
-playerController.player.transform.translate(100, 116)
-playerController.player.transform.setScale(3.0, 3.0)
-
-world.children.append(playerController)
-
-gameState = GameState(root)
-root.children.append(gameState)
-
-gamePlayInterface = GamePlayInterface(ui, gameState)
-ui.children.append(gamePlayInterface)
+scene = World1_1Scene("World 1-1")
+scene.debug = True
 
 running = True
 oldTime = time.time()
