@@ -37,6 +37,6 @@ class VerticalPipe(GameObject):
 
         collider = BoxCollider(self, spriteWidth * 2, spriteHeight * height)
         collider.transform.translate(spriteWidth, spriteHeight * height / 2)
-        collider.tag = "Floor"
+        collider.setTag("Floor")
 
         self.addCollider(collider)
