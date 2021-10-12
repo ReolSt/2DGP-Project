@@ -35,33 +35,36 @@ class Vector3:
 
         assert False, "Invalid operand type"
 
+    def assertIfInvalid(other):
+        assert hasattr(other, 'x') and hasattr(other, 'y') and hasattr(other, 'z'), "Invalid operand type: {}".format(other)
+
     def __eq__(self, other):
-        assert hasattr(other, 'x') and hasattr(other, 'y') and hasattr(other, 'z'), "Invalid operand type"
+        self.assertIfInvalid(other)
 
         return self.x == other.x and self.y == other.y and self.z == other.z
 
     def __ne__(self, other):
-        assert hasattr(other, 'x') and hasattr(other, 'y') and hasattr(other, 'z'), "Invalid operand type"
+        self.assertIfInvalid(other)
 
         return self.x != other.x or self.y != other.y or self.z != other.z
 
     def __ge__(self, other):
-        assert hasattr(other, 'x') and hasattr(other, 'y') and hasattr(other, 'z'), "Invalid operand type"
+        self.assertIfInvalid(other)
 
         return self.x >= other.x and self.y >= other.y and self.z >= other.z
 
     def __le__(self, other):
-        assert hasattr(other, 'x') and hasattr(other, 'y') and hasattr(other, 'z'), "Invalid operand type"
+        self.assertIfInvalid(other)
 
         return self.x <= other.x and self.y <= other.y and self.z <= other.z
 
     def __gt__(self, other):
-        assert hasattr(other, 'x') and hasattr(other, 'y') and hasattr(other, 'z'), "Invalid operand type"
+        self.assertIfInvalid(other)
 
         return self.x > other.x and self.y > other.y and self.z > other.z
 
     def __lt__(self, other):
-        assert hasattr(other, 'x') and hasattr(other, 'y') and hasattr(other, 'z'), "Invalid operand type"
+        self.assertIfInvalid(other)
 
         return self.x < other.x and self.y < other.y and self.z < other.z
 
@@ -79,7 +82,7 @@ class Vector3:
             vector = other
             return __class__(self.x + vector.x, self.y + vector.y, self.z + vector.z)
 
-        assert False, "Invaild operand type."
+        assert False, "Invaild operand type: {}".format(type(other))
 
     def __sub__(self, other):
         if type(other) == int or type(other) == float:
@@ -89,7 +92,7 @@ class Vector3:
             vector = other
             return __class__(self.x - vector.x, self.y - vector.y, self.z - vector.z)
 
-        assert False, "Invaild operand type."
+        assert False, "Invaild operand type: {}".format(type(other))
 
     def __mul__(self, other):
         if type(other) == int or type(other) == float:
@@ -99,7 +102,7 @@ class Vector3:
             vector = other
             return __class__(self.x * vector.x, self.y * vector.y, self.z * vector.z)
 
-        assert False, "Invaild operand type."
+        assert False, "Invaild operand type: {}".format(type(other))
 
     def __pow__(self, other):
         if type(other) == int or type(other) == float:
@@ -109,7 +112,7 @@ class Vector3:
             vector = other
             return __class__(self.x ** vector.x, self.y ** vector.y, self.z ** vector.z)
 
-        assert False, "Invaild operand type."
+        assert False, "Invaild operand type: {}".format(type(other))
 
     def __abs__(self):
         return (self.x ** 2 + self.y ** 2 + self.z ** 2) ** 0.5
