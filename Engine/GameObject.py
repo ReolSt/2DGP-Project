@@ -181,7 +181,7 @@ class GameObject:
         for child in self.children:
             child.update(deltaTime)
 
-    def render(self, camera):
+    def render(self, camera, debug=False):
         for callback in self.eventListeners["Render"]:
             callback(self)
 
@@ -189,8 +189,12 @@ class GameObject:
             for sprite in self.sprites:
                 sprite.render(camera)
 
+            if debug:
+                for collider in self.colliders:
+                    collider.render(camera)
+
         for child in self.children:
-            child.render(camera)
+            child.render(camera, debug)
 
     def onMouseMove(self, event):
         for callback in self.eventListeners["MouseMove"]:
