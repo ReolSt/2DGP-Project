@@ -26,6 +26,7 @@ class Ground(GameObject):
             spriteWidth * width, spriteHeight * height)
         collider.transform.translate(
             spriteWidth * width / 2, spriteHeight * height / 2)
-        collider.tag = "Floor"
+        collider.setTag("Floor")
+        collider.renderMesh = True
 
         self.addCollider(collider)
