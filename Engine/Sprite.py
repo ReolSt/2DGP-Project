@@ -52,20 +52,9 @@ class Sprite:
         scale = self.transform.scale()
         flip = self.transform.flip()
 
-        cameraPosition = -camera.transform.position()
-        cameraRotation = -camera.transform.rotation()
-        cameraScale = camera.transform.localScale
-
-        cos = numpy.cos(numpy.deg2rad(cameraRotation))
-        sin = numpy.sin(numpy.deg2rad(cameraRotation))
-
-        position *= cameraScale
-        position = Vector2(position.x * cos - position.y * sin,
-                           position.y * cos + position.x * sin)
-        position += cameraPosition
-
-        rotation += cameraRotation
-        scale *= cameraScale
+        position = camera.translate(position)
+        rotation = camera.rotate(rotation)
+        scale = camera.scale(scale)
 
         flipString = ''
         flipString += 'h' if flip.x else ''
