@@ -12,13 +12,15 @@ class Scene:
         self.collisionManager = CollisionManager(self)
         self.cameras = []
 
+        self.debug = False
+
     def update(self, deltaTime):
         self.collisionManager.Update()
         self.root.update(deltaTime)
 
     def render(self):
         for camera in self.cameras:
-            self.root.render(camera)
+            self.root.render(camera, self.debug)
 
     def addCamera(self, parent, layer, order):
         camera = Camera(parent, layer, order)

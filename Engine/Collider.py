@@ -156,3 +156,17 @@ class Collider:
             return [0.0, 0.0]
 
         return [rx / magnitude, ry / magnitude]
+
+    def render(self, camera):
+        """
+
+        Parameters
+        ----------
+        camera : Camera
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """

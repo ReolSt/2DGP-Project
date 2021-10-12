@@ -1,3 +1,5 @@
+import pico2d
+
 from .Transform import *
 from .Collider import *
 from .Math import *
@@ -217,3 +219,22 @@ class BoxCollider(Collider):
             return False
 
         return True
+
+    def render(self, camera):
+        aabb = self.aabb()
+
+        position = self.transform.position()
+        scale = self.transform.scale()
+
+        position = camera.translate(position)
+        scale = camera.scale(scale)
+
+        width = self.width * scale.x
+        height = self.height * scale.y
+
+        left = position.x - width / 2
+        right = position.x + width / 2
+        bottom = position.y - height / 2
+        top = position.y + height / 2
+
+        pico2d.draw_rectangle(left, bottom, right, top)
