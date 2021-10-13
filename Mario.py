@@ -158,6 +158,7 @@ class Mario(GameObject):
 
         if ceilHit is not None and self.speed.y > 0:
             self.speed.y = 0
+            self.jumpPressing = False
 
         self.transform.translate(deltaTime * self.speed.x,
                                  deltaTime * self.speed.y)
