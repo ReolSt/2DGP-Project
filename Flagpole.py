@@ -1,5 +1,6 @@
 from Engine.GameObject import *
 from Engine.TerrainSprite import *
+from Engine.BoxCollider import *
 
 class Flagpole(GameObject):
     def __init__(self, parent, height=10):
@@ -9,8 +10,13 @@ class Flagpole(GameObject):
 
         ball = TerrainSprite(self, "FlagpoleBall")
 
-        spriteWidth = ball.width
-        spriteHeight = ball.height
+        referenceSprite = ball
+
+        spriteWidth = referenceSprite.width
+        spriteHeight = referenceSprite.height
+
+        objectWidth = spriteWidth
+        objectHeight = spriteHeight * height
 
         xOffset = spriteWidth / 2
         yOffset = spriteHeight / 2
@@ -37,3 +43,8 @@ class Flagpole(GameObject):
         ball.transform.translate(xOffset + spriteWidth, yOffset)
 
         self.sprites.append(ball)
+
+        collider = BoxCollider(self, objectWidth, objectHeight)
+        collider.transform.translate(objectWidth * 1.5, objectHeight / 2)
+
+        self.addCollider(collider)
