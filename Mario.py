@@ -30,7 +30,7 @@ class Mario(GameObject):
 
         self.speed = Vector2(0.0, 0.0)
         self.minSpeed = Vector2(0.0, 0.2)
-        self.maxSpeed = Vector2(0.3, 0.5)
+        self.maxSpeed = Vector2(0.3, 0.4)
         self.acceleration = Vector2(0.0005, 0.003)
         self.gravity = 0.0015
 
