@@ -1,4 +1,3 @@
-import numpy
 import math
 
 from .Vector2 import *
