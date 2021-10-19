@@ -1,4 +1,5 @@
 from Engine.Vector2 import *
+from Engine.AudioMixer import *
 
 from Sky import *
 from Ground import *
@@ -16,14 +17,33 @@ class World(GameObject):
         super().__init__(parent)
 
         self.unitSize = unitSize
+        self.player = None
+
+        AudioMixer().playMusic("Overworld")
+
+    def addPlayer(self, player):
+        self.player = player
+
+    def removePlayer(self):
+        self.player = None
+
+    def update(self, deltaTime):
+        super().update(deltaTime)
+
+        if self.player is not None:
+            if self.player.transform.position.y < 0:
+                AudioMixer().stopMusic("Overworld")
+                AudioMixer().playWav("MarioDie")
+                self.removePlayer()
 
     def setGridPosition(self, gameObject, x, y):
         gameObject.transform.localPosition = Vector2(
             x * self.unitSize.x, y * self.unitSize.y)
 
 class World1_1(World):
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, parent, unitSize):
+        super().__init__(parent, unitSize)
+
         sky = Sky(self, 800, 600)
         sky.layer = "Background"
 
@@ -60,7 +80,7 @@ class World1_1(World):
         self.setGridPosition(tree, 30, 3)
         self.children.append(tree)
 
-        mushroom = Mushroom(self)
+        mushroom = Mushroom(self, 5, 5)
         self.setGridPosition(mushroom, 35, 3)
         self.children.append(mushroom)
 
