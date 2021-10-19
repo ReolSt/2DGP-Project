@@ -1,4 +1,5 @@
 import pico2d
+
 from .GameObject import *
 from .CollisionManager import *
 from .Camera import *
@@ -12,9 +13,10 @@ class Scene:
         self.collisionManager = CollisionManager(self)
         self.cameras = []
 
-        self.debug = False
-        self.updateFixedTimeStep = 2.0
+        self.updateFixedTimeStep = 3.0
         self.updateTime = 0.0
+
+        self.debug = False
 
     def update(self, deltaTime):
         self.updateTime += deltaTime
