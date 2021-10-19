@@ -61,8 +61,8 @@ class BoxCollider(Collider):
 
         """
 
-        position = self.transform.position()
-        scale = self.transform.scale()
+        position = self.transform.position
+        scale = self.transform.scale
 
         width = self.width * scale.x
         height = self.height * scale.y
@@ -119,6 +119,10 @@ class BoxCollider(Collider):
         """
 
         aabb = self.aabb()
+
+        if aabb.left <= ray.origin.x <= aabb.right and \
+           aabb.bottom <= ray.origin.y <= aabb.top:
+            return ray.origin.copy()
 
         rayStart = ray.origin
         rayEnd = ray.origin + ray.direction * ray.distance
@@ -243,8 +247,8 @@ class BoxCollider(Collider):
     def render(self, camera):
         aabb = self.aabb()
 
-        position = self.transform.position()
-        scale = self.transform.scale()
+        position = self.transform.position
+        scale = self.transform.scale
 
         position = camera.translate(position)
         scale = camera.scale(scale)

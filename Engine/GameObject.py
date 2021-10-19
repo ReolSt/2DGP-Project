@@ -181,12 +181,18 @@ class GameObject:
         for child in self.children:
             child.update(deltaTime)
 
+        for collider in self.colliders:
+            collider.transform.update()
+
+        self.transform.update()
+
     def render(self, camera, debug=False):
         for callback in self.eventListeners["Render"]:
             callback(self)
 
         if camera.layer == self.layer:
             for sprite in self.sprites:
+                sprite.transform.update()
                 sprite.render(camera)
 
             if debug:

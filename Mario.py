@@ -105,8 +105,8 @@ class Mario(GameObject):
         self.updateJump(deltaTime)
         self.updateMove(deltaTime)
 
-        position = self.transform.position()
-        scale = self.transform.scale()
+        position = self.transform.position
+        scale = self.transform.scale
         rayDistance = Vector2(
             self.sprites[0].width * scale.x / 2,
             self.sprites[0].height * scale.y / 2)
@@ -147,8 +147,6 @@ class Mario(GameObject):
         if floorHit is None:
             self.speed.y -= gravity
         else:
-            self.transform.translate(0.0, rayDistance.y - floorHit.distance)
-
             if self.jumping and self.speed.y < 0:
                 self.jumping = False
                 self.switchSprite("Stand")

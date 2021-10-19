@@ -169,11 +169,11 @@ class Collider:
 
         """
 
-        position = self.transform.position()
+        position = self.transform.position
 
         x, y = position.x, position.y
 
-        colliderPosition = collider.transform.position()
+        colliderPosition = collider.transform.position
         cx, cy = colliderPosition.x, colliderPosition.y
 
         rx = cx - x

@@ -1,4 +1,6 @@
 import numpy
+import math
+
 from .Vector2 import *
 
 class Transform:
@@ -11,8 +13,20 @@ class Transform:
         self.localPosition = Vector2(0.0, 0.0)
         self.localRotation = 0.0
         self.localScale = Vector2(1.0, 1.0)
-
         self.localFlip = Vector2(False, False)
+
+        self.position = self.localPosition.copy()
+        self.rotation = self.localRotation
+        self.scale = self.localScale
+        self.flip = self.localFlip
+
+        self.update()
+
+    def update(self):
+        self.updateFlip()
+        self.updateScale()
+        self.updateRotation()
+        self.updatePosition()
 
     def translate(self, x, y):
         self.localPosition += Vector2(x, y)
@@ -23,47 +37,44 @@ class Transform:
     def setScale(self, xScale, yScale):
         self.localScale = Vector2(xScale, yScale)
 
-    def position(self):
+    def updatePosition(self):
+        self.position = self.localPosition.copy()
+
+        if self.parent is not None:
+            self.position *= self.parent.scale
+
+            cos = math.cos(math.radians(self.parent.rotation))
+            sin = math.sin(math.radians(self.parent.rotation))
+
+            self.position = Vector2(self.position.x * cos - self.position.y * sin,
+                               self.position.y * cos + self.position.x * sin)
+
+            self.position += self.parent.position
+
+    def updateRotation(self):
+        self.rotation = self.localRotation
         parent = self.parent
-        position = self.localPosition.copy()
-        if parent is not None:
-            parent_position = parent.position()
-            parent_rotation = parent.rotation()
-            parent_scale = parent.scale()
 
-            position *= parent_scale
+        while parent is not None:
+            self.rotation += parent.localRotation
+            parent = parent.parent
 
-            cos = numpy.cos(numpy.deg2rad(parent_rotation))
-            sin = numpy.sin(numpy.deg2rad(parent_rotation))
+    def updateScale(self):
+        self.scale = self.localScale.copy()
+        parent = self.parent
 
-            position = Vector2(position.x * cos - position.y * sin,
-                               position.y * cos + position.x * sin)
+        while parent is not None:
+            self.scale *= parent.localScale
+            parent = parent.parent
 
-            position += parent_position
+    def updateFlip(self):
+        self.flip = self.localFlip.copy()
+        parent = self.parent
 
-        return position
-
-    def rotation(self):
-        rotation = self.localRotation
-        if self.parent is not None:
-            rotation += self.parent.rotation()
-
-        return rotation
-
-    def scale(self):
-        scale = self.localScale.copy()
-        if self.parent is not None:
-            scale *= self.parent.scale()
-
-        return scale
-
-    def flip(self):
-        flip = self.localFlip.copy()
-        if self.parent is not None:
-            parent_flip = self.parent.flip()
+        while parent is not None:
+            parent_flip = parent.localFlip
             if parent_flip.x:
-                flip.x = not flip.x
+                self.flip.x = not self.flip.x
             if parent_flip.y:
-                flip.y = not flip.y
-
-        return flip
+                self.flip.y = not self.flip.y
+            parent = parent.parent

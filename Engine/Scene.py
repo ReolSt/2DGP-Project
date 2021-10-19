@@ -13,10 +13,17 @@ class Scene:
         self.cameras = []
 
         self.debug = False
+        self.updateFixedTimeStep = 2.0
+        self.updateTime = 0.0
 
     def update(self, deltaTime):
-        self.collisionManager.Update()
-        self.root.update(deltaTime)
+        self.updateTime += deltaTime
+
+        while self.updateTime >= self.updateFixedTimeStep:
+            self.collisionManager.Update()
+            self.root.update(self.updateFixedTimeStep)
+
+            self.updateTime -= self.updateFixedTimeStep
 
     def render(self):
         for camera in self.cameras:

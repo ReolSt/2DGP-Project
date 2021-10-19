@@ -1,16 +1,29 @@
 from Engine.GameObject import *
 from Engine.AudioMixer import *
+from Engine.Settings import *
 
 from Mario import *
 
 class PlayerController(GameObject):
-    def __init__(self, parent):
+    def __init__(self, parent, camera):
         super().__init__(parent)
 
         self.player = Mario(self)
+        self.camera = camera
         self.children.append(self.player)
 
         self.input = True
+
+    def update(self, deltaTime):
+        super().update(deltaTime)
+
+        cameraPosition = self.camera.transform.position
+        playerPosition = self.player.transform.position
+
+        if playerPosition.x - cameraPosition.x < 100.0:
+            self.camera.transform.translate(playerPosition.x - cameraPosition.x - 100.0, 0)
+        elif playerPosition.x - cameraPosition.x > 300.0:
+            self.camera.transform.translate(playerPosition.x - cameraPosition.x - 300.0, 0)
 
     def onKeyDown(self, event):
         super().onKeyDown(event)
