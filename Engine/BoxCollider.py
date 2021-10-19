@@ -147,6 +147,26 @@ class BoxCollider(Collider):
 
         return minDistancePoint
 
+    def boxIntersectionPoint(self, ray, boxSize):
+        """
+        Parameters
+        ----------
+        ray : Ray
+            DESCRIPTION.
+        boxSize : Vector2
+            DESCRIPTION.
+
+        Returns
+        -------
+        Vector2
+
+        """
+
+        rayPoint = self.rayIntersectionPoint(ray)
+        boxPoint = Vector2()
+
+        aabb = self.aabb()
+
     def isTouchingRay(self, ray):
         """
         Parameters

@@ -127,6 +127,34 @@ class Collider:
 
         return False
 
+    def rayIntersectionPoint(self, ray):
+        """
+        Parameters
+        ----------
+        ray : Ray
+            DESCRIPTION.
+
+        Returns
+        -------
+        Vector2
+
+        """
+
+    def boxIntersectionPoint(self, ray, boxSize):
+        """
+        Parameters
+        ----------
+        ray : Ray
+            DESCRIPTION.
+        boxSize : Vector2
+            DESCRIPTION.
+
+        Returns
+        -------
+        Vector2
+
+        """
+
     def relativeDirection(self, collider):
         """
         Parameters
