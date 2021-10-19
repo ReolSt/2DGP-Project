@@ -10,9 +10,10 @@ settings = Settings()
 renderingContext = RenderingContext(
     int(settings.default["WindowWidth"]), int(settings.default["WindowHeight"]))
 
-from World1_1Scene import *
+from GamePlayScene import *
+from Worlds import *
 
-scene = World1_1Scene("World 1-1")
+scene = GamePlayScene(World1_1, "World 1-1")
 scene.debug = True
 
 running = True
@@ -33,13 +34,20 @@ while running:
         if event.type == pico2d.SDL_QUIT:
             running = False
             break
-        else:
-            scene.root.captureEvent(event)
+
+        if event.type == pico2d.SDL_KEYDOWN:
+            if event.key == pico2d.SDLK_F1:
+                scene.debug = not scene.debug
+
+        scene.root.captureEvent(event)
 
     finishedTime = time.time()
     elapsedTime = finishedTime - currentTime
 
-    pico2d.delay(max(0.0, 1 / int(settings.default['TargetFPS']) - elapsedTime))
+    delayTime = 1 / int(settings.default['TargetFPS']) - elapsedTime
+
+    if delayTime > 0.0:
+        pico2d.delay(delayTime)
 
     oldTime = currentTime
 
