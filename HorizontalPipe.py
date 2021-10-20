@@ -21,8 +21,8 @@ class HorizontalPipe(GameObject):
         entranceLeftTop.transform.translate(xOffset, yOffset + spriteHeight)
         entranceLeftBottom.transform.translate(xOffset, yOffset)
 
-        self.sprites.append(entranceLeftTop)
-        self.sprites.append(entranceLeftBottom)
+        self.addSprite(entranceLeftTop)
+        self.addSprite(entranceLeftBottom)
 
         xOffset += spriteWidth
 
@@ -33,8 +33,8 @@ class HorizontalPipe(GameObject):
             pillarLeftTop.transform.translate(xOffset, yOffset + spriteHeight)
             pillarLeftBottom.transform.translate(xOffset, yOffset)
 
-            self.sprites.append(pillarLeftTop)
-            self.sprites.append(pillarLeftBottom)
+            self.addSprite(pillarLeftTop)
+            self.addSprite(pillarLeftBottom)
 
             xOffset += spriteWidth
 
@@ -46,8 +46,8 @@ class HorizontalPipe(GameObject):
         pillarBottomLeft.transform.translate(xOffset, yOffset)
         pillarBottomRight.transform.translate(xOffset + spriteWidth, yOffset)
 
-        self.sprites.append(pillarBottomLeft)
-        self.sprites.append(pillarBottomRight)
+        self.addSprite(pillarBottomLeft)
+        self.addSprite(pillarBottomRight)
 
         yOffset += spriteHeight
 
@@ -59,8 +59,8 @@ class HorizontalPipe(GameObject):
 
         yOffset += spriteHeight
 
-        self.sprites.append(pillarTopLeft)
-        self.sprites.append(pillarTopRight)
+        self.addSprite(pillarTopLeft)
+        self.addSprite(pillarTopRight)
 
         for i in range(height - 3):
             pillarLeft = TerrainSprite(self, "VerticalPipePillar1")
@@ -71,8 +71,8 @@ class HorizontalPipe(GameObject):
 
             yOffset += spriteHeight
 
-            self.sprites.append(pillarLeft)
-            self.sprites.append(pillarRight)
+            self.addSprite(pillarLeft)
+            self.addSprite(pillarRight)
 
         pillarEntranceLeft = TerrainSprite(self, "VerticalPipeEntrance1")
         pillarEntranceRight = TerrainSprite(self, "VerticalPipeEntrance2")
@@ -82,6 +82,23 @@ class HorizontalPipe(GameObject):
 
         yOffset += spriteHeight
 
-        self.sprites.append(pillarEntranceLeft)
-        self.sprites.append(pillarEntranceRight)
+        self.addSprite(pillarEntranceLeft)
+        self.addSprite(pillarEntranceRight)
+
+        leftWidth = spriteWidth * (width - 2)
+        leftHeight = spriteHeight * 2
+
+        colliderLeft = BoxCollider(self, leftWidth, leftHeight)
+        colliderLeft.transform.translate(leftWidth / 2, leftHeight / 2)
+        colliderLeft.tag = "Floor"
+
+        verticalWidth = spriteWidth * 2
+        verticalHeight = spriteHeight * height
+
+        colliderVertical = BoxCollider(self, verticalWidth, verticalHeight)
+        colliderVertical.transform.translate(leftWidth + verticalWidth / 2, verticalHeight / 2)
+        colliderVertical.tag = "Floor"
+
+        self.addCollider(colliderLeft)
+        self.addCollider(colliderVertical)
 

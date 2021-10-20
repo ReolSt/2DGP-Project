@@ -20,7 +20,7 @@ class Ground(GameObject):
                 currentSprite = TerrainSprite(self.transform, "Ground")
                 currentSprite.transform.translate(
                     spriteWidth / 2 + x * spriteWidth, spriteHeight / 2 + y * spriteHeight)
-                self.sprites.append(currentSprite)
+                self.addSprite(currentSprite)
 
         collider = BoxCollider(self,
             spriteWidth * width, spriteHeight * height)

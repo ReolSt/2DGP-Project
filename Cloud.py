@@ -22,8 +22,8 @@ class Cloud(GameObject):
 
         xOffset += spriteWidth
 
-        self.sprites.append(bottomLeft)
-        self.sprites.append(topLeft)
+        self.addSprite(bottomLeft)
+        self.addSprite(topLeft)
 
         for x in range(width - 2):
             bottom = TerrainSprite(self, "CloudBottom2")
@@ -32,8 +32,8 @@ class Cloud(GameObject):
             bottom.transform.translate(xOffset, yOffset)
             top.transform.translate(xOffset, yOffset + spriteHeight)
 
-            self.sprites.append(bottom)
-            self.sprites.append(top)
+            self.addSprite(bottom)
+            self.addSprite(top)
 
             xOffset += spriteWidth
 
@@ -43,5 +43,5 @@ class Cloud(GameObject):
         bottomRight.transform.translate(xOffset, yOffset)
         topRight.transform.translate(xOffset, yOffset + spriteHeight)
 
-        self.sprites.append(bottomRight)
-        self.sprites.append(topRight)
+        self.addSprite(bottomRight)
+        self.addSprite(topRight)

@@ -17,12 +17,12 @@ class Tree(GameObject):
         xOffset = spriteWidth / 2
         yOffset = spriteHeight / 2
 
-        self.sprites.append(crownTop)
-        self.sprites.append(crownBottom)
+        self.addSprite(crownTop)
+        self.addSprite(crownBottom)
 
         for i in range(height - 2):
             truck = TerrainSprite(self, "TreeTruck")
-            self.sprites.append(truck)
+            self.addSprite(truck)
 
         for i in range(len(self.sprites) - 1, -1, -1):
             self.sprites[i].transform.translate(

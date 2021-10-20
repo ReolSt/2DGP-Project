@@ -17,7 +17,7 @@ class Mountain(GameObject):
 
         top.transform.translate(xOffset, yOffset)
 
-        self.sprites.append(top)
+        self.addSprite(top)
 
         if height == 1:
             return
@@ -33,9 +33,9 @@ class Mountain(GameObject):
         slopeRight = TerrainSprite(self.transform, "MountainSlopeRight")
         slopeRight.transform.translate(xOffset + spriteWidth * 2, yOffset)
 
-        self.sprites.append(slopeLeft)
-        self.sprites.append(inside)
-        self.sprites.append(slopeRight)
+        self.addSprite(slopeLeft)
+        self.addSprite(inside)
+        self.addSprite(slopeRight)
 
         if height == 2:
             return
@@ -57,9 +57,9 @@ class Mountain(GameObject):
         bottomInside3.transform.translate(xOffset + spriteWidth * 3, yOffset)
         bottomSlopeRight.transform.translate(xOffset + spriteWidth * 4, yOffset)
 
-        self.sprites.append(bottomSlopeLeft)
-        self.sprites.append(bottomInside1)
-        self.sprites.append(bottomInside2)
-        self.sprites.append(bottomInside3)
-        self.sprites.append(bottomSlopeRight)
+        self.addSprite(bottomSlopeLeft)
+        self.addSprite(bottomInside1)
+        self.addSprite(bottomInside2)
+        self.addSprite(bottomInside3)
+        self.addSprite(bottomSlopeRight)
 

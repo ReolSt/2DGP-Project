@@ -25,7 +25,7 @@ class Flagpole(GameObject):
             pole = TerrainSprite(self, "FlagpolePole")
             pole.transform.translate(xOffset + spriteWidth, yOffset)
 
-            self.sprites.append(pole)
+            self.addSprite(pole)
 
             yOffset += spriteWidth
 
@@ -35,14 +35,14 @@ class Flagpole(GameObject):
         flagLeft.transform.translate(xOffset, yOffset)
         flagRight.transform.translate(xOffset + spriteWidth, yOffset)
 
-        self.sprites.append(flagLeft)
-        self.sprites.append(flagRight)
+        self.addSprite(flagLeft)
+        self.addSprite(flagRight)
 
         yOffset += spriteWidth
 
         ball.transform.translate(xOffset + spriteWidth, yOffset)
 
-        self.sprites.append(ball)
+        self.addSprite(ball)
 
         collider = BoxCollider(self, objectWidth, objectHeight)
         collider.transform.translate(objectWidth * 1.5, objectHeight / 2)

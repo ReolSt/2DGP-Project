@@ -10,6 +10,6 @@ class Sky(GameObject):
         sprite = TerrainSprite(self, "Sky")
         sprite.transform.translate(sprite.width / 2, sprite.height / 2)
 
-        self.sprites.append(sprite)
+        self.addSprite(sprite)
 
         self.transform.setScale(width / sprite.width, height / sprite.height)

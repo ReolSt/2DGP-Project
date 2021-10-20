@@ -23,8 +23,8 @@ class VerticalPipe(GameObject):
 
             yOffset += pillarLeft.height
 
-            self.sprites.append(pillarLeft)
-            self.sprites.append(pillarRight)
+            self.addSprite(pillarLeft)
+            self.addSprite(pillarRight)
 
         entranceLeft = TerrainSprite(self, "VerticalPipeEntrance1")
         entranceRight = TerrainSprite(self, "VerticalPipeEntrance2")
@@ -32,8 +32,8 @@ class VerticalPipe(GameObject):
         entranceLeft.transform.translate(xOffset, yOffset)
         entranceRight.transform.translate(xOffset + spriteWidth, yOffset)
 
-        self.sprites.append(entranceLeft)
-        self.sprites.append(entranceRight)
+        self.addSprite(entranceLeft)
+        self.addSprite(entranceRight)
 
         collider = BoxCollider(self, spriteWidth * 2, spriteHeight * height)
         collider.transform.translate(spriteWidth, spriteHeight * height / 2)
