@@ -1,0 +1,31 @@
+3 3
+Sky
+Ground -10 0 78 2
+Mountain 0 2 0 3
+Grass 12 2 3 0
+Mountain 16 2 0 2
+MysteryBlock 16 6 0 0 1
+Brick 20 6 0 0
+MysteryBlock 21 6 0 0 1
+Brick 22 6 0 0
+MysteryBlock 23 6 0 0 1
+Brick 24 6 0 0
+Grass 24 2 2 0
+VerticalPipe 28 2 0 2
+VerticalPipe 38 2 0 3
+Grass 42 2 3 0
+VerticalPipe 46 2 0 4
+Mountain 48 2 0 3
+VerticalPipe 57 2 0 4
+Grass 59 2 3 0
+Mountain 63 2 0 2
+Ground 70 0 15 2
+Grass 71 2 2 0
+Ground 88 0 64 2
+Grass 89 2 2 0
+Mountain 95 2 0 3
+Grass 107 2 3 0
+Mountain 111 2 0 2
+Grass 118 2 2 0
+Grass 136 2 3 0
+Mountain 143 2 0 3

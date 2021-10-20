@@ -4,7 +4,7 @@ MarioRun2 38 3 52 18
 MarioRun3 58 3 70 18
 MarioJump 88 2 103 17
 MarioKick 73 3 85 18
-MarioDead 100 23 113 36
+MarioDie 100 23 113 36
 BigMarioStand 8 41 23 72
 BigMarioRun1 27 41 42 72
 BigMarioRun2 46 43 60 72
