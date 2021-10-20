@@ -14,13 +14,13 @@ class Camera(GameObject):
     def translate(self, position):
         assert isinstance(position, Vector2), "Invalid parameter type: {}".format(type(position))
 
-        cos = math.cos(math.radians(-self.transform.rotation))
-        sin = math.sin(math.radians(-self.transform.rotation))
+        cos = self.transform.rotationCos
+        sin = -self.transform.rotationSin
 
         position = position * self.transform.scale
         position = Vector2(position.x * cos - position.y * sin,
                            position.y * cos + position.x * sin)
-        position += -self.transform.position
+        position -= self.transform.position
 
         return position
 

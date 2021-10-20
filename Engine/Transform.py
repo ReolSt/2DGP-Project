@@ -14,10 +14,18 @@ class Transform:
         self.localScale = Vector2(1.0, 1.0)
         self.localFlip = Vector2(False, False)
 
+        self.localRotationRads = math.radians(self.localRotation)
+        self.localRotationCos = math.cos(self.localRotationRads)
+        self.localRotationSin = math.sin(self.localRotationRads)
+
         self.position = self.localPosition.copy()
         self.rotation = self.localRotation
         self.scale = self.localScale
         self.flip = self.localFlip
+
+        self.rotationRads = math.radians(self.rotation)
+        self.rotationCos = math.cos(self.rotation)
+        self.rotationSin = math.cos(self.rotation)
 
         self.update()
 
@@ -42,8 +50,8 @@ class Transform:
         if self.parent is not None:
             self.position *= self.parent.scale
 
-            cos = math.cos(math.radians(self.parent.rotation))
-            sin = math.sin(math.radians(self.parent.rotation))
+            cos = self.parent.rotationCos
+            sin = self.parent.rotationSin
 
             self.position = Vector2(self.position.x * cos - self.position.y * sin,
                                self.position.y * cos + self.position.x * sin)
@@ -51,12 +59,20 @@ class Transform:
             self.position += self.parent.position
 
     def updateRotation(self):
+        self.localRotationRads = math.radians(self.localRotation)
+        self.localRotationCos = math.cos(self.localRotationRads)
+        self.localRotationSin = math.sin(self.localRotationRads)
+
         self.rotation = self.localRotation
         parent = self.parent
 
         while parent is not None:
             self.rotation += parent.localRotation
             parent = parent.parent
+
+        self.rotationRads = math.radians(self.rotation)
+        self.rotationCos = math.cos(self.rotationRads)
+        self.rotationSin = math.sin(self.rotationRads)
 
     def updateScale(self):
         self.scale = self.localScale.copy()
