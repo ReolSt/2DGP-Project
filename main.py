@@ -11,44 +11,53 @@ renderingContext = RenderingContext(
     int(settings.default["WindowWidth"]), int(settings.default["WindowHeight"]))
 
 from GamePlayScene import *
-from Worlds import *
+from World import *
+from WorldImporter import *
 
-scene = GamePlayScene(World1_1, "World 1-1")
-scene.debug = True
+def main():
+    scene = GamePlayScene()
+    scene.loadWorld(1, 1)
 
-running = True
-oldTime = time.time()
-while running:
-    currentTime = time.time()
-    deltaTime = currentTime - oldTime
+    scene.debug = True
 
-    pico2d.clear_canvas()
+    running = True
+    oldTime = time.time()
+    while running:
+        currentTime = time.time()
+        deltaTime = currentTime - oldTime
 
-    scene.update(deltaTime * 1000)
-    scene.render()
+        pico2d.clear_canvas()
 
-    pico2d.update_canvas()
+        GameState().update(deltaTime * 1000)
 
-    events = pico2d.get_events()
-    for event in events:
-        if event.type == pico2d.SDL_QUIT:
-            running = False
-            break
+        scene.update(deltaTime * 1000)
+        scene.render()
 
-        if event.type == pico2d.SDL_KEYDOWN:
-            if event.key == pico2d.SDLK_F1:
-                scene.debug = not scene.debug
+        pico2d.update_canvas()
 
-        scene.root.captureEvent(event)
+        events = pico2d.get_events()
+        for event in events:
+            if event.type == pico2d.SDL_QUIT:
+                running = False
+                break
 
-    finishedTime = time.time()
-    elapsedTime = finishedTime - currentTime
+            if event.type == pico2d.SDL_KEYDOWN:
+                if event.key == pico2d.SDLK_F1:
+                    scene.debug = not scene.debug
 
-    delayTime = 1 / int(settings.default['TargetFPS']) - elapsedTime
+            scene.root.captureEvent(event)
 
-    if delayTime > 0.0:
-        pico2d.delay(delayTime)
+        finishedTime = time.time()
+        elapsedTime = finishedTime - currentTime
 
-    oldTime = currentTime
+        delayTime = 1 / int(settings.default['TargetFPS']) - elapsedTime
 
-pico2d.close_canvas()
+        if delayTime > 0.0:
+            pico2d.delay(delayTime)
+
+        oldTime = currentTime
+
+    pico2d.close_canvas()
+
+if __name__ == "__main__":
+    main()
