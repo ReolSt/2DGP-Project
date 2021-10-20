@@ -16,7 +16,7 @@ class Mario(GameObject):
             "Run2": EntitySprite(self, "MarioRun2"),
             "Run3": EntitySprite(self, "MarioRun3"),
             "Jump": EntitySprite(self, "MarioJump"),
-            "Dead": EntitySprite(self, "MarioDead"),
+            "Die": EntitySprite(self, "MarioDie"),
             "Kick": EntitySprite(self, "MarioKick")
         }
 
@@ -28,15 +28,18 @@ class Mario(GameObject):
         self.jumpPressing = True
         self.jumping = False
 
+        self.died = False
+        self.dieAnimationTimeStep = 0
+
         self.speed = Vector2(0.0, 0.0)
         self.minSpeed = Vector2(0.0, 0.2)
         self.maxSpeed = Vector2(0.3, 0.4)
         self.acceleration = Vector2(0.0005, 0.003)
         self.gravity = 0.0015
 
-        self.runningAnimationFrame = 1
-        self.runningAnimationInterval = 20.0
-        self.runningAnimationFrameDuration = 0.0
+        self.runAnimationFrame = 1
+        self.runAnimationInterval = 20.0
+        self.runAnimationFrameDuration = 0.0
 
         collider = BoxCollider(self, self.sprites[0].width, self.sprites[0].height)
 
@@ -45,19 +48,25 @@ class Mario(GameObject):
     def switchSprite(self, spriteName):
         self.sprites[0] = self.animationSprites[spriteName]
 
-    def updateAnimation(self, deltaTime):
+    def dieAnimationYDelta(self, timeStep):
+        if timeStep < 400:
+            return 0
+        else:
+            return 400 / 160000 * (800 - timeStep)
+
+    def updateRunAnimation(self, deltaTime):
         if not self.jumping and self.moving:
             self.transform.localFlip.x = self.moving < 0
 
         if self.moving != 0 or self.stopping:
             if not self.jumping:
-                self.switchSprite("Run" + str(self.runningAnimationFrame))
+                self.switchSprite("Run" + str(self.runAnimationFrame))
 
-            self.runningAnimationFrameDuration += deltaTime * abs(self.speed.x)
+            self.runAnimationFrameDuration += deltaTime * abs(self.speed.x)
 
-            if self.runningAnimationFrameDuration > self.runningAnimationInterval:
-                self.runningAnimationFrame = (self.runningAnimationFrame % 3) + 1
-                self.runningAnimationFrameDuration = 0.0
+            if self.runAnimationFrameDuration > self.runAnimationInterval:
+                self.runAnimationFrame = (self.runAnimationFrame % 3) + 1
+                self.runAnimationFrameDuration = 0.0
 
         if self.stopping and not self.jumping and self.moving * self.speed.x < 0.0:
             self.switchSprite("Kick")
@@ -65,10 +74,24 @@ class Mario(GameObject):
         if (self.moving == 0 or self.stopping) and self.speed.x == 0.0:
             self.switchSprite("Stand")
 
+    def updateJumpAnimation(self, deltaTime):
         if self.jumping:
             self.switchSprite("Jump")
 
+    def updateDieAnimation(self, deltaTime):
+        if self.died:
+            self.switchSprite("Die")
+            return
+
+    def updateAnimation(self, deltaTime):
+        self.updateRunAnimation(deltaTime)
+        self.updateJumpAnimation(deltaTime)
+        self.updateDieAnimation(deltaTime)
+
     def updateMove(self, deltaTime):
+        if self.died:
+            return
+
         acceleration = deltaTime * self.acceleration.x
         gravity = deltaTime * self.gravity
 
@@ -87,6 +110,9 @@ class Mario(GameObject):
             self.stopping = False if self.speed.x == 0.0 else self.stopping
 
     def updateJump(self, deltaTime):
+        if self.died:
+            return
+
         acceleration = deltaTime * self.acceleration.y
 
         if self.jumping:
@@ -98,12 +124,23 @@ class Mario(GameObject):
 
                 self.speed.y = min(self.speed.y, self.maxSpeed.y)
 
+    def updateDie(self, deltaTime):
+        if self.died:
+            self.dieAnimationTimeStep += deltaTime
+            self.transform.translate(0.0, self.dieAnimationYDelta(self.dieAnimationTimeStep))
+
+
     def update(self, deltaTime):
         super().update(deltaTime)
 
         self.updateAnimation(deltaTime)
+
+        self.updateDie(deltaTime)
         self.updateJump(deltaTime)
         self.updateMove(deltaTime)
+
+        if self.died:
+            return
 
         position = self.transform.position
         scale = self.transform.scale
@@ -157,6 +194,9 @@ class Mario(GameObject):
         if ceilHit is not None and self.speed.y > 0:
             self.speed.y = 0
             self.jumpPressing = False
+
+        if self.transform.position.y < 0.0:
+            self.died = True
 
         self.transform.translate(deltaTime * self.speed.x,
                                  deltaTime * self.speed.y)

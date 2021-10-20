@@ -10,7 +10,8 @@ class PlayerController(GameObject):
 
         self.player = Mario(self)
         self.camera = camera
-        self.children.append(self.player)
+
+        self.addChild(self.player)
 
         self.input = True
 
@@ -29,6 +30,9 @@ class PlayerController(GameObject):
         super().onKeyDown(event)
 
         if not self.input:
+            return
+
+        if self.player.died:
             return
 
         if event.key == pico2d.SDLK_LEFT:
