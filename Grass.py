@@ -17,18 +17,18 @@ class Grass(GameObject):
         yOffset = spriteHeight / 2
 
         left.transform.translate(xOffset, yOffset)
-        self.sprites.append(left)
+        self.addSprite(left)
 
         xOffset += spriteWidth
 
         for i in range(width - 2):
             inside = TerrainSprite(self.transform, "Grass2")
             inside.transform.translate(xOffset, yOffset)
-            self.sprites.append(inside)
+            self.addSprite(inside)
 
             xOffset += spriteWidth
 
         right = TerrainSprite(self.transform, "Grass3")
         right.transform.translate(xOffset, yOffset)
 
-        self.sprites.append(right)
+        self.addSprite(right)
