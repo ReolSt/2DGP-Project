@@ -30,7 +30,7 @@ class Vector2:
 
         assert False, "Invalid operand type"
 
-    def assertIfInvalid(other):
+    def assertIfInvalid(self, other):
         assert hasattr(other, 'x') and hasattr(other, 'y'), "Invalid operand type: {}".format(type(other))
 
     def __eq__(self, other):
