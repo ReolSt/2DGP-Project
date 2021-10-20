@@ -187,10 +187,10 @@ class GameObject:
         self.transform.update()
 
     def render(self, camera, debug=False):
-        for callback in self.eventListeners["Render"]:
-            callback(self)
-
         if camera.layer == self.layer:
+            for callback in self.eventListeners["Render"]:
+                callback(self)
+
             for sprite in self.sprites:
                 sprite.transform.update()
                 sprite.render(camera)
@@ -260,6 +260,20 @@ class GameObject:
     def onCollisionExit(self, collision):
         pass
 
+    def addChild(self, child):
+        self.children.append(child)
+
+    def addChildren(self, children):
+        for child in children:
+            self.children.append(child)
+
+    def removeChild(self, chlid):
+        self.children.remove(child)
+
+    def removeChildren(self, children):
+        for child in children:
+            self.children.remove(child)
+
     def addCollider(self, collider):
         assert hasattr(self, "scene"), "addCollider : object has no scene property."
 
@@ -271,3 +285,9 @@ class GameObject:
 
         self.colliders.remove(collider)
         self.scene.collisionManager.removeCollider(collider)
+
+    def addSprite(self, sprite):
+        self.sprites.append(sprite)
+
+    def removeSprite(self, sprite):
+        self.sprites.remove(sprite)
