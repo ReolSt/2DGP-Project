@@ -59,6 +59,9 @@ class WorldImporter(metaclass=Singleton):
                     parserState = "GameObject"
                     continue
 
+                if len(tokens) == 0:
+                    continue
+
                 assert 5 <= len(tokens) <= 6
 
                 objectName, x, y, width, height = tokens[:5]
