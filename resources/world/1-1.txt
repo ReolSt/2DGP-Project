@@ -21,11 +21,46 @@ Grass 59 2 3 0
 Mountain 63 2 0 2
 Ground 70 0 15 2
 Grass 71 2 2 0
+Brick 76 6 0 0
+MysteryBlock 77 6 0 0 1
+Brick 78 6 0 0
 Ground 88 0 64 2
 Grass 89 2 2 0
+Brick 93 6 0 0
+Brick 99 6 0 0
+Brick 100 6 0 0
 Mountain 95 2 0 3
+MysteryBlock 105 6 0 0 1
+MysteryBlock 108 6 0 0 1
+MysteryBlock 111 6 0 0 1
+Brick 117 6 0 0 
 Grass 107 2 3 0
 Mountain 111 2 0 2
 Grass 118 2 2 0
+Brick 128 6 0 0
+Brick 128 6 0 0
 Grass 136 2 3 0
+Block 133 2 0 0 1
+Block 134 2 0 0 1
+Block 135 2 0 0 1
+Block 136 2 0 0 1
+Block 134 3 0 0 1
+Block 135 3 0 0 1
+Block 136 3 0 0 1
+Block 135 4 0 0 1
+Block 136 4 0 0 1
+Block 136 5 0 0 1
+
 Mountain 143 2 0 3
+
+
+Ground 154 0 50 2
+Grass 156 2 3 0
+
+Mountain 159 2 0 2
+VerticalPipe 162 2 0 2
+Grass 167 2 2 0
+Brick 167 6 0 0
+Brick 168 6 0 0
+MysteryBlock 169 6 0 0
+Brick 170 6 0 0
