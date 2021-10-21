@@ -1,5 +1,4 @@
 import math
-
 from .Vector2 import *
 
 class Transform:
@@ -13,10 +12,6 @@ class Transform:
         self.localRotation = 0.0
         self.localScale = Vector2(1.0, 1.0)
         self.localFlip = Vector2(False, False)
-
-        self.localRotationRads = math.radians(self.localRotation)
-        self.localRotationCos = math.cos(self.localRotationRads)
-        self.localRotationSin = math.sin(self.localRotationRads)
 
         self.position = self.localPosition.copy()
         self.rotation = self.localRotation
@@ -59,10 +54,6 @@ class Transform:
             self.position += self.parent.position
 
     def updateRotation(self):
-        self.localRotationRads = math.radians(self.localRotation)
-        self.localRotationCos = math.cos(self.localRotationRads)
-        self.localRotationSin = math.sin(self.localRotationRads)
-
         self.rotation = self.localRotation
         parent = self.parent
 
