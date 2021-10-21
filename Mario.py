@@ -154,32 +154,27 @@ class Mario(GameObject):
             distance=rayDistance.y,
             tag="Floor")
 
-        ceilHit = self.scene.collisionManager.rayCast(
-            origin=position,
-            direction=Vector2(0.0, 1.0),
-            distance=rayDistance.y,
-            tag="Floor")
-
-        leftHit = self.scene.collisionManager.rayCast(
-            origin=position,
-            direction=Vector2(-1.0, 0.0),
-            distance=rayDistance.x,
-            tag="Floor")
-
-        rightHit = self.scene.collisionManager.rayCast(
-            origin=position,
-            direction=Vector2(1.0, 0.0),
-            distance=rayDistance.x,
-            tag="Floor")
-
-
         gravity = deltaTime * self.gravity
 
-        if leftHit is not None and self.speed.x < 0:
-            self.speed.x = 0
+        if self.speed.x < 0:
+            leftHit = self.scene.collisionManager.rayCast(
+                origin=position,
+                direction=Vector2(-1.0, 0.0),
+                distance=rayDistance.x,
+                tag="Floor")
 
-        if rightHit is not None and self.speed.x > 0:
-            self.speed.x = 0
+            if leftHit is not None:
+                self.speed.x = 0
+
+        if self.speed.x > 0:
+            rightHit = self.scene.collisionManager.rayCast(
+                    origin=position,
+                    direction=Vector2(1.0, 0.0),
+                    distance=rayDistance.x,
+                    tag="Floor")
+
+            if rightHit is not None:
+                self.speed.x = 0
 
         if floorHit is None:
             self.speed.y -= gravity
@@ -191,9 +186,16 @@ class Mario(GameObject):
             if not self.jumping:
                 self.speed.y = 0.0
 
-        if ceilHit is not None and self.speed.y > 0:
-            self.speed.y = 0
-            self.jumpPressing = False
+        if self.speed.y > 0:
+            ceilHit = self.scene.collisionManager.rayCast(
+                origin=position,
+                direction=Vector2(0.0, 1.0),
+                distance=rayDistance.y,
+                tag="Floor")
+
+            if ceilHit is not None:
+                self.speed.y = 0
+                self.jumpPressing = False
 
         if self.transform.position.y < 0.0:
             self.died = True
