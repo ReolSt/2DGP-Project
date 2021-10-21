@@ -52,6 +52,19 @@ class BoxCollider(Collider):
         self.width = width
         self.height = height
 
+        self.update()
+
+    def update(self):
+        self.transform.update()
+
+        width = self.width * self.transform.scale.x
+        height = self.height * self.transform.scale.y
+
+        self.left = self.transform.position.x - width / 2
+        self.right = self.transform.position.x + width / 2
+        self.bottom = self.transform.position.y - height / 2
+        self.top = self.transform.position.y + height / 2
+
     def aabb(self):
         """
         Returns
@@ -61,19 +74,7 @@ class BoxCollider(Collider):
 
         """
 
-        position = self.transform.position
-        scale = self.transform.scale
-
-        width = self.width * scale.x
-        height = self.height * scale.y
-
-
-        left = position.x - width / 2
-        right = position.x + width / 2
-        bottom = position.y - height / 2
-        top = position.y + height / 2
-
-        return AABB(left, right, bottom, top)
+        return AABB(self.left, self.right, self.bottom, self.top)
 
 
     def isTouchingCollider(self, collider):
