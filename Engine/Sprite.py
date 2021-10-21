@@ -1,5 +1,4 @@
 import pico2d
-import numpy
 
 from .Transform import *
 from .GameObject import *
@@ -50,6 +49,14 @@ class Sprite:
         position = camera.translate(self.transform.position)
         rotation = camera.rotate(self.transform.rotation)
         scale = camera.scale(self.transform.scale)
+
+        if position.x - self.width / 2 > 800 or \
+           position.x + self.width / 2 < 0:
+               return
+
+        if position.y - self.height / 2 > 800 or \
+           position.y + self.height / 2 < 0:
+               return
 
         flipString = ''
         flipString += 'h' if self.transform.flip.x else ''
