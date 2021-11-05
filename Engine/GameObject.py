@@ -175,6 +175,8 @@ class GameObject:
 
         """
 
+        self.transform.update()
+
         for callback in self.eventListeners["Update"]:
             callback(self)
 
@@ -182,9 +184,7 @@ class GameObject:
             child.update(deltaTime)
 
         for collider in self.colliders:
-            collider.transform.update()
-
-        self.transform.update()
+            collider.update()
 
     def render(self, camera, debug=False):
         if camera.layer == self.layer:
