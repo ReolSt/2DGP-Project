@@ -4,6 +4,8 @@ from .Singleton import *
 from .Settings import *
 from .Transform import *
 
+from typing import Union, Callable, Iterable
+
 class GameObjectIDGenerator(metaclass=Singleton):
     OBJECT_MAX_ID = int(Settings().default["GameObjectMaxId"])
     def __init__(self):
@@ -32,7 +34,7 @@ class GameObjectIDGenerator(metaclass=Singleton):
         return generated_id
 
 class GameObject:
-    def __init__(self, parent=None):
+    def __init__(self, parent : Union[GameObject, Transform] = None):
         """
         Parameters
         ----------
@@ -78,7 +80,7 @@ class GameObject:
 
         self.colliders = []
 
-    def captureEvent(self, event):
+    def captureEvent(self, event : pico2d.SDL_Event):
         """
         Parameters
         ----------
@@ -125,7 +127,7 @@ class GameObject:
 
             self.onKeyUp(event)
 
-    def addEventListener(self, eventType, callback):
+    def addEventListener(self, eventType : str, callback : Callable):
         """
         Parameters
         ----------
@@ -144,7 +146,7 @@ class GameObject:
 
         self.eventListener[eventType].append(callback)
 
-    def removeEventListeners(self, eventType):
+    def removeEventListeners(self, eventType : str):
         """
         Parameters
         ----------
@@ -161,7 +163,7 @@ class GameObject:
 
         self.eventListeners[eventType] = []
 
-    def update(self, deltaTime):
+    def update(self, deltaTime: float):
         """
 
         Parameters
@@ -186,7 +188,7 @@ class GameObject:
         for collider in self.colliders:
             collider.update()
 
-    def render(self, camera, debug=False):
+    def render(self, camera, debug : bool = False):
         if camera.layer == self.layer:
             for callback in self.eventListeners["Render"]:
                 callback(self)
@@ -202,75 +204,66 @@ class GameObject:
         for child in self.children:
             child.render(camera, debug)
 
-    def onMouseMove(self, event):
+    def onMouseMove(self, event : pico2d.SDL_Event):
         for callback in self.eventListeners["MouseMove"]:
             callback(self, event)
 
         for child in self.children:
             child.onMouseMove(event)
 
-    def onMouseDown(self, event):
+    def onMouseDown(self, event : pico2d.SDL_Event):
         for callback in self.eventListeners["MouseDown"]:
             callback(self, event)
 
         for child in self.children:
             child.onMouseDown(event)
 
-    def onMouseUp(self, event):
+    def onMouseUp(self, event : pico2d.SDL_Event):
         for callback in self.eventListeners["MouseUp"]:
             callback(self, event)
 
         for child in self.children:
             child.onMouseUp(event)
 
-    def onMouseWheel(self, event):
+    def onMouseWheel(self, event : pico2d.SDL_Event):
         for callback in self.eventListeners["MouseWheel"]:
             callback(self, event)
 
         for child in self.children:
             child.onMouseWheel(event)
 
-    def onKeyDown(self, event):
+    def onKeyDown(self, event : pico2d.SDL_Event):
         for callback in self.eventListeners["KeyDown"]:
             callback(self, event)
 
         for child in self.children:
             child.onKeyDown(event)
 
-    def onKeyUp(self, event):
+    def onKeyUp(self, event : pico2d.SDL_Event):
         for callback in self.eventListeners["KeyUp"]:
             callback(self, event)
 
         for child in self.children:
             child.onKeyUp(event)
 
-    def onKeyPress(self, event):
+    def onKeyPress(self, event : pico2d.SDL_Event):
         for callback in self.eventListeners["KeyPress"]:
             callback(self, event)
 
         for child in self.children:
             child.onKeyPress(event)
 
-    def onCollisionEnter(self, collision):
-        pass
-
-    def onCollisionStay(self, collision):
-        pass
-
-    def onCollisionExit(self, collision):
-        pass
-
-    def addChild(self, child):
+    def addChild(self, child : GameObject):
         self.children.append(child)
 
-    def addChildren(self, children):
+    def addChildren(self, children : Iterable[GameObject]):
         for child in children:
             self.children.append(child)
 
-    def removeChild(self, chlid):
+    def removeChild(self, chlid : GameObject):
         self.children.remove(child)
 
-    def removeChildren(self, children):
+    def removeChildren(self, children : Iterable[GameObject]):
         for child in children:
             self.children.remove(child)
 
