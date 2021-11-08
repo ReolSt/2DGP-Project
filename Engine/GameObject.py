@@ -295,10 +295,10 @@ class GameObject:
         for child in children:
             self.children.append(child)
 
-    def removeChild(self, chlid : GameObject):
+    def removeChild(self, chlid):
         self.children.remove(child)
 
-    def removeChildren(self, children : Iterable[GameObject]):
+    def removeChildren(self, children):
         for child in children:
             self.children.remove(child)
 
