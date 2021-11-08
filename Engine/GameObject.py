@@ -42,7 +42,7 @@ class GameObjectIDGenerator(metaclass=Singleton):
         return generated_id
 
 class GameObject:
-    def __init__(self, parent : Union[GameObject, Transform] = None):
+    def __init__(self, parent = None):
         """
         Parameters
         ----------
@@ -81,12 +81,37 @@ class GameObject:
 
         self.keyDown = {}
 
-        self.layer = "Default"
-
         if self.transform.parent is not None:
             self.scene = self.transform.parent.gameObject.scene
 
-        self.colliders = []
+        self.__layer = "Default"
+        self.__rigidBody = None
+
+    @property
+    def layer(self):
+        return self.__layer
+
+    @layer.setter
+    def layer(self, layer):
+        assert isinstance(layer, str), "[GameObject] layer.setter : layer is not instance of str. ( layer = {} )".format(layer)
+
+        self.__layer = layer
+
+    @property
+    def rigidBody(self):
+        return self.__rigidBody
+
+    @rigidBody.setter
+    def rigidBody(self, rigidBody):
+        assert hasattr(self, "scene"), "[GameObject] rigidBody.setter : object has no scene property."
+        assert isinstance(rigidBody, RigidBody), \
+            "[GameObject] rigidBody.setter : parameter is not instance of RigidBody. ( rigidBody = {} )".format(rigidBody)
+
+        if self.__rigidBody is not None:
+            self.scene.physicsManager.remove(self.__rigidBody)
+
+        self.__rigidBody = rigidBody
+        self.scene.physicsManager.add(self.__rigidBody)
 
     def captureEvent(self, event : pico2d.SDL_Event):
         """
@@ -185,16 +210,16 @@ class GameObject:
 
         """
 
-        self.transform.update()
-
         for callback in self.eventListeners["Update"]:
             callback(self)
 
         for child in self.children:
             child.update(deltaTime)
 
-        for collider in self.colliders:
-            collider.update()
+        self.transform.update()
+
+        if self.rigidBody is not None:
+            self.rigidBody.update()
 
     def render(self, camera, debug : bool = False):
         if camera.layer == self.layer:
@@ -205,9 +230,8 @@ class GameObject:
                 sprite.transform.update()
                 sprite.render(camera)
 
-            if debug:
-                for collider in self.colliders:
-                    collider.render(camera)
+            if debug and self.rigidBody is not None:
+                self.rigidBody.render(camera)
 
         for child in self.children:
             child.render(camera, debug)
@@ -261,10 +285,13 @@ class GameObject:
         for child in self.children:
             child.onKeyPress(event)
 
-    def addChild(self, child : GameObject):
+    def addChild(self, child):
         self.children.append(child)
 
-    def addChildren(self, children : Iterable[GameObject]):
+        if child.rigidBody is not None:
+            child.rigidBody.update()
+
+    def addChildren(self, children):
         for child in children:
             self.children.append(child)
 
@@ -274,18 +301,6 @@ class GameObject:
     def removeChildren(self, children : Iterable[GameObject]):
         for child in children:
             self.children.remove(child)
-
-    def addCollider(self, collider):
-        assert hasattr(self, "scene"), "addCollider : object has no scene property."
-
-        self.colliders.append(collider)
-        self.scene.collisionManager.addCollider(collider)
-
-    def removeCollider(self, collider):
-        assert hasattr(self, "scene"), "removeCollider : object has no scene property."
-
-        self.colliders.remove(collider)
-        self.scene.collisionManager.removeCollider(collider)
 
     def addSprite(self, sprite):
         self.sprites.append(sprite)
