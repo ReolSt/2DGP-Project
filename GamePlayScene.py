@@ -43,11 +43,11 @@ class GamePlayScene(Scene):
         self.world.addChild(backgroundCamera)
 
         playerController = PlayerController(self.world, worldCamera)
-        playerController.player.transform.setScale(1.5, 1.5)
-
-        self.world.setPlayerInitialPosition(playerController.player)
+        playerController.player.transform.setLocalScale(1.5, 1.5)
 
         self.world.addChild(playerController)
         self.world.addPlayer(playerController.player)
 
-        self.world.transform.setScale(2, 2)
+        self.world.setPlayerInitialPosition(playerController.player)
+
+        self.world.transform.setLocalScale(2, 2)
