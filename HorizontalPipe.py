@@ -1,6 +1,8 @@
 from Engine.GameObject import *
 from Engine.TerrainSprite import *
-from Engine.BoxCollider import *
+from Engine.RigidBody import *
+
+import pymunk
 
 class HorizontalPipe(GameObject):
     def __init__(self, parent, width=4, height=3):
@@ -88,17 +90,13 @@ class HorizontalPipe(GameObject):
         leftWidth = spriteWidth * (width - 2)
         leftHeight = spriteHeight * 2
 
-        colliderLeft = BoxCollider(self, leftWidth, leftHeight)
-        colliderLeft.transform.translate(leftWidth / 2, leftHeight / 2)
-        colliderLeft.tag = "Floor"
+        objectWidth = leftWidth + verticalWidth
+        objectHeight = verticalHeight
 
-        verticalWidth = spriteWidth * 2
-        verticalHeight = spriteHeight * height
+        body = pymunk.Body()
+        shape = pymunk.Poly(body, [(0, 0), (objectWidth, 0), (objectWidth, objectHeight),
+                                   (leftWidth, objectHeight), (leftWidth, leftHeight), (0, leftHeight)])
 
-        colliderVertical = BoxCollider(self, verticalWidth, verticalHeight)
-        colliderVertical.transform.translate(leftWidth + verticalWidth / 2, verticalHeight / 2)
-        colliderVertical.tag = "Floor"
-
-        self.addCollider(colliderLeft)
-        self.addCollider(colliderVertical)
+        self.rigidBody = RigidBody(self, body, shape)
+        self.rigidBody.filter = 0b1
 

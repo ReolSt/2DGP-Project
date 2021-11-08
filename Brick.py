@@ -18,7 +18,12 @@ class Brick(GameObject):
         sprite.transform.translate(xOffset, yOffset)
         self.addSprite(sprite)
 
-        collider = BoxCollider(self, spriteWidth, spriteHeight)
-        collider.transform.translate(xOffset, yOffset)
-        collider.tag = "Floor"
-        self.addCollider(collider)
+        objectWidth = spriteWidth * width
+        objectHeight = spriteHeight * height
+
+        body = pymunk.Body()
+        shape = pymunk.Poly(body, [(0, 0), (objectWidth, 0), (objectWidth, objectHeight), (0, objectHeight)])
+
+        self.rigidBody = RigidBody(self, body, shape)
+        self.rigidBody.bodyType = "Static"
+        self.rigidBody.filter = 0b1

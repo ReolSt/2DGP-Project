@@ -1,6 +1,8 @@
 from Engine.GameObject import *
 from Engine.TerrainSprite import *
-from Engine.BoxCollider import *
+from Engine.RigidBody import *
+
+import pymunk
 
 class Flagpole(GameObject):
     def __init__(self, parent, height=10):
@@ -15,7 +17,7 @@ class Flagpole(GameObject):
         spriteWidth = referenceSprite.width
         spriteHeight = referenceSprite.height
 
-        objectWidth = spriteWidth
+        objectWidth = spriteWidth * 2
         objectHeight = spriteHeight * height
 
         xOffset = spriteWidth / 2
@@ -23,7 +25,7 @@ class Flagpole(GameObject):
 
         for i in range(height - 2):
             pole = TerrainSprite(self, "FlagpolePole")
-            pole.transform.translate(xOffset + spriteWidth, yOffset)
+            pole.transform.translate(-xOffset + spriteWidth, yOffset)
 
             self.addSprite(pole)
 
@@ -32,19 +34,21 @@ class Flagpole(GameObject):
         flagLeft = TerrainSprite(self, "FlagpoleFlag1")
         flagRight = TerrainSprite(self, "FlagpoleFlag2")
 
-        flagLeft.transform.translate(xOffset, yOffset)
-        flagRight.transform.translate(xOffset + spriteWidth, yOffset)
+        flagLeft.transform.translate(-xOffset, yOffset)
+        flagRight.transform.translate(-xOffset + spriteWidth, yOffset)
 
         self.addSprite(flagLeft)
         self.addSprite(flagRight)
 
         yOffset += spriteWidth
 
-        ball.transform.translate(xOffset + spriteWidth, yOffset)
+        ball.transform.translate(-xOffset + spriteWidth, yOffset)
 
         self.addSprite(ball)
 
-        collider = BoxCollider(self, objectWidth, objectHeight)
-        collider.transform.translate(objectWidth * 1.5, objectHeight / 2)
+        body = pymunk.Body()
+        shape = pymunk.Poly(body, [(0, 0), (objectWidth / 2, 0), (objectWidth / 2, objectHeight), (0, objectHeight)])
 
-        self.addCollider(collider)
+        self.rigidBody = RigidBody(self, body, shape)
+        self.rigidBody.bodyType = "Static"
+        self.rigidBody.filter = 0b10

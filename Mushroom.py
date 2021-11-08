@@ -1,6 +1,8 @@
 from Engine.GameObject import *
 from Engine.TerrainSprite import *
-from Engine.BoxCollider import *
+from Engine.RigidBody import *
+
+import pymunk
 
 class Mushroom(GameObject):
     def __init__(self, parent, width=3, height=3):
@@ -51,9 +53,11 @@ class Mushroom(GameObject):
         roofRight.transform.translate(xOffset, yOffset)
         self.sprites.append(roofRight)
 
-        collider = BoxCollider(self, objectWidth, spriteHeight)
-        collider.transform.translate(objectWidth / 2, objectHeight - spriteHeight / 2)
-        collider.setTag("Floor")
+        body = pymunk.Body()        
+        shape = pymunk.Poly(body, [(0, objectHeight - spriteHeight), (objectWidth, objectHeight - spriteHeight),
+                                   (objectWidth, objectHeight), (0, objectHeight)])
 
-        self.addCollider(collider)
+        self.rigidBody = RigidBody(self, body, shape)
+        self.rigidBody.bodyType = "Static"
+        self.rigidBody.filter = 0b1
 
