@@ -14,7 +14,7 @@ class Settings(metaclass=Singleton):
 
     def __init__(self):
         config = configparser.ConfigParser()
-        config.read("Engine/Settings.ini")
+        config.read(os.path.dirname(os.path.abspath(__file__)) + "/Settings.ini")
 
         self.default = config['Default']
         self.sprite = config['Sprite']
