@@ -53,7 +53,6 @@ class Sprite:
         """
 
         position = camera.translate(self.transform.position)
-        rotation = camera.rotate(self.transform.rotation)
         scale = camera.scale(self.transform.scale)
 
         if position.x - self.width / 2 > 800 or \
@@ -70,5 +69,5 @@ class Sprite:
 
         self.image.clip_composite_draw(
             self.left, self.bottom, self.width, self.height,
-            rotation, flipString, position.x, position.y,
+            0, flipString, position.x, position.y,
             self.width * scale.x, self.height * scale.y)
