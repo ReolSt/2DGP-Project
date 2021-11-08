@@ -1,6 +1,10 @@
 import configparser
 
-from .Singleton import *
+import os
+if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
+    from Singleton import *
+else:
+    from .Singleton import *
 
 class Settings(metaclass=Singleton):
     def __new__(cls, *args, **kwargs):

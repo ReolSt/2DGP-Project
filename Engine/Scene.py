@@ -1,8 +1,14 @@
 import pico2d
 
-from .GameObject import *
-from .CollisionManager import *
-from .Camera import *
+import os
+if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
+    from GameObject import *
+    from PhysicsManager import *
+    from Camera import *
+else:
+    from .GameObject import *
+    from .PhysicsManager import *
+    from .Camera import *
 
 class Scene:
     def __init__(self, name=""):

@@ -1,7 +1,12 @@
+import os
 import pico2d
 
-from .Singleton import *
-from .Settings import *
+if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
+    from Singleton import *
+    from Settings import *
+else:
+    from .Singleton import *
+    from .Settings import *
 
 class AudioMixer(metaclass=Singleton):
     def __init__(self):

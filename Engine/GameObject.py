@@ -1,8 +1,16 @@
 import pico2d
 
-from .Singleton import *
-from .Settings import *
-from .Transform import *
+import os
+if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
+    from Singleton import *
+    from Settings import *
+    from Transform import *
+    from RigidBody import *
+else:
+    from .Singleton import *
+    from .Settings import *
+    from .Transform import *
+    from .RigidBody import *
 
 from typing import Union, Callable, Iterable
 

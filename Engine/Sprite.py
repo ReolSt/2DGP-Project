@@ -1,7 +1,13 @@
 import pico2d
 
-from .Transform import *
-from .GameObject import *
+import os
+if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
+    from Transform import *
+    from GameObject import *
+else:
+    from .Transform import *
+    from .GameObject import *
+
 
 class Sprite:
     def __init__(self, parent, spriteMap, spriteName):

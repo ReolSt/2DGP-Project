@@ -1,6 +1,10 @@
 import pico2d
 
-from .Sprite import *
+import os
+if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
+    from Sprite import *
+else:
+    from .Sprite import *
 
 SPRITE_PATH = "resources/image/sprite/"
 

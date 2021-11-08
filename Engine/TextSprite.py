@@ -1,10 +1,16 @@
 import pico2d
 
-from .Settings import *
-
-from .Sprite import *
-from .SpriteMap import *
-from .SpriteIndexParser import *
+import os
+if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
+    from Settings import *
+    from Sprite import *
+    from SpriteMap import *
+    from SpriteIndexParser import *
+else:
+    from .Settings import *
+    from .Sprite import *
+    from .SpriteMap import *
+    from .SpriteIndexParser import *
 
 class TextSprite(Sprite):
     Settings = Settings()

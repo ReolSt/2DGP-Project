@@ -1,8 +1,15 @@
 import pico2d
 
-from .TextSprite import *
-from .EntitySprite import *
-from .GameObject import *
+import os
+if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
+    from TextSprite import *
+    from EntitySprite import *
+    from GameObject import *
+else:
+    from .TextSprite import *
+    from .EntitySprite import *
+    from .GameObject import *
+
 
 class Text(GameObject):
     def __init__(self, parent, text="", spacing=1):
