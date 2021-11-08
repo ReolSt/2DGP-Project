@@ -36,14 +36,15 @@ class PlayerController(GameObject):
             return
 
         if event.key == pico2d.SDLK_LEFT:
-            self.player.moving = -1
+            self.player.moving = True
+            self.player.direction = -1
         elif event.key == pico2d.SDLK_RIGHT:
-            self.player.moving = 1
+            self.player.moving = True
+            self.player.direction = 1
         elif event.key == pico2d.SDLK_SPACE:
             if not self.player.jumping:
                 self.player.jumping = True
                 self.player.jumpPressing = True
-                self.player.speed.y = self.player.minSpeed.y
 
                 AudioMixer().playWav("JumpSmall")
 
@@ -60,10 +61,10 @@ class PlayerController(GameObject):
             return
 
         if event.key == pico2d.SDLK_LEFT:
-            self.player.moving = 0 if self.player.moving == -1 else self.player.moving
+            self.player.moving = False if self.player.direction == -1 else self.player.moving
             self.player.stopping = True
         elif event.key == pico2d.SDLK_RIGHT:
-            self.player.moving = 0 if self.player.moving == 1 else self.player.moving
+            self.player.moving = False if self.player.direction == 1 else self.player.moving
             self.player.stopping = True
         elif event.key == pico2d.SDLK_SPACE:
             self.player.jumpPressing = False

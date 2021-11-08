@@ -3,8 +3,10 @@ import pico2d
 from Engine.Vector2 import *
 from Engine.GameObject import *
 from Engine.EntitySprite import *
-from Engine.BoxCollider import *
+from Engine.RigidBody import *
 from Engine.AudioMixer import *
+
+import pymunk
 
 class Mario(GameObject):
     def __init__(self, parent):
@@ -22,28 +24,37 @@ class Mario(GameObject):
 
         self.sprites = [self.animationSprites["Stand"]]
 
-        self.moving = 0
+        self.moving = False
         self.stopping = False
 
-        self.jumpPressing = True
+        self.direction = 1
+
+        self.jumpPressing = False
         self.jumping = False
 
         self.died = False
         self.dieAnimationTimeStep = 0
 
-        self.speed = Vector2(0.0, 0.0)
-        self.minSpeed = Vector2(0.0, 0.2)
-        self.maxSpeed = Vector2(0.3, 0.4)
-        self.acceleration = Vector2(0.0005, 0.003)
-        self.gravity = 0.0015
+        self.epsilon = 0.01
+
+        self.direction = 1
+        self.maxVelocity = Vector2(120, 150)
+        self.acceleration = Vector2(0.1, 1.5)
 
         self.runAnimationFrame = 1
-        self.runAnimationInterval = 20.0
+        self.runAnimationInterval = 10000.0
         self.runAnimationFrameDuration = 0.0
 
-        collider = BoxCollider(self, self.sprites[0].width, self.sprites[0].height)
+        body = pymunk.Body()
+        shape = pymunk.Poly.create_box(body, (self.sprites[0].width, self.sprites[0].height))
 
-        self.addCollider(collider)
+        self.rigidBody = RigidBody(self, body, shape)
+        self.rigidBody.bodyType = "Dynamic"
+        self.rigidBody.filter = 0b1
+        self.rigidBody.mass = 1000
+        self.rigidBody.moment = float('inf')
+        self.rigidBody.elasticity = 0
+        self.rigidBody.friction = 1
 
     def switchSprite(self, spriteName):
         self.sprites[0] = self.animationSprites[spriteName]
@@ -56,22 +67,22 @@ class Mario(GameObject):
 
     def updateRunAnimation(self, deltaTime):
         if not self.jumping and self.moving:
-            self.transform.localFlip.x = self.moving < 0
+            self.transform.localFlip.x = self.direction < 0
 
-        if self.moving != 0 or self.stopping:
+        if self.moving or self.stopping:
             if not self.jumping:
                 self.switchSprite("Run" + str(self.runAnimationFrame))
 
-            self.runAnimationFrameDuration += deltaTime * abs(self.speed.x)
+            self.runAnimationFrameDuration += deltaTime * abs(self.rigidBody.velocityX)
 
             if self.runAnimationFrameDuration > self.runAnimationInterval:
                 self.runAnimationFrame = (self.runAnimationFrame % 3) + 1
                 self.runAnimationFrameDuration = 0.0
 
-        if self.stopping and not self.jumping and self.moving * self.speed.x < 0.0:
+        if self.stopping and not self.jumping and self.moving and self.direction * self.rigidBody.velocityX < 0:
             self.switchSprite("Kick")
 
-        if (self.moving == 0 or self.stopping) and self.speed.x == 0.0:
+        if (not self.moving or self.stopping) and self.rigidBody.velocityX == 0.0:
             self.switchSprite("Stand")
 
     def updateJumpAnimation(self, deltaTime):
@@ -92,113 +103,63 @@ class Mario(GameObject):
         if self.died:
             return
 
-        acceleration = deltaTime * self.acceleration.x
-        gravity = deltaTime * self.gravity
+        acceleration = self.acceleration * deltaTime
 
-        if self.moving != 0:
-            self.speed.x += acceleration * self.moving
-            self.speed.x = max(-self.maxSpeed.x, self.speed.x)
-            self.speed.x = min(self.maxSpeed.x, self.speed.x)
+        if self.moving:
+            self.rigidBody.velocityX += acceleration.x * self.direction
+            self.rigidBody.velocityX = max(-self.maxVelocity.x, self.rigidBody.velocityX)
+            self.rigidBody.velocityX = min(self.maxVelocity.x, self.rigidBody.velocityX)
         elif self.stopping:
-            if self.speed.x > 0:
-                self.speed.x -= acceleration
-                self.speed.x = max(0.0, self.speed.x)
-            elif self.speed.x < 0:
-                self.speed.x += acceleration
-                self.speed.x = min(0.0, self.speed.x)
+            if self.rigidBody.velocityX > 0:
+                self.rigidBody.velocityX -= acceleration.x
+                self.rigidBody.velocityX = max(0.0, self.rigidBody.velocityX)
+            elif self.rigidBody.velocityX < 0:
+                self.rigidBody.velocityX += acceleration.x
+                self.rigidBody.velocityX = min(0.0, self.rigidBody.velocityX)
 
-            self.stopping = False if self.speed.x == 0.0 else self.stopping
+
+    def runStart(self, direction):
+        if direction > 0:
+            pass
+        elif direction < 0:
+            pass
 
     def updateJump(self, deltaTime):
         if self.died:
             return
 
-        acceleration = deltaTime * self.acceleration.y
+        acceleration = self.acceleration * deltaTime
 
-        if self.jumping:
-            if self.jumpPressing:
-                self.speed.y += acceleration
+        if self.jumpPressing:
+            self.rigidBody.velocityY += acceleration.y
 
-                if self.speed.y >= self.maxSpeed.y:
-                    self.jumpPressing = False
-
-                self.speed.y = min(self.speed.y, self.maxSpeed.y)
+            if self.rigidBody.velocityY > self.maxVelocity.y:
+                self.jumpPressing = False
+                self.rigidBody.velicityY = self.maxVelocity.y
 
     def updateDie(self, deltaTime):
         if self.died:
             self.dieAnimationTimeStep += deltaTime
             self.transform.translate(0.0, self.dieAnimationYDelta(self.dieAnimationTimeStep))
 
-
     def update(self, deltaTime):
-        super().update(deltaTime)
-
         self.updateAnimation(deltaTime)
 
         self.updateDie(deltaTime)
         self.updateJump(deltaTime)
         self.updateMove(deltaTime)
 
+        self.rigidBody.angle = 0
+
         if self.died:
             return
 
-        position = self.transform.position
-        scale = self.transform.scale
-        rayDistance = Vector2(
-            self.sprites[0].width * scale.x / 2,
-            self.sprites[0].height * scale.y / 2)
-
-        floorHit = self.scene.collisionManager.rayCast(
-            origin=position,
-            direction=Vector2(0.0, -1.0),
-            distance=rayDistance.y,
-            tag="Floor")
-
-        gravity = deltaTime * self.gravity
-
-        if self.speed.x < 0:
-            leftHit = self.scene.collisionManager.rayCast(
-                origin=position,
-                direction=Vector2(-1.0, 0.0),
-                distance=rayDistance.x,
-                tag="Floor")
-
-            if leftHit is not None:
-                self.speed.x = 0
-
-        if self.speed.x > 0:
-            rightHit = self.scene.collisionManager.rayCast(
-                    origin=position,
-                    direction=Vector2(1.0, 0.0),
-                    distance=rayDistance.x,
-                    tag="Floor")
-
-            if rightHit is not None:
-                self.speed.x = 0
-
-        if floorHit is None:
-            self.speed.y -= gravity
-        else:
-            if self.jumping and self.speed.y < 0:
+        if self.jumping:
+            if abs(self.rigidBody.body.velocity.y) < self.epsilon:
                 self.jumping = False
-                self.switchSprite("Stand")
-
-            if not self.jumping:
-                self.speed.y = 0.0
-
-        if self.speed.y > 0:
-            ceilHit = self.scene.collisionManager.rayCast(
-                origin=position,
-                direction=Vector2(0.0, 1.0),
-                distance=rayDistance.y,
-                tag="Floor")
-
-            if ceilHit is not None:
-                self.speed.y = 0
-                self.jumpPressing = False
+                self.rigidBody.body.velocity = pymunk.vec2d.Vec2d(self.rigidBody.body.velocity.x, 0)
 
         if self.transform.position.y < 0.0:
             self.died = True
 
-        self.transform.translate(deltaTime * self.speed.x,
-                                 deltaTime * self.speed.y)
+        super().update(deltaTime)
