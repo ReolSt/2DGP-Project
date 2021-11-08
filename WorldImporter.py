@@ -77,11 +77,11 @@ class WorldImporter(metaclass=Singleton):
                 elif objectName == "Mountain":
                     gameObject = Mountain(world, height)
                 elif objectName == "Block":
-                    gameObject = Block(world)
+                    gameObject = Block(world, width, height)
                 elif objectName == "MysteryBlock":
                     gameObject = MysteryBlock(world, colorType)
                 elif objectName == "Brick":
-                    gameObject = Brick(world)
+                    gameObject = Brick(world, width, height)
                 elif objectName == "VerticalPipe":
                     gameObject = VerticalPipe(world, height)
                 elif objectName == "HorizontalPipe":

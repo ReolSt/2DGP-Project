@@ -1,21 +1,29 @@
 from Engine.GameObject import *
 from Engine.TerrainSprite import *
-from Engine.BoxCollider import *
+from Engine.RigidBody import *
+
+import pymunk
 
 class Block(GameObject):
-    def __init__(self, parent):
+    def __init__(self, parent, width=1, height=1):
         super().__init__(parent)
 
         assert width >= 1 and height >= 1, "[Block] Impossible size : ({}, {})".format(width, height)
 
-        spriteWidth = sprite.width
-        spriteHeight = sprite.height
+        referenceSprite = TerrainSprite(self, "Block")
+
+        spriteWidth = referenceSprite.width
+        spriteHeight = referenceSprite.height
 
         xOffset = spriteWidth / 2
         yOffset = spriteHeight / 2
 
-        sprite.transform.translate(xOffset, yOffset)
-        self.addSprite(sprite)
+        for y in range(height):
+            for x in range(width):
+                sprite = TerrainSprite(self, "Block")
+
+                sprite.transform.translate(xOffset + spriteWidth * x, yOffset + spriteHeight * y)
+                self.addSprite(sprite)
 
         objectWidth = spriteWidth * width
         objectHeight = spriteHeight * height
