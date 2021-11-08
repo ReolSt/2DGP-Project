@@ -6,7 +6,7 @@ class Block(GameObject):
     def __init__(self, parent):
         super().__init__(parent)
 
-        sprite = TerrainSprite(self, "Block")
+        assert width >= 1 and height >= 1, "[Block] Impossible size : ({}, {})".format(width, height)
 
         spriteWidth = sprite.width
         spriteHeight = sprite.height

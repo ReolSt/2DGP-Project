@@ -1,8 +1,9 @@
 from Engine.TerrainSprite import *
 from Engine.GameObject import *
+
 class Mountain(GameObject):
     def __init__(self, parent, height=2):
-        assert 1 <= height <= 3, "Impossible mountain height : {}".format(height)
+        assert 1 <= height <= 3, "[Mountain] Impossible height : {}".format(height)
 
         super().__init__(parent)
 

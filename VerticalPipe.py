@@ -4,7 +4,7 @@ from Engine.BoxCollider import *
 
 class VerticalPipe(GameObject):
     def __init__(self, parent, height=2):
-        assert height >= 1, "Impossible vertical pipe height : {}".format(height)
+        assert height >= 1, "[VerticalPipe] Impossible height : {}".format(height)
         super().__init__(parent)
 
         referenceSprite = TerrainSprite(self, "VerticalPipeEntrance1")

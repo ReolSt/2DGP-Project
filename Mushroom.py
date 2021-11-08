@@ -4,7 +4,7 @@ from Engine.BoxCollider import *
 
 class Mushroom(GameObject):
     def __init__(self, parent, width=3, height=3):
-        assert width >= 3 and width % 2 and height >= 1, "Impossible mushroom height : ({}, {})".format(width, height)
+        assert width >= 3 and width % 2 and height >= 1, "[Mushroom] Impossible size : ({}, {})".format(width, height)
         super().__init__(parent)
 
         referenceSprite = TerrainSprite(self, "MushroomPillar1")

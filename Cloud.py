@@ -3,7 +3,7 @@ from Engine.TerrainSprite import *
 
 class Cloud(GameObject):
     def __init__(self, parent, width=2):
-        assert width >= 2, "Impossible Cloud width : {}".format(width)
+        assert width >= 2, "[Cloud] Impossible width : {}".format(width)
 
         super().__init__(parent)
 

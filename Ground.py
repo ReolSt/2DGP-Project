@@ -4,7 +4,7 @@ from Engine.BoxCollider import *
 
 class Ground(GameObject):
     def __init__(self, parent, width, height):
-        assert width >= 1 and height >= 1, "Impossible ground size: ({}, {})".format(width, height)
+        assert width >= 1 and height >= 1, "[Ground] Impossible size: ({}, {})".format(width, height)
 
         super().__init__(parent)
 

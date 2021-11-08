@@ -3,7 +3,7 @@ from Engine.TerrainSprite import *
 
 class Tree(GameObject):
     def __init__(self, parent, height=3):
-        assert height >= 2, "Impossible tree height : {}".format(height)
+        assert height >= 2, "[Tree] Impossible height : {}".format(height)
 
         super().__init__(parent)
 

@@ -4,7 +4,7 @@ from Engine.BoxCollider import *
 
 class HorizontalPipe(GameObject):
     def __init__(self, parent, width=4, height=3):
-        assert width >= 3 and height >=3, "Impossible horizontal pipe size : ({}, {})".format(width, height)
+        assert width >= 3 and height >=3, "[HorizontalPipe] Impossible size : ({}, {})".format(width, height)
 
         super().__init__(parent)
 

@@ -7,7 +7,7 @@ class Brick(GameObject):
     def __init__(self, parent):
         super().__init__(parent)
 
-        sprite = TerrainSprite(self, "Brick")
+        assert width >= 1 and height >= 1, "[Brick] Impossible size : ({}, {})".format(width, height)
 
         spriteWidth = sprite.width
         spriteHeight = sprite.height

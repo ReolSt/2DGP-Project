@@ -4,7 +4,7 @@ from Engine.BoxCollider import *
 
 class Flagpole(GameObject):
     def __init__(self, parent, height=10):
-        assert height >= 3, "Invalid flagpole height : {}".format(height)
+        assert height >= 3, "[Flagpole] Invalid height : {}".format(height)
 
         super().__init__(parent)
 
