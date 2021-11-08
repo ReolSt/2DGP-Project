@@ -177,7 +177,7 @@ class GameObject:
 
         assert(eventType in self.eventListeners.keys())
 
-        self.eventListener[eventType].append(callback)
+        self.eventListeners[eventType].append(callback)
 
     def removeEventListeners(self, eventType : str):
         """
