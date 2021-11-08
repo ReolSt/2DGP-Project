@@ -1,5 +1,4 @@
 import time
-import numpy
 
 import pico2d
 
@@ -11,8 +10,6 @@ renderingContext = RenderingContext(
     int(settings.default["WindowWidth"]), int(settings.default["WindowHeight"]))
 
 from GamePlayScene import *
-from World import *
-from WorldImporter import *
 
 def main():
     scene = GamePlayScene()
