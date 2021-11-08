@@ -16,7 +16,7 @@ class Scene:
         self.root = GameObject(None)
         self.root.scene = self
 
-        self.collisionManager = CollisionManager(self)
+        self.physicsManager = PhysicsManager()
         self.cameras = []
 
         self.updateFixedTimeStep = 3.0
@@ -28,8 +28,10 @@ class Scene:
         self.updateTime += deltaTime
 
         while self.updateTime >= self.updateFixedTimeStep:
-            self.collisionManager.Update()
             self.root.update(self.updateFixedTimeStep)
+
+            self.physicsManager.update(deltaTime / 1000)
+            self.physicsManager.sync()
 
             self.updateTime -= self.updateFixedTimeStep
 
