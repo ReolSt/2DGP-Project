@@ -1,8 +1,16 @@
 import pico2d
 
-from .Transform import *
-from .Collider import *
-from .Math import *
+if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
+    from Transform import *
+    from Collider import *
+    from Math import *
+    from Vector2 import *
+
+else:
+    from .Transform import *
+    from .Collider import *
+    from .Math import *
+    from .Vector2 import *
 
 class AABB:
     def __init__(self, left, right, bottom, top):

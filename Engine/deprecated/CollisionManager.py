@@ -2,12 +2,10 @@ from .Collider import *
 from .Ray import *
 
 class CollisionManager():
-    def __init__(self, scene):
+    def __init__(self):
         """
         Parameters
         ----------
-        scene : Scene
-            DESCRIPTION.
 
         Returns
         -------
@@ -15,7 +13,6 @@ class CollisionManager():
 
         """
 
-        self.scene = scene
         self.colliders = []
 
     def rayCast(self, origin, direction, distance, tag):
@@ -77,7 +74,7 @@ class CollisionManager():
 
 
 
-    def Update(self):
+    def update(self):
         """
         Returns
         -------
