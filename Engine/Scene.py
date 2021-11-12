@@ -30,7 +30,7 @@ class Scene:
         while self.updateTime >= self.updateFixedTimeStep:
             self.root.update(self.updateFixedTimeStep)
 
-            self.physicsManager.update(deltaTime / 1000)
+            self.physicsManager.update(self.updateFixedTimeStep / 1000)
             self.physicsManager.sync()
 
             self.updateTime -= self.updateFixedTimeStep
