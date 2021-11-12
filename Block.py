@@ -5,12 +5,12 @@ from Engine.RigidBody import *
 import pymunk
 
 class Block(GameObject):
-    def __init__(self, parent, width=1, height=1):
+    def __init__(self, parent, width=1, height=1, colorType=1):
         super().__init__(parent)
 
         assert width >= 1 and height >= 1, "[Block] Impossible size : ({}, {})".format(width, height)
 
-        referenceSprite = TerrainSprite(self, "Block")
+        referenceSprite = TerrainSprite(self, "Block" + str(colorType))
 
         spriteWidth = referenceSprite.width
         spriteHeight = referenceSprite.height
@@ -20,7 +20,7 @@ class Block(GameObject):
 
         for y in range(height):
             for x in range(width):
-                sprite = TerrainSprite(self, "Block")
+                sprite = TerrainSprite(self, "Block" + str(colorType))
 
                 sprite.transform.translate(xOffset + spriteWidth * x, yOffset + spriteHeight * y)
                 self.addSprite(sprite)
