@@ -1,19 +1,22 @@
+import pico2d
+
 from Engine.GameObject import GameObject
 from Engine.AudioMixer import AudioMixer
 from Engine.Settings import Settings
 
-from Mario import *
+from Player import Player
 
 class PlayerController(GameObject):
     def __init__(self, parent, camera):
         super().__init__(parent)
 
-        self.player = Mario(self)
+        self.player = Player(self)
         self.camera = camera
 
         self.addChild(self.player)
 
         self.input = True
+        self.ended = False
 
     def update(self, deltaTime):
         super().update(deltaTime)
@@ -26,6 +29,10 @@ class PlayerController(GameObject):
         elif playerPosition.x - cameraPosition.x > 300.0:
             self.camera.transform.translate(playerPosition.x - cameraPosition.x - 300.0, 0)
 
+        if self.player.died and not self.ended:
+            AudioMixer().playWav("MarioDie")
+            self.ended = True
+
     def onKeyDown(self, event):
         super().onKeyDown(event)
 
@@ -36,15 +43,12 @@ class PlayerController(GameObject):
             return
 
         if event.key == pico2d.SDLK_LEFT:
-            self.player.moving = True
-            self.player.direction = -1
+            self.player.startRunning(-1)
         elif event.key == pico2d.SDLK_RIGHT:
-            self.player.moving = True
-            self.player.direction = 1
+            self.player.startRunning(1)
         elif event.key == pico2d.SDLK_SPACE:
-            if not self.player.jumping:
-                self.player.jumping = True
-                self.player.jumpPressing = True
+            if self.player.canJump() and not self.player.jumping:
+                self.player.startJumping()
 
                 AudioMixer().playWav("JumpSmall")
 
@@ -61,10 +65,8 @@ class PlayerController(GameObject):
             return
 
         if event.key == pico2d.SDLK_LEFT:
-            self.player.moving = False if self.player.direction == -1 else self.player.moving
-            self.player.stopping = True
+            self.player.endRunning(-1)
         elif event.key == pico2d.SDLK_RIGHT:
-            self.player.moving = False if self.player.direction == 1 else self.player.moving
-            self.player.stopping = True
+            self.player.endRunning(1)
         elif event.key == pico2d.SDLK_SPACE:
-            self.player.jumpPressing = False
+            self.player.endJumping()
