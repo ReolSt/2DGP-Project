@@ -1,6 +1,7 @@
 from Engine.Singleton import Singleton
 from Engine.Settings import Settings
 from Engine.Scene import Scene
+from Engine.GameObject import GameObject
 from Engine.Text import Text
 from Engine.EntitySprite import EntitySprite
 from Engine.TerrainSprite import TerrainSprite
@@ -20,7 +21,7 @@ class UILoader(metaclass=Singleton):
 
         slots = {}
 
-        with open(slotFilePath, "r") as file:
+        with open(uiFilePath, "r") as file:
             for line in file.readlines():
                 tokens = line.split()
 
@@ -30,7 +31,7 @@ class UILoader(metaclass=Singleton):
 
                 if slotType == "Text":
                     slotName, slotType, x, y, xScale, yScale, spacing = tokens
-                    gameObject = Text(parent, "", spacing)                    
+                    gameObject = Text(parent, "", float(spacing))
                 elif slotType == "Entity":
                     slotName, slotType, spriteName, x, y, xScale, yScale = tokens
                     gameObject = GameObject(parent)
@@ -42,8 +43,10 @@ class UILoader(metaclass=Singleton):
 
                 assert gameObject is not None, "[UILoader] load : Game object load error. ( {} )".format(line)
 
-                gameObject.translate(x, y)
-                gameObject.setLocalScale(xScale, yScale)
+                x, y, xScale, yScale = float(x), float(y), float(xScale), float(yScale)
+
+                gameObject.transform.translate(x, y)
+                gameObject.transform.setLocalScale(xScale, yScale)
                 slots[slotName] = UISlot(slotName, slotType, gameObject)
 
         return slots
