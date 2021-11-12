@@ -13,9 +13,13 @@ else:
     from .SpriteIndexParser import SpriteIndexParser
 
 class TerrainSprite(Sprite):
-    Map = SpriteMap(
-        pico2d.load_image(Settings().sprite['TerrainSpritePath']),
-        SpriteIndexParser(Settings().sprite['TerrainSpriteIndexPath']).indices)
+    Map = None
 
     def __init__(self, parent, spriteName):
+        if TerrainSprite.Map is None:
+            settings = Settings()
+            TerrainSprite.Map = SpriteMap(
+                pico2d.load_image(settings.sprite['TerrainSpritePath']),
+                SpriteIndexParser(settings.sprite['TerrainSpriteIndexPath']).indices)
+
         super().__init__(parent, TerrainSprite.Map, spriteName)

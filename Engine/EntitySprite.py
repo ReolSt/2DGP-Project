@@ -13,9 +13,13 @@ else:
     from .SpriteIndexParser import SpriteIndexParser
 
 class EntitySprite(Sprite):
-    Map = SpriteMap(
-        pico2d.load_image(Settings().sprite['EntitySpritePath']),
-        SpriteIndexParser(Settings().sprite['EntitySpriteIndexPath']).indices)
+    Map = None
 
     def __init__(self, parent, spriteName):
+        if EntitySprite.Map is None:
+            settings = Settings()
+            EntitySprite.Map = SpriteMap(
+                pico2d.load_image(settings.sprite['EntitySpritePath']),
+                SpriteIndexParser(settings.sprite['EntitySpriteIndexPath']).indices)
+
         super().__init__(parent, EntitySprite.Map, spriteName)
