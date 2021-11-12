@@ -19,4 +19,5 @@ class Settings(metaclass=Singleton):
         self.default = config['Default']
         self.sprite = config['Sprite']
         self.audio = config['Audio']
-        self.world = config['World']
+        self.level = config['Level']
+        self.ui = config['UI']
