@@ -1,0 +1,8 @@
+Name Text 80 568 3 3 1
+Score Text 80 544 3 3 1
+Coin Text 298 544 3 3 1
+CoinSprite Entity Coin3 272 544 2 2
+WorldText Text 464 568 3 3 1
+WorldStage Text 488 544 3 3 1
+TimeText Text 640 568 3 3 1
+Time Text 656 544 3 3 1

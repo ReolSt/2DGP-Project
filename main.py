@@ -1,8 +1,9 @@
 import time
-
 import pico2d
+
 from Engine.Settings import Settings
 from Engine.RenderingContext import RenderingContext
+from Engine.Scene import Scene
 
 from World import World
 
@@ -10,11 +11,13 @@ settings = Settings()
 renderingContext = RenderingContext(
     int(settings.default["WindowWidth"]), int(settings.default["WindowHeight"]))
 
-from GamePlayScene import *
-
 def main():
-    scene = GamePlayScene()
-    scene.loadWorld(1, 1)
+    scene = Scene()
+
+    world = World(scene.root)
+    scene.root.addChild(world)
+
+    world.loadLevel(1, 1)
 
     scene.debug = True
 
@@ -25,8 +28,6 @@ def main():
         deltaTime = currentTime - oldTime
 
         pico2d.clear_canvas()
-
-        GameState().update(deltaTime * 1000)
 
         scene.update(deltaTime * 1000)
         scene.render()
