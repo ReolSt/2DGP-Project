@@ -1,6 +1,6 @@
-from Engine.GameObject import *
-from Engine.TerrainSprite import *
-from Engine.RigidBody import *
+from Engine.GameObject import GameObject
+from Engine.TerrainSprite import TerrainSprite
+from Engine.RigidBody import RigidBody
 
 import pymunk
 

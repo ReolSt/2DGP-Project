@@ -2,15 +2,15 @@ import pico2d
 
 import os
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-    from Settings import *
-    from Sprite import *
-    from SpriteMap import *
-    from SpriteIndexParser import *
+    from Settings import Settings
+    from Sprite import Sprite
+    from SpriteMap import SpriteMap
+    from SpriteIndexParser import SpriteIndexParser
 else:
-    from .Settings import *
-    from .Sprite import *
-    from .SpriteMap import *
-    from .SpriteIndexParser import *
+    from .Settings import Settings
+    from .Sprite import Sprite
+    from .SpriteMap import SpriteMap
+    from .SpriteIndexParser import SpriteIndexParser
 
 class EntitySprite(Sprite):
     Map = SpriteMap(

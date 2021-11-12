@@ -2,9 +2,9 @@ import math
 
 import os
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-    from Vector2 import *
+    from Vector2 import Vector2
 else:
-    from .Vector2 import *
+    from .Vector2 import Vector2
 
 class Transform:
     def __init__(self, parent=None, gameObject=None):

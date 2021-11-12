@@ -2,11 +2,11 @@ import pico2d
 
 import os
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-    from Transform import *
-    from GameObject import *
+    from Transform import Transform
+    from GameObject import GameObject
 else:
-    from .Transform import *
-    from .GameObject import *
+    from .Transform import Transform
+    from .GameObject import GameObject
 
 
 class Sprite:

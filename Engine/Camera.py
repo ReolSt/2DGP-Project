@@ -1,13 +1,13 @@
 import os
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-    from Settings import *
-    from Transform import *
-    from GameObject import *
+    from Settings import Settings
+    from Transform import Transform
+    from GameObject import GameObject
 else:
-    from .Settings import *
-    from .Transform import *
-    from .GameObject import *
+    from .Settings import Settings
+    from .Transform import Transform
+    from .GameObject import GameObject
 
 import math
 from typing import Union

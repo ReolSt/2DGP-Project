@@ -3,9 +3,9 @@ import os
 import pico2d
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-    from Transform import *
+    from Transform import Transform
 else:
-    from .Transform import *
+    from .Transform import Transform
 
 class RigidBody:
     static = pymunk.Body.STATIC

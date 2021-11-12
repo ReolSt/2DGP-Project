@@ -2,11 +2,9 @@ import pico2d
 
 import os
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-    from Sprite import *
+    from Sprite import Sprite
 else:
-    from .Sprite import *
-
-SPRITE_PATH = "resources/image/sprite/"
+    from .Sprite import Sprite
 
 class SpriteMap:
     def __init__(self, image, indices):

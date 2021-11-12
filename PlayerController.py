@@ -1,6 +1,6 @@
-from Engine.GameObject import *
-from Engine.AudioMixer import *
-from Engine.Settings import *
+from Engine.GameObject import GameObject
+from Engine.AudioMixer import AudioMixer
+from Engine.Settings import Settings
 
 from Mario import *
 

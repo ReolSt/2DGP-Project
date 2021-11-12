@@ -2,9 +2,9 @@ import pico2d
 import os
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-    from Singleton import *
+    from Singleton import Singleton
 else:
-    from .Singleton import *
+    from .Singleton import Singleton
 
 class RenderingContext(metaclass=Singleton):
     def __init__(self, width, height):

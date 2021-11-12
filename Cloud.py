@@ -1,5 +1,5 @@
-from Engine.GameObject import *
-from Engine.TerrainSprite import *
+from Engine.GameObject import GameObject
+from Engine.TerrainSprite import TerrainSprite
 
 class Cloud(GameObject):
     def __init__(self, parent, width=2):

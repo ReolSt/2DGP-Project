@@ -1,9 +1,10 @@
 import time
 
 import pico2d
+from Engine.Settings import Settings
+from Engine.RenderingContext import RenderingContext
 
-from Engine.Settings import *
-from Engine.RenderingContext import *
+from World import World
 
 settings = Settings()
 renderingContext = RenderingContext(

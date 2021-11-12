@@ -1,11 +1,11 @@
 import os
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-    from Vector2 import *
-    from Vector3 import *
+    from Vector2 import Vector2
+    from Vector3 import Vector3
 else:
-    from .Vector2 import *
-    from .Vector3 import *
+    from .Vector2 import Vector2
+    from .Vector3 import Vector3
 
 def ccw(p1, p2, p3):
     """

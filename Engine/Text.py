@@ -2,13 +2,13 @@ import pico2d
 
 import os
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-    from TextSprite import *
-    from EntitySprite import *
-    from GameObject import *
+    from TextSprite import TextSprite
+    from EntitySprite import EntitySprite
+    from GameObject import GameObject
 else:
-    from .TextSprite import *
-    from .EntitySprite import *
-    from .GameObject import *
+    from .TextSprite import TextSprite
+    from .EntitySprite import EntitySprite
+    from .GameObject import GameObject
 
 
 class Text(GameObject):
