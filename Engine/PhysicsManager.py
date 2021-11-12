@@ -3,7 +3,7 @@ import pymunk
 class PhysicsManager:
     def __init__(self):
         self.space = pymunk.Space()
-        self.space.gravity = 0, -98.1
+        self.space.gravity = 0, -3800
 
         self.rigidBodies = []
 
