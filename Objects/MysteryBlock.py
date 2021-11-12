@@ -6,10 +6,10 @@ from Engine.RigidBody import *
 import pymunk
 
 class MysteryBlock(GameObject):
-    def __init__(self, parent, boxType=1):
+    def __init__(self, parent, colorType=1):
         super().__init__(parent)
 
-        sprite = EntitySprite(self, "MysteryBlock" + str(boxType))
+        sprite = EntitySprite(self, "MysteryBlock" + str(colorType))
 
         spriteWidth = sprite.width
         spriteHeight = sprite.height

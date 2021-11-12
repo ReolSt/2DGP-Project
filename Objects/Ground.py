@@ -5,7 +5,7 @@ from Engine.RigidBody import *
 import pymunk
 
 class Ground(GameObject):
-    def __init__(self, parent, width, height):
+    def __init__(self, parent, width=1, height=1, colorType=1):
         assert width >= 1 and height >= 1, "[Ground] Impossible size: ({}, {})".format(width, height)
 
         super().__init__(parent)
@@ -13,13 +13,13 @@ class Ground(GameObject):
         self.width = width
         self.height = height
 
-        sprite = TerrainSprite(self.transform, "Ground")
+        sprite = TerrainSprite(self.transform, "Ground" + str(colorType))
         spriteWidth = sprite.width
         spriteHeight = sprite.height
 
         for y in range(height):
             for x in range(width):
-                currentSprite = TerrainSprite(self.transform, "Ground")
+                currentSprite = TerrainSprite(self.transform, "Ground" + str(colorType))
                 currentSprite.transform.translate(
                     spriteWidth / 2 + x * spriteWidth, spriteHeight / 2 + y * spriteHeight)
                 self.addSprite(currentSprite)        
@@ -33,6 +33,6 @@ class Ground(GameObject):
 
         self.rigidBody = RigidBody(self, body, shape)
         self.rigidBody.bodyType = "STATIC"
-        self.rigidBody.filter = pymunk.ShapeFilter(categories=0b1)
+        self.rigidBody.filter = 0b1
         self.rigidBody.elasticity = 0
         self.rigidBody.friction = 1
