@@ -4,10 +4,12 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     from Settings import Settings
     from Transform import Transform
     from GameObject import GameObject
+    from Vector2 import Vector2
 else:
     from .Settings import Settings
     from .Transform import Transform
     from .GameObject import GameObject
+    from .Vector2 import Vector2
 
 import math
 from typing import Union

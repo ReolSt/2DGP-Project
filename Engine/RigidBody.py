@@ -4,8 +4,10 @@ import pico2d
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     from Transform import Transform
+    from Vector2 import Vector2
 else:
     from .Transform import Transform
+    from .Vector2 import Vector2
 
 class RigidBody:
     static = pymunk.Body.STATIC
@@ -15,11 +17,39 @@ class RigidBody:
     def __init__(self, gameObject, body, shape):
         self.gameObject = gameObject
 
-        self.body : pymunk.Body = body
-        self.shape : pymunk.Poly = shape
+        self.__body : pymunk.Body = body
+        self.__shape : pymunk.Poly = shape
 
-        self.vertices = shape.get_vertices()
-        self.scale = gameObject.transform.getScale()
+        self.__vertices = shape.get_vertices()
+        self.__scale = gameObject.transform.getScale()
+
+    @property
+    def space(self):
+        return self.__body.space
+
+    @property
+    def body(self):
+        return self.__body
+
+    @body.setter
+    def body(self, body):
+        assert isinstance(body, pymunk.Body), "[RigidBody] body.setter : Invalid parameter. ( {} )".format(body)
+        space = self.body.space
+        space.remove(self.__body, self.__shape)
+        self.__body = body
+        space.add(self.__body, self.__shape)
+
+    @property
+    def shape(self):
+        return self.__shape
+
+    @shape.setter
+    def shape(self, shape):
+        assert isinstance(shape, pymunk.Shape), "[RigidBody] shape.setter : Invalid parameter. ( {} )".format(shape)
+        space = self.body.space
+        space.remove(self.__body, self.__shape)
+        self.__shape = shape
+        space.add(self.__body, self.__shape)
 
     @property
     def bodyType(self):
@@ -30,7 +60,7 @@ class RigidBody:
         if isinstance(bodyType, str):
             if bodyType in ["STATIC", "Static", "static"]:
                 bodyType = RigidBody.static
-            elif bodyType in ["KINEMATIC", "Static", "static"]:
+            elif bodyType in ["KINEMATIC", "Kinematic", "kinematic"]:
                 bodyType = RigidBody.kinematic
             elif bodyType in ["DYNAMIC", "Dynamic", "dynamic"]:
                 bodyType = RigidBody.dynamic
@@ -107,6 +137,14 @@ class RigidBody:
         self.body.moment = moment
 
     @property
+    def density(self):
+        return self.body.density
+
+    @density.setter
+    def density(self, density):
+        self.body.density = density
+
+    @property
     def elasticity(self):
         return self.shape.elasticity
 
@@ -122,11 +160,17 @@ class RigidBody:
     def friction(self, friction):
         self.shape.friction = friction
 
+    @property
+    def vertices(self):
+        return self.shape.get_vertices()
+
+    @property
+    def bb(self):
+        return self.shape.bb
+
     def sync(self):
-        if self.body.body_type == self.body.DYNAMIC:
-            position = self.body.position
-       
-            self.gameObject.transform.setPosition(position.x, position.y)
+        position = self.body.position
+        self.gameObject.transform.setPosition(position.x, position.y)
 
     def update(self):
         position = self.gameObject.transform.getPosition()
@@ -134,18 +178,26 @@ class RigidBody:
 
         self.body.position = position.x, position.y
 
-        if scale != self.scale:
+        if scale != self.__scale:
+            filter = self.filter
+            elasticity = self.elasticity
+            friction = self.friction
+
             space = self.body.space
             space.remove(self.body, self.shape)
 
             scaleTransform = pymunk.Transform(a=scale.x, b=0, c=0, d=scale.y, tx=0, ty=0)
 
-            self.shape = pymunk.Poly(self.body, self.vertices, scaleTransform)
-            self.scale = scale.copy()
-            
-            self.vertices = self.shape.get_vertices()
+            self.__shape = pymunk.Poly(self.body, self.__vertices, scaleTransform)
+            self.__scale = scale.copy()
+
+            self.__vertices = self.shape.get_vertices()
 
             space.add(self.body, self.shape)
+
+            self.filter = filter
+            self.elasticity = elasticity
+            self.friction = friction
 
     def render(self, camera):
         position = camera.translate(Vector2(self.body.position.x, self.body.position.y))
