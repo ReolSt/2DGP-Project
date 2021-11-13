@@ -302,6 +302,9 @@ class GameObject:
         for child in children:
             self.children.remove(child)
 
+    def clearChildren(self):
+        self.children = []
+
     def addSprite(self, sprite):
         self.sprites.append(sprite)
 
