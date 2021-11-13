@@ -1,10 +1,10 @@
 import pico2d
 
-from Engine.Vector2 import *
-from Engine.GameObject import *
-from Engine.EntitySprite import *
-from Engine.RigidBody import *
-from Engine.AudioMixer import *
+from Engine.Vector2 import Vector2
+from Engine.GameObject import GameObject
+from Engine.EntitySprite import EntitySprite
+from Engine.RigidBody import RigidBody
+from Engine.AudioMixer import AudioMixer
 
 import pymunk
 
@@ -53,12 +53,13 @@ class Player(GameObject):
         self.runAnimationInterval = 20000
         self.runAnimationFrameDuration = 0
 
-        body = pymunk.Body()
-        shape = pymunk.Poly.create_box(body, (self.sprites[0].width, self.sprites[0].height))
+        width = self.sprites[0].width
+        height = self.sprites[0].height
 
-        self.rigidBody = RigidBody(self, body, shape)
+        self.rigidBody = RigidBody(self)
+        self.rigidBody.vertices = [(-width / 2, -height / 2), (width / 2, -height / 2), (width / 2, height / 2), (-width / 2, height / 2)]
         self.rigidBody.bodyType = "Dynamic"
-        self.rigidBody.filter = pymunk.ShapeFilter(categories=0b100)
+        self.rigidBody.filter = 0b100
         self.rigidBody.mass = 1000
         self.rigidBody.moment = float('inf')
         self.rigidBody.elasticity = 0
@@ -180,7 +181,12 @@ class Player(GameObject):
                 self.rigidBody.velocityY += self.acceleration.y * deltaTime
                 
                 if self.rigidBody.velocityY >= self.maxVelocity.y:
-                   self.longJumping = True
+                   self.longJumping = True        
+
+        if self.jumping:
+            if abs(self.rigidBody.velocityY) < self.epsilon:
+                self.jumping = False
+                self.rigidBody.velocityY = 0
 
     def updateDie(self, deltaTime):
         if self.transform.getPosition().y <= 0:
@@ -204,11 +210,3 @@ class Player(GameObject):
 
         if self.died:
             return
-
-        if self.jumping:
-            if abs(self.rigidBody.body.velocity.y) < self.epsilon:
-                self.jumping = False
-                self.rigidBody.body.velocity = pymunk.vec2d.Vec2d(self.rigidBody.body.velocity.x, 0)
-
-        if self.transform.position.y < 0.0:
-            self.died = True

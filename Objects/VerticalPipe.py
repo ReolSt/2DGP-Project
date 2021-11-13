@@ -2,8 +2,6 @@ from Engine.GameObject import GameObject
 from Engine.TerrainSprite import TerrainSprite
 from Engine.RigidBody import RigidBody
 
-import pymunk
-
 class VerticalPipe(GameObject):
     def __init__(self, parent, height=2):
         assert height >= 1, "[VerticalPipe] Impossible height : {}".format(height)
@@ -40,11 +38,7 @@ class VerticalPipe(GameObject):
         objectWidth = spriteWidth * 2
         objectHeight = spriteHeight * height
 
-        body = pymunk.Body()
-
-        shape = pymunk.Poly(body, [(0, 0), (objectWidth, 0), (objectWidth, objectHeight), (0, objectHeight)])
-
-        self.rigidBody = RigidBody(self, body, shape)
-        self.rigidBody.bodyType = RigidBody.static
+        self.rigidBody = RigidBody(self)
+        self.rigidBody.vertices = [(0, 0), (objectWidth, 0), (objectWidth, objectHeight), (0, objectHeight)]
+        self.rigidBody.bodyType = "Static"
         self.rigidBody.filter = 0b1
-        self.rigidBody.elasticity = 0

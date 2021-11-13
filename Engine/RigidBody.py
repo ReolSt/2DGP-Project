@@ -14,14 +14,14 @@ class RigidBody:
     kinematic = pymunk.Body.KINEMATIC
     dynamic = pymunk.Body.DYNAMIC
 
-    def __init__(self, gameObject, body, shape):
+    def __init__(self, gameObject, body=None, shape=None):
         self.gameObject = gameObject
 
-        self.__body : pymunk.Body = body
-        self.__shape : pymunk.Poly = shape
+        self.__body : pymunk.Body = body if body is not None else pymunk.Body()
+        self.__shape : pymunk.Poly = shape if shape is not None else pymunk.Poly(self.__body, [])
 
-        self.__vertices = shape.get_vertices()
-        self.__scale = gameObject.transform.getScale()
+        self.__vertices = self.__shape.get_vertices()
+        self.__scale = self.gameObject.transform.getScale()
 
     @property
     def space(self):
@@ -34,7 +34,7 @@ class RigidBody:
     @body.setter
     def body(self, body):
         assert isinstance(body, pymunk.Body), "[RigidBody] body.setter : Invalid parameter. ( {} )".format(body)
-        space = self.body.space
+        space = self.__body.space
         space.remove(self.__body, self.__shape)
         self.__body = body
         space.add(self.__body, self.__shape)
@@ -46,10 +46,13 @@ class RigidBody:
     @shape.setter
     def shape(self, shape):
         assert isinstance(shape, pymunk.Shape), "[RigidBody] shape.setter : Invalid parameter. ( {} )".format(shape)
-        space = self.body.space
+        space = self.__body.space
+
         space.remove(self.__body, self.__shape)
         self.__shape = shape
         space.add(self.__body, self.__shape)
+
+        self.__vertices = self.shape.get_vertices()
 
     @property
     def bodyType(self):
@@ -137,14 +140,6 @@ class RigidBody:
         self.body.moment = moment
 
     @property
-    def density(self):
-        return self.body.density
-
-    @density.setter
-    def density(self, density):
-        self.body.density = density
-
-    @property
     def elasticity(self):
         return self.shape.elasticity
 
@@ -163,6 +158,16 @@ class RigidBody:
     @property
     def vertices(self):
         return self.shape.get_vertices()
+
+    @vertices.setter
+    def vertices(self, vertices):
+        shape = pymunk.Poly(self.body, vertices)
+
+        shape.filter = self.filter
+        shape.elasticity = self.elasticity
+        shape.friction = self.friction
+
+        self.shape = shape
 
     @property
     def bb(self):
@@ -183,17 +188,17 @@ class RigidBody:
             elasticity = self.elasticity
             friction = self.friction
 
-            space = self.body.space
-            space.remove(self.body, self.shape)
+            space = self.__body.space
+            space.remove(self.__body, self.__shape)
 
             scaleTransform = pymunk.Transform(a=scale.x, b=0, c=0, d=scale.y, tx=0, ty=0)
 
-            self.__shape = pymunk.Poly(self.body, self.__vertices, scaleTransform)
+            self.__shape = pymunk.Poly(self.__body, self.__vertices, scaleTransform)
             self.__scale = scale.copy()
 
-            self.__vertices = self.shape.get_vertices()
+            self.__vertices = self.__shape.get_vertices()
 
-            space.add(self.body, self.shape)
+            space.add(self.__body, self.__shape)
 
             self.filter = filter
             self.elasticity = elasticity

@@ -1,9 +1,7 @@
-from Engine.GameObject import *
-from Engine.EntitySprite import *
-from Engine.TerrainSprite import *
-from Engine.RigidBody import *
-
-import pymunk
+from Engine.GameObject import GameObject
+from Engine.EntitySprite import EntitySprite
+from Engine.TerrainSprite import TerrainSprite
+from Engine.RigidBody import RigidBody
 
 class MysteryBlock(GameObject):
     def __init__(self, parent, colorType=1):
@@ -20,9 +18,7 @@ class MysteryBlock(GameObject):
         sprite.transform.translate(xOffset, yOffset)
         self.addSprite(sprite)
 
-        body = pymunk.Body()
-        shape = pymunk.Poly(body, [(0, 0), (spriteWidth, 0), (spriteWidth, spriteHeight), (0, spriteHeight)])
-
-        self.rigidBody = RigidBody(self, body, shape)
+        self.rigidBody = RigidBody(self)
+        self.rigidBody.vertices = [(0, 0), (spriteWidth, 0), (spriteWidth, spriteHeight), (0, spriteHeight)]
         self.rigidBody.bodyType = "Static"
         self.rigidBody.filter = 0b1

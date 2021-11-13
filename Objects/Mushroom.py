@@ -2,8 +2,6 @@ from Engine.GameObject import GameObject
 from Engine.TerrainSprite import TerrainSprite
 from Engine.RigidBody import RigidBody
 
-import pymunk
-
 class Mushroom(GameObject):
     def __init__(self, parent, width=3, height=3):
         assert width >= 3 and width % 2 and height >= 1, "[Mushroom] Impossible size : ({}, {})".format(width, height)
@@ -53,11 +51,8 @@ class Mushroom(GameObject):
         roofRight.transform.translate(xOffset, yOffset)
         self.sprites.append(roofRight)
 
-        body = pymunk.Body()        
-        shape = pymunk.Poly(body, [(0, objectHeight - spriteHeight), (objectWidth, objectHeight - spriteHeight),
-                                   (objectWidth, objectHeight), (0, objectHeight)])
-
-        self.rigidBody = RigidBody(self, body, shape)
+        self.rigidBody = RigidBody(self)
+        self.rigidBody.veritces = [(0, objectHeight - spriteHeight), (objectWidth, objectHeight - spriteHeight), (objectWidth, objectHeight), (0, objectHeight)]
         self.rigidBody.bodyType = "Static"
         self.rigidBody.filter = 0b1
 

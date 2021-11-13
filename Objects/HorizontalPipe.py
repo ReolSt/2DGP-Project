@@ -2,8 +2,6 @@ from Engine.GameObject import GameObject
 from Engine.TerrainSprite import TerrainSprite
 from Engine.RigidBody import RigidBody
 
-import pymunk
-
 class HorizontalPipe(GameObject):
     def __init__(self, parent, width=4, height=3):
         assert width >= 3 and height >=3, "[HorizontalPipe] Impossible size : ({}, {})".format(width, height)
@@ -93,10 +91,8 @@ class HorizontalPipe(GameObject):
         objectWidth = leftWidth + verticalWidth
         objectHeight = verticalHeight
 
-        body = pymunk.Body()
-        shape = pymunk.Poly(body, [(0, 0), (objectWidth, 0), (objectWidth, objectHeight),
-                                   (leftWidth, objectHeight), (leftWidth, leftHeight), (0, leftHeight)])
-
-        self.rigidBody = RigidBody(self, body, shape)
+        self.rigidBody = RigidBody(self)
+        self.rigidBody.veritces = [(0, 0), (objectWidth, 0), (objectWidth, objectHeight), (leftWidth, objectHeight), (leftWidth, leftHeight), (0, leftHeight)]
+        self.rigidBody.bodyType = "Static"
         self.rigidBody.filter = 0b1
 
