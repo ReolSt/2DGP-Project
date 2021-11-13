@@ -2,8 +2,6 @@ from Engine.GameObject import *
 from Engine.TerrainSprite import *
 from Engine.RigidBody import *
 
-import pymunk
-
 class Brick(GameObject):
     def __init__(self, parent, width=1, height=1, colorType=1):
         super().__init__(parent)
@@ -28,9 +26,7 @@ class Brick(GameObject):
         objectWidth = spriteWidth * width
         objectHeight = spriteHeight * height
 
-        body = pymunk.Body()
-        shape = pymunk.Poly(body, [(0, 0), (objectWidth, 0), (objectWidth, objectHeight), (0, objectHeight)])
-
-        self.rigidBody = RigidBody(self, body, shape)
+        self.rigidBody = RigidBody(self)
+        self.rigidBody.vertices = [(0, 0), (objectWidth, 0), (objectWidth, objectHeight), (0, objectHeight)]
         self.rigidBody.bodyType = "Static"
         self.rigidBody.filter = 0b1

@@ -154,7 +154,7 @@ class Player(GameObject):
 
     def canJump(self):
         bb = self.rigidBody.bb
-        shape = pymunk.Poly(pymunk.Body(), [(bb.left, bb.bottom - 1), (bb.right, bb.bottom - 1), (bb.right, bb.bottom + 1), (bb.left, bb.bottom + 1)])
+        shape = pymunk.Poly(pymunk.Body(), [(bb.left + 1, bb.bottom - 1), (bb.right - 1, bb.bottom - 1), (bb.right - 1, bb.bottom + 1), (bb.left + 1, bb.bottom + 1)])
 
         queryInfos = self.rigidBody.space.shape_query(shape)
         for queryInfo in queryInfos:
@@ -184,7 +184,7 @@ class Player(GameObject):
                    self.longJumping = True        
 
         if self.jumping:
-            if abs(self.rigidBody.velocityY) < self.epsilon:
+            if abs(self.rigidBody.velocityY) < self.epsilon and self.canJump():
                 self.jumping = False
                 self.rigidBody.velocityY = 0
 
