@@ -16,8 +16,6 @@ class TextSprite(Sprite):
     Map = None
 
     def __init__(self, parent, ch=''):
-        assert(len(ch) <= 1)
-
         if TextSprite.Map is None:
             settings = Settings()
             TextSprite.Map = SpriteMap(
