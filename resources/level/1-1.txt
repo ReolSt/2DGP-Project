@@ -1,8 +1,10 @@
 3 3
+Overworld
 Sky
-Ground -10 0 78 2 1
-Mountain 0 2 0 3
-Grass 12 2 3 0
+Ground -10 0 79 2 1
+Mountain -1 2 0 3
+Cloud 8 11 2 1
+Grass 11 2 4 0
 Mountain 16 2 0 2
 MysteryBlock 16 5 0 0 1
 Brick 20 5 1 1 1
@@ -10,72 +12,94 @@ MysteryBlock 21 5 0 0 1
 Brick 22 5 1 1 1
 MysteryBlock 23 5 0 0 1
 Brick 24 5 1 1 1
+MysteryBlock 22 9 0 0 1
+Cloud 20 12 2 1
 Grass 24 2 2 0
 VerticalPipe 28 2 0 2
+Cloud 28 11 4 1
 VerticalPipe 38 2 0 3
+Cloud 37 12 3 1
 Grass 42 2 3 0
 VerticalPipe 46 2 0 4
 Mountain 48 2 0 3
+Cloud 57 11 2 1
 VerticalPipe 57 2 0 4
-Grass 59 2 3 0
-Mountain 63 2 0 2
-Ground 70 0 15 2
-Grass 71 2 2 0
-Brick 76 6 1 1 1
-MysteryBlock 77 6 0 0 1
-Brick 78 6 1 1 1
-Brick 79 10 8 1 1
-Brick 90 10 3 1 1
-MysteryBlock 93 10 0 0 1
-Ground 88 0 64 2 1
-Grass 89 2 2 0
-Brick 93 6 1 1 1
-Brick 99 6 2 1 1
-Mountain 95 2 0 3
-MysteryBlock 105 6 0 0 1
-MysteryBlock 108 6 0 0 1
-MysteryBlock 111 6 0 0 1
-Brick 117 6 1 1 1
-Brick 119 10 3 1 1
-Grass 107 2 3 0
-Mountain 111 2 0 2
-Grass 118 2 2 0
-Brick 128 6 2 1 1
-Grass 136 2 3 0
-Mountain 143 2 0 3
-Ground 154 0 50 2 1
-Grass 156 2 3 0
-Block 133 2 4 1 1
-Block 134 3 3 1 1
-Block 135 4 2 1 1
-Block 136 5 1 1 1
-Block 138 2 4 1 1
-Block 138 3 3 1 1
-Block 138 4 2 1 1
+Grass 59 2 4 0
+Mountain 64 2 0 2
+Cloud 68 12 2 1
+Ground 72 0 15 2
+Grass 73 2 2 0
+Cloud 76 11 4 1
+Brick 78 5 1 1 1
+MysteryBlock 79 5 0 0 1
+Brick 80 5 1 1 1
+Brick 81 9 8 1 1
+Cloud 85 12 3 1
+Brick 92 9 3 1 1
+MysteryBlock 95 9 0 0 1
+Ground 90 0 64 2 1
+Grass 91 2 2 0
+Brick 95 5 1 1 1
+Brick 101 5 2 1 1
+Mountain 97 2 0 3
+Cloud 105 11 2 1
+MysteryBlock 107 5 0 0 1
+MysteryBlock 110 5 0 0 1
+MysteryBlock 113 5 0 0 1
+MysteryBlock 110 8 0 0 1
+Cloud 116 12 2 1
+Brick 119 5 1 1 1
+Brick 121 9 3 1 1
+Grass 108 2 4 0
+Mountain 113 2 0 2
+Grass 120 2 2 0
+Cloud 124 11 4 1
+Brick 129 9 1 1 1
+MysteryBlock 130 9 0 0 1
+MysteryBlock 131 9 0 0 1
+Brick 132 9 1 1 1
+Brick 130 5 2 1 1
+Cloud 133 12 3 1
+Grass 138 2 4 0
+Mountain 145 2 0 3
+Ground 156 0 70 2 1
+Grass 158 2 3 0
+Block 135 2 4 1 1
+Block 136 3 3 1 1
+Block 137 4 2 1 1
 Block 138 5 1 1 1
-Block 147 2 5 1 1
-Block 148 3 4 1 1
-Block 149 4 3 1 1
-Block 150 5 2 1 1
-Block 154 5 1 1 1
-Block 154 4 2 1 1
-Block 154 3 3 1 1
-Block 154 2 4 1 1
-Mountain 159 2 0 2
-VerticalPipe 162 2 0 2
-Grass 167 2 2 0
-Brick 167 6 2 1 1
-MysteryBlock 169 6 0 0
-Brick 170 6 1 1 1
-VerticalPipe 178 2 0 2
-Block 180 2 9 1 1
-Block 181 3 8 1 1
-Block 182 4 7 1 1
-Block 183 5 6 1 1
-Block 184 6 5 1 1
-Block 185 7 4 1 1
-Block 186 8 3 1 1
-Block 187 9 2 1 1
-Mountain 191 2 0 2
-Block 197 2 1 1 1
-Flagpole 197 3 0 10
+Block 141 2 4 1 1
+Block 141 3 3 1 1
+Block 141 4 2 1 1
+Block 141 5 1 1 1
+Block 149 2 5 1 1
+Block 150 3 4 1 1
+Block 151 4 3 1 1
+Block 152 5 2 1 1
+Block 156 5 1 1 1
+Block 156 4 2 1 1
+Block 156 3 3 1 1
+Block 156 2 4 1 1
+Cloud 154 11 2 1
+Mountain 161 2 0 2
+VerticalPipe 165 2 0 2
+Cloud 165 12 2 1
+Grass 169 2 2 0
+Brick 169 5 2 1 1
+MysteryBlock 171 5 0 0
+Brick 172 5 1 1 1
+Cloud 172 11 4 1
+VerticalPipe 180 2 0 2
+Cloud 181 12 3 1
+Block 182 2 9 1 1
+Block 183 3 8 1 1
+Block 184 4 7 1 1
+Block 185 5 6 1 1
+Block 186 6 5 1 1
+Block 187 7 4 1 1
+Block 188 8 3 1 1
+Block 189 9 2 1 1
+Mountain 193 2 0 2
+Block 199 2 1 1 1
+Flagpole 199 3 0 10
+Cloud 202 11 2 1
