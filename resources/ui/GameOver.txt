@@ -5,4 +5,4 @@ CoinSprite Entity Coin3 272 544 2 2
 WorldText Text 464 568 3 2.8 1
 WorldStage Text 488 544 3 2.8 1
 TimeText Text 640 568 3 2.8 1
-Time Text 656 544 3 2.8 1
+GameOverText Text 280 270 3 2.8 1

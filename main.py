@@ -1,11 +1,12 @@
 import time
 import pico2d
+import cProfile
 
 from Engine.Settings import Settings
 from Engine.RenderingContext import RenderingContext
 from Engine.Scene import Scene
 
-from World import World
+from Game import Game
 
 settings = Settings()
 renderingContext = RenderingContext(
@@ -13,11 +14,8 @@ renderingContext = RenderingContext(
 
 def main():
     scene = Scene()
-
-    world = World(scene.root)
-    scene.root.addChild(world)
-
-    world.loadLevel(1, 1)
+    game = Game(scene.root)
+    scene.root.addChild(game)    
 
     scene.debug = True
 

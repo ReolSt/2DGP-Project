@@ -5,4 +5,8 @@ CoinSprite Entity Coin3 272 544 2 2
 WorldText Text 464 568 3 2.8 1
 WorldStage Text 488 544 3 2.8 1
 TimeText Text 640 568 3 2.8 1
-Time Text 656 544 3 2.8 1
+Splash Terrain Splash 400 410 3.15 2.55
+OnePlayerGame Text 280 225 3 2.8 1
+TwoPlayerGame Text 280 180 3 2.8 1
+TopText Text 300 120 3 2.8 1
+TopScore Text 420 120 3 2.8 1

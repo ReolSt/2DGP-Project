@@ -1,12 +1,13 @@
 from Engine.GameObject import GameObject
+from Engine.GameObject import GameObject
 from UILoader import UILoader
 
-class GamePlayUI(GameObject):
+class MainMenuUI(GameObject):
     def __init__(self, parent):
         super().__init__(parent)
         self.layer = "UI"
 
-        self.slots = UILoader().load(self, "GamePlay")
+        self.slots = UILoader().load(self, "MainMenu")
 
         for slot in self.slots.values():
             self.addChild(slot.gameObject)
@@ -14,13 +15,10 @@ class GamePlayUI(GameObject):
 
         self.slots["WorldText"].gameObject.setText("WORLD")
         self.slots["TimeText"].gameObject.setText("TIME")
-
-        self.name = ""
-        self.score = 0
-        self.coin = 0
-        self.world = 0
-        self.stage = 0
-        self.time = 0
+        self.slots["OnePlayerGame"].gameObject.setText("1 PLAYER GAME")
+        self.slots["TwoPlayerGame"].gameObject.setText("2 PLAYER GAME")
+        self.slots["TopText"].gameObject.setText("TOP-")
+        self.slots["TopScore"].gameObject.setText("000000")
 
     def update(self, deltaTime):
         super().update(deltaTime)
@@ -29,4 +27,3 @@ class GamePlayUI(GameObject):
         self.slots["Score"].gameObject.setText(str(self.score).zfill(6))
         self.slots["Coin"].gameObject.setText("*" + str(self.coin).zfill(2))
         self.slots["WorldStage"].gameObject.setText(str(self.world) + "-" + str(self.stage))
-        self.slots["Time"].gameObject.setText(str(int(self.time)).zfill(3))

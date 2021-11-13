@@ -6,3 +6,8 @@ WorldText Text 464 568 3 2.8 1
 WorldStage Text 488 544 3 2.8 1
 TimeText Text 640 568 3 2.8 1
 Time Text 656 544 3 2.8 1
+CenterWorldText Text 270 400 3.4 2.8 1
+CenterWorldStage Text 430 400 3.4 2.8 1
+MarioSprite Entity MarioStand 310 325 3 2.8
+Cross Text 370 325 3 2.8 1
+Life Text 450 328 3 2.8 1
