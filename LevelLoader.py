@@ -40,8 +40,20 @@ class LevelLoader(metaclass=Singleton):
                     level.playerInitialPosition.x = x
                     level.playerInitialPosition.y = y
 
-                    parserState = "Background"
+                    parserState = "BGM"
                     continue
+
+                elif parserState == "BGM":
+                    if len(tokens) == 0:
+                        level.bgm = ""
+                    else:
+                        assert len(tokens) == 1
+                        bgm = tokens[0]
+                        level.bgm = bgm
+
+                        parserState = "Background"
+                        continue
+
                 elif parserState == "Background":
                     assert len(tokens) == 1
                     spriteName = str(tokens[0])

@@ -13,7 +13,11 @@ class Level(GameObject):
         self.player = None
         self.playerInitialPosition = Vector2(0, 0)
 
-        AudioMixer().playMusic("Overworld")
+        self.bgm = "Overworld"
+
+    def playBGM(self):
+        if len(self.bgm):
+            AudioMixer().playMusicRepeat(self.bgm)
 
     def gridPosition(self, x, y):
         return Vector2(x * self.unitSize.x, y * self.unitSize.y)
@@ -39,4 +43,6 @@ class Level(GameObject):
         if self.state == "Playing":
             if self.player.died:
                 self.state = "Ending"
-                AudioMixer().stopMusic("Overworld")
+
+                if len(self.bgm):
+                    AudioMixer().stopMusic(self.bgm)
