@@ -3,7 +3,7 @@ from Engine.TerrainSprite import TerrainSprite
 
 class Background(GameObject):
     def __init__(self, parent, width, height, spriteName):
-        assert width >= 0 and height >= 0, "Sky size is negative : ({}, {})".format(width, height)
+        assert width >= 0 and height >= 0, "[Background] Invalid size : ({}, {})".format(width, height)
 
         super().__init__(parent)
 
