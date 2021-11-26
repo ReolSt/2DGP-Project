@@ -27,8 +27,6 @@ class Player(GameObject):
         self.running = False
         self.stopping = False
 
-        self.direction = 1
-
         self.jumpPressing = False
         self.jumping = False
         self.longJumping = False
@@ -40,24 +38,24 @@ class Player(GameObject):
         self.epsilon = 0.01
 
         self.direction = 1
-        self.maxVelocity = Vector2(250, 700)
+        self.maxVelocity = Vector2(250, 550)
         self.acceleration = Vector2(0.5, 50.0)
         self.stoppingAcceleration = 1.0
 
         self.jumpStartVelocity = 300
         self.longJumpTime = 0
         self.longJumpDuration = 600
-        self.longJumpAcceleration = 2.3
+        self.longJumpAcceleration = 2.1
 
         self.runAnimationFrame = 1
         self.runAnimationInterval = 20000
         self.runAnimationFrameDuration = 0
 
-        width = self.sprites[0].width
-        height = self.sprites[0].height
+        self.width = self.sprites[0].width
+        self.height = self.sprites[0].height
 
         self.rigidBody = RigidBody(self)
-        self.rigidBody.vertices = [(-width / 2, -height / 2), (width / 2, -height / 2), (width / 2, height / 2), (-width / 2, height / 2)]
+        self.rigidBody.vertices = [(-self.width / 2, -self.height / 2), (self.width / 2, -self.height / 2), (self.width / 2, self.height / 2), (-self.width / 2, self.height / 2)]
         self.rigidBody.bodyType = "Dynamic"
         self.rigidBody.filter = 0b100
         self.rigidBody.mass = 1000
@@ -68,7 +66,7 @@ class Player(GameObject):
         self.sprites[0] = self.animationSprites[spriteName]
 
     def dieAnimationYDelta(self, timeStep):
-        if timeStep < 400 or timeStep > 1200 or timeStep == 800:
+        if timeStep < 400:
             return 0
         else:
             return (800 - timeStep) * 2
@@ -192,8 +190,18 @@ class Player(GameObject):
         if self.transform.getPosition().y <= 0:
             self.died = True
 
+        bb = self.rigidBody.bb
+        shape = pymunk.Poly(pymunk.Body(), [(bb.left, bb.bottom + 2), (bb.right, bb.bottom + 2), (bb.right, bb.top), (bb.left, bb.top)])
+
+        queryInfos = self.rigidBody.space.shape_query(shape)
+        for queryInfo in queryInfos:
+            shape = queryInfo.shape
+            if shape.filter.categories & 0b1000:
+                self.died = True
+
         if self.died:
             self.rigidBody.bodyType = "Kinematic"
+            self.rigidBody.filter = 0b0
             self.dieAnimationTimeStep += deltaTime
             self.rigidBody.velocityY = self.dieAnimationYDelta(self.dieAnimationTimeStep)
 
@@ -207,6 +215,3 @@ class Player(GameObject):
         self.updateMovement(deltaTime)
 
         self.rigidBody.angle = 0
-
-        if self.died:
-            return
