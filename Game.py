@@ -88,10 +88,7 @@ class GamePlay(GameObject):
         self.game.world.level.playBGM()
 
     def onKeyDown(self, event):
-        pass
-
-    def update(self, deltaTime):
-        if self.game.world.player.died:
+        if self.game.world.player.died and event.key == pico2d.SDLK_RETURN:
             self.game.life -= 1
             if self.game.life > 0:
                 self.game.state = PreGame(self.game)
