@@ -104,11 +104,16 @@ class GameObject:
     @rigidBody.setter
     def rigidBody(self, rigidBody):
         assert hasattr(self, "scene"), "[GameObject] rigidBody.setter : object has no scene property."
-        assert isinstance(rigidBody, RigidBody), \
+
+        assert isinstance(rigidBody, RigidBody) or rigidBody is None, \
             "[GameObject] rigidBody.setter : parameter is not instance of RigidBody. ( rigidBody = {} )".format(rigidBody)
 
         if self.__rigidBody is not None:
             self.scene.physicsManager.remove(self.__rigidBody)
+
+        if rigidBody is None:
+            self.__rigidBody = None
+            return
 
         self.__rigidBody = rigidBody
         self.scene.physicsManager.add(self.__rigidBody)
