@@ -94,7 +94,16 @@ class GamePlay(GameObject):
                 self.game.state = PreGame(self.game)
             else:
                 self.game.state = GameOver(self.game)
+        
+        if event.key == pico2d.SDLK_F2:
+            self.game.stageNumber = min(self.game.stageNumber + 1, 2)
+            self.game.state = PreGame(self.game)
+        elif event.key == pico2d.SDLK_F3:
+            self.game.stageNumber = max(self.game.stageNumber - 1, 1)
+            self.game.state = PreGame(self.game)
 
+
+    def update(self, deltaTime):
         self.ui.name = self.game.name
         self.ui.life = self.game.life
         self.ui.score = self.game.score
