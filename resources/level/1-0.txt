@@ -103,8 +103,3 @@ Mountain 193 2 0 2
 Block 199 2 1 1 1
 Flagpole 199 3 0 10
 Cloud 202 11 2 1
-
-Goomba 12 2 0 0 1 1
-Goomba 41 2 0 0 1 1
-Goomba 51 2 0 0 1 1
-Goomba 53 2 0 0 1 1

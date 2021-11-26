@@ -37,3 +37,6 @@ EarnedCoin2 82 358 85 371
 EarnedCoin3 92 358 94 371
 EarnedCoin4 100 358 103 371
 Peach 1 332 14 354
+GoombaWalk1 205 408 219 423
+GoombaWalk2 224 408 239 423
+GoombaDead 186 416 201 423
