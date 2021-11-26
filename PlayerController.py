@@ -4,7 +4,7 @@ from Engine.GameObject import GameObject
 from Engine.AudioMixer import AudioMixer
 from Engine.Settings import Settings
 
-from Player import Player
+from Entities.Player import Player
 
 class PlayerController(GameObject):
     def __init__(self, parent, camera):
