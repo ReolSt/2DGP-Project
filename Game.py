@@ -28,7 +28,7 @@ class MainMenu(GameObject):
         self.ui.stage = self.game.stageNumber
 
         self.game.world = World(self)
-        self.game.world.load(self.game.worldNumber, self.game.stageNumber, self.game.subStage)
+        self.game.world.load(1, 0, -1)
         self.game.world.playerController.input = False
 
         self.game.addChildren([self.ui, self.game.world])
