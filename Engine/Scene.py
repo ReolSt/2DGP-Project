@@ -49,3 +49,6 @@ class Scene:
 
     def removeCamera(self, camera):
         self.cameras.remove(camera)
+
+    def clearCamera(self):
+        self.cameras = []
