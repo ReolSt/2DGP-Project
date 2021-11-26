@@ -18,6 +18,8 @@ from Objects.Tree import Tree
 from Objects.Mushroom import Mushroom
 from Objects.Flagpole import Flagpole
 
+from Entities.Goomba import Goomba
+
 class LevelLoader(metaclass=Singleton):
     def __init__(self):
         self.levelFilePath = Settings().level["LevelFilePath"]
@@ -73,8 +75,11 @@ class LevelLoader(metaclass=Singleton):
                 objectName, x, y, width, height = tokens[:5]
                 x, y, width, height = int(x), int(y), int(width), int(height)
 
-                if len(tokens) == 6:
+                if len(tokens) >= 6:
                     colorType = int(tokens[5])
+
+                if len(tokens) >= 7:
+                    direction = int(tokens[6])
 
                 gameObject = None
 
@@ -102,6 +107,8 @@ class LevelLoader(metaclass=Singleton):
                     gameObject = Mushroom(level, width, height)
                 elif objectName == "Flagpole":
                     gameObject = Flagpole(level, height)
+                elif objectName == "Goomba":
+                    gameObject = Goomba(level, colorType, direction)
 
                 if gameObject is not None:
                     level.setGridPosition(gameObject, x, y)
