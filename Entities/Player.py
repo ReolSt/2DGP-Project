@@ -8,6 +8,12 @@ from Engine.AudioMixer import AudioMixer
 
 import pymunk
 
+import os
+if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
+    from .ColliderCategories import *
+else:
+    from Entities.ColliderCategories import *
+
 class Player(GameObject):
     def __init__(self, parent):
         super().__init__(parent)
@@ -57,7 +63,7 @@ class Player(GameObject):
         self.rigidBody = RigidBody(self)
         self.rigidBody.vertices = [(-self.width / 2, -self.height / 2), (self.width / 2, -self.height / 2), (self.width / 2, self.height / 2), (-self.width / 2, self.height / 2)]
         self.rigidBody.bodyType = "Dynamic"
-        self.rigidBody.filter = 0b100
+        self.rigidBody.filter = PLAYER_CATEGORY
         self.rigidBody.mass = 1000
         self.rigidBody.moment = float('inf')
         self.rigidBody.elasticity = 0
@@ -157,7 +163,7 @@ class Player(GameObject):
         queryInfos = self.rigidBody.space.shape_query(shape)
         for queryInfo in queryInfos:
             shape = queryInfo.shape
-            if shape.filter.categories & 0b1:
+            if shape.filter.categories & FLOOR_CATEGORY:
                 return True
 
         return False
@@ -196,7 +202,7 @@ class Player(GameObject):
         queryInfos = self.rigidBody.space.shape_query(shape)
         for queryInfo in queryInfos:
             shape = queryInfo.shape
-            if shape.filter.categories & 0b1000:
+            if shape.filter.categories & GOOMBA_CATEGORY:
                 self.died = True
 
         if self.died:

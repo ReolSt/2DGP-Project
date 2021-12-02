@@ -7,8 +7,14 @@ from Engine.RigidBody import RigidBody
 
 import pymunk
 
-class Goomba(GameObject, colorType=1, direction=1):
-    def __init__(self, parent):
+import os
+if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
+    from .ColliderCategories import *
+else:
+    from Entities.ColliderCategories import *
+
+class Goomba(GameObject):
+    def __init__(self, parent, colorType=1, direction=1):
         super().__init__(parent)
 
         self.animationSprites = {
@@ -18,6 +24,8 @@ class Goomba(GameObject, colorType=1, direction=1):
         }
 
         self.sprites = [self.animationSprites["Walk1"]]
+
+        self.removed = False
 
         self.died = False
         self.dieAnimationTimeStep = 0
@@ -30,6 +38,8 @@ class Goomba(GameObject, colorType=1, direction=1):
         self.runAnimationInterval = 20000
         self.runAnimationFrameDuration = 0
 
+        self.removeRemainedTime = 1000
+
         for spriteName in self.animationSprites:
             width = self.animationSprites[spriteName].width
             height = self.animationSprites[spriteName].height
@@ -41,7 +51,7 @@ class Goomba(GameObject, colorType=1, direction=1):
         self.rigidBody = RigidBody(self)
         self.rigidBody.vertices = [(0, 0), (self.width, 0), (self.width, self.height), (0, self.height)]
         self.rigidBody.bodyType = "Dynamic"
-        self.rigidBody.filter = 0b1000
+        self.rigidBody.filter = GOOMBA_CATEGORY
         self.rigidBody.mass = 1000
         self.rigidBody.moment = float('inf')
         self.rigidBody.elasticity = 0
@@ -99,7 +109,7 @@ class Goomba(GameObject, colorType=1, direction=1):
         for queryInfo in self.rigidBody.space.shape_query(self.rigidBody.shape):
             shape = queryInfo.shape
             contactPoints = queryInfo.contact_point_set.points
-            if shape.filter.categories & 0b100:
+            if shape.filter.categories & PLAYER_CATEGORY:
                 for contactPoint in contactPoints:
                     point_a = contactPoint.point_a
                     point_b = contactPoint.point_b
@@ -124,6 +134,10 @@ class Goomba(GameObject, colorType=1, direction=1):
         self.updateMovement(deltaTime)
 
         if self.died:
+            if self.removeRemainedTime <= 0:
+                self.remove = True
+            else:
+                self.removeRemainedTime -= deltaTime
             return
 
         self.rigidBody.angle = 0
