@@ -11,6 +11,9 @@ class World(GameObject):
     def __init__(self, parent):
         super().__init__(parent)
 
+    def update(self, deltaTime):
+        super().update(deltaTime)
+
     def load(self, world, stage, subStage=-1):
         if subStage == -1:
             self.level = LevelLoader().load(self, "{}-{}".format(world, stage))

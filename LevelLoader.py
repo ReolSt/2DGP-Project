@@ -1,6 +1,7 @@
 from Engine.Singleton import Singleton
 from Engine.Settings import Settings
 from Engine.Scene import Scene
+from Engine.GameObject import GameObject
 
 from Level import Level
 
@@ -28,6 +29,14 @@ class LevelLoader(metaclass=Singleton):
         filePath = self.levelFilePath + fileName + ".txt"
 
         level = Level(parent)
+
+        objects = GameObject(level)
+        entities = GameObject(level)
+
+        level.addChildren([objects, entities])
+        
+        level.objects = objects.children
+        level.entities = entities.children
 
         parserState = "Player"
 
@@ -112,6 +121,10 @@ class LevelLoader(metaclass=Singleton):
 
                 if gameObject is not None:
                     level.setGridPosition(gameObject, x, y)
-                    level.addChild(gameObject)
+
+                    if objectName in ["Goomba"]:
+                        entities.addChild(gameObject)
+                    else:
+                        objects.addChild(gameObject)
 
         return level

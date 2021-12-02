@@ -13,6 +13,9 @@ class Level(GameObject):
         self.player = None
         self.playerInitialPosition = Vector2(0, 0)
 
+        self.objects = []
+        self.entities = []
+
         self.bgm = "Overworld"
 
     def playBGM(self):
@@ -27,8 +30,8 @@ class Level(GameObject):
 
     def setPlayerInitialPosition(self, player):
         playerGridPosition = self.gridPosition(
-                                         self.playerInitialPosition.x,
-                                         self.playerInitialPosition.y)
+            self.playerInitialPosition.x,
+            self.playerInitialPosition.y)
         player.transform.localPosition = playerGridPosition
 
     def addPlayer(self, player):
@@ -46,3 +49,7 @@ class Level(GameObject):
 
                 if len(self.bgm):
                     AudioMixer().stopMusic(self.bgm)
+
+        for entity in self.entities:
+            if hasattr(entity, "removeReady") and entity.removeReady:
+                self.entities.remove(entity)
