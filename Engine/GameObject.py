@@ -292,6 +292,7 @@ class GameObject:
 
     def addChild(self, child):
         self.children.append(child)
+        child.parent = self
 
         if child.rigidBody is not None:
             child.rigidBody.update()
@@ -300,7 +301,7 @@ class GameObject:
         for child in children:
             self.children.append(child)
 
-    def removeChild(self, chlid):
+    def removeChild(self, child):
         self.children.remove(child)
 
     def removeChildren(self, children):
