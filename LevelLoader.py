@@ -70,7 +70,7 @@ class LevelLoader(metaclass=Singleton):
                 if len(tokens) == 0:
                     continue
 
-                assert 5 <= len(tokens) <= 6
+                assert 5 <= len(tokens) <= 7
 
                 objectName, x, y, width, height = tokens[:5]
                 x, y, width, height = int(x), int(y), int(width), int(height)
