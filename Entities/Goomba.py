@@ -4,6 +4,7 @@ from Engine.Vector2 import Vector2
 from Engine.GameObject import GameObject
 from Engine.EntitySprite import EntitySprite
 from Engine.RigidBody import RigidBody
+from Engine.AudioMixer import AudioMixer
 
 import pymunk
 
@@ -25,7 +26,7 @@ class Goomba(GameObject):
 
         self.sprites = [self.animationSprites["Walk1"]]
 
-        self.removed = False
+        self.removeReady = False
 
         self.died = False
         self.dieAnimationTimeStep = 0
@@ -117,6 +118,10 @@ class Goomba(GameObject):
                         self.died = True
                         self.rigidBody = None
 
+                        shape.body.velocity = shape.body.velocity.x, 300
+
+                        AudioMixer().playWav("Stomp")
+
     def updateMovement(self, deltaTime):
         if self.died:
             return
@@ -135,7 +140,7 @@ class Goomba(GameObject):
 
         if self.died:
             if self.removeRemainedTime <= 0:
-                self.remove = True
+                self.removeReady = True
             else:
                 self.removeRemainedTime -= deltaTime
             return
