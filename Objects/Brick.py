@@ -9,29 +9,20 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
 else:
     from Entities.ColliderCategories import *
 
-class Brick(GameObject):
-    def __init__(self, parent, width=1, height=1, colorType=1):
-        super().__init__(parent)
+class BrickUnit(GameObject):
+    def __init__(self, parent, colorType=1):
+        super().__init__(parent)        
 
-        assert width >= 1 and height >= 1, "[Brick] Impossible size : ({}, {})".format(width, height)
+        sprite = TerrainSprite(self, "Brick" + str(colorType))
+        self.addSprite(sprite)
 
-        referenceSprite = TerrainSprite(self, "Brick" + str(colorType))
+        objectWidth = sprite.width
+        objectHeight = sprite.height
 
-        spriteWidth = referenceSprite.width
-        spriteHeight = referenceSprite.height
+        xOffset = objectWidth / 2
+        yOffset = objectHeight / 2
 
-        xOffset = spriteWidth / 2
-        yOffset = spriteHeight / 2
-
-        for y in range(height):
-            for x in range(width):
-                sprite = TerrainSprite(self, "Brick" + str(colorType))
-
-                sprite.transform.translate(xOffset + spriteWidth * x, yOffset + spriteHeight * y)
-                self.addSprite(sprite)
-
-        objectWidth = spriteWidth * width
-        objectHeight = spriteHeight * height
+        sprite.transform.translate(xOffset, yOffset)
 
         self.rigidBody = RigidBody(self)
         self.rigidBody.vertices = [(0, 0), (objectWidth, 0), (objectWidth, objectHeight), (0, objectHeight)]
@@ -40,6 +31,7 @@ class Brick(GameObject):
 
         self.bumpingTime = 0
         self.bumping = False
+
 
     def update(self, deltaTime):
         super().update(deltaTime)
@@ -55,6 +47,8 @@ class Brick(GameObject):
                 self.rigidBody.velocityY = 0
 
                 self.transform.setPosition(self.originalPosition)
+
+            return
 
         bb = self.rigidBody.bb
 
@@ -74,3 +68,21 @@ class Brick(GameObject):
                         self.originalPosition = self.transform.getPosition()
 
                         self.rigidBody.velocityY = 100
+
+class Brick(GameObject):
+    def __init__(self, parent, width=1, height=1, colorType=1):
+        super().__init__(parent)
+
+        assert width >= 1 and height >= 1, "[Brick] Impossible size : ({}, {})".format(width, height)
+
+        referenceSprite = TerrainSprite(self, "Brick" + str(colorType))
+
+        spriteWidth = referenceSprite.width
+        spriteHeight = referenceSprite.height
+
+        for y in range(height):
+            for x in range(width):
+                brick = BrickUnit(self, colorType)
+                brick.transform.translate(spriteWidth * x, spriteHeight * y)
+
+                self.addChild(brick)
