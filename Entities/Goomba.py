@@ -19,9 +19,9 @@ class Goomba(GameObject):
         super().__init__(parent)
 
         self.animationSprites = {
-            "Walk1": EntitySprite(self, "GoombaWalk1"),
-            "Walk2": EntitySprite(self, "GoombaWalk2"),
-            "Die": EntitySprite(self, "GoombaDead"),
+            "Walk1": EntitySprite(self, "Goomba" + str(colorType) + "Walk1"),
+            "Walk2": EntitySprite(self, "Goomba" + str(colorType) + "Walk2"),
+            "Die": EntitySprite(self, "Goomba" + str(colorType) + "Dead"),
         }
 
         self.sprites = [self.animationSprites["Walk1"]]
@@ -58,6 +58,8 @@ class Goomba(GameObject):
         self.rigidBody.elasticity = 0
 
         self.switchSprite("Walk1")
+
+        self.player = None
 
     def switchSprite(self, spriteName):
         self.sprites[0] = self.animationSprites[spriteName]
@@ -132,6 +134,12 @@ class Goomba(GameObject):
     
     def update(self, deltaTime):
         super().update(deltaTime)
+
+        if self.player is None:
+            return
+
+        if abs(self.player.transform.getPosition().x - self.transform.getPosition().x) > 600:
+            return
 
         self.updateAnimation(deltaTime)
 
