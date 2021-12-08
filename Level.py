@@ -37,8 +37,14 @@ class Level(GameObject):
     def addPlayer(self, player):
         self.player = player
 
+        for entity in self.entities:
+            entity.player = self.player
+
     def removePlayer(self):
         self.player = None
+
+        for entity in self.entities:
+            entity.player = None
 
     def update(self, deltaTime):
         super().update(deltaTime)
