@@ -46,6 +46,9 @@
     <Compile Include="Engine\Transform.py" />
     <Compile Include="Engine\Vector2.py" />
     <Compile Include="Engine\Vector3.py" />
+    <Compile Include="Entities\ColliderCategories.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Entities\Goomba.py">
       <SubType>Code</SubType>
     </Compile>
