@@ -19,7 +19,7 @@ class Scene:
         self.physicsManager = PhysicsManager()
         self.cameras = []
 
-        self.updateFixedTimeStep = 3.0
+        self.updateFixedTimeStep = 5.0
         self.updateTime = 0.0
 
         self.debug = False

@@ -3,7 +3,13 @@ import pymunk
 class PhysicsManager:
     def __init__(self):
         self.space = pymunk.Space()
-        self.space.gravity = 0, -3800
+        self.space.gravity = 0, -3000
+
+        self.rigidBodies = []
+
+    def reset(self):
+        self.space = pymunk.Space()
+        self.space.gravity = 0, -3000
 
         self.rigidBodies = []
 
@@ -13,7 +19,7 @@ class PhysicsManager:
 
     def remove(self, rigidBody):
         self.rigidBodies.remove(rigidBody)
-        self.space.remove(rigidBody.body, rigidBody.remove)
+        self.space.remove(rigidBody.body, rigidBody.shape)
 
     def update(self, deltaTime):
         self.space.step(deltaTime)
