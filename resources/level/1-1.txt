@@ -108,3 +108,13 @@ Goomba 12 2 0 0 1 1
 Goomba 41 2 0 0 1 1
 Goomba 51 2 0 0 1 1
 Goomba 53 2 0 0 1 1
+Goomba 81 10 0 0 1 -1
+Goomba 83 10 0 0 1 -1
+Goomba 98 2 0 0 1 -1
+Goomba 100 2 0 0 1 -1
+Goomba 115 2 0 0 1 -1
+Goomba 117 2 0 0 1 -1
+Goomba 125 2 0 0 1 -1
+Goomba 127 2 0 0 1 -1
+Goomba 129 2 0 0 1 -1
+Goomba 131 2 0 0 1 -1
